@@ -14,8 +14,8 @@ download-iana-data.py
     e.g. see http://bugs.icu-project.org/trac/search?q=2015d
 
 update-tzdata.py
-  - Regenerates the ICU and libcore/bionic timezone data files.
+  - Regenerates the external/icu and system/timezone/output_data timezone
+    data files.
 
-    ICU and CTS tests for bionic / libcore should be run before
-    and after.
+    CTS tests for ICU, bionic and libcore should be run before and after.
 
