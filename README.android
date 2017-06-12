@@ -1,0 +1,15 @@
+This directory contains tools for time zone updates.
+
+Data update tools
+=================
+
+update-tzdata.py
+  - downloads tzdata updates and regenerates the ICU and
+    libcore/bionic timezone data files.
+    There are sometimes code and metadata changes associated
+    with tzdata updates that should be applied to ICU at the same time.
+    e.g. see http://bugs.icu-project.org/trac/search?q=2015d
+
+    ICU and CTS tests for bionic / libcore should be run before
+    and after.
+
