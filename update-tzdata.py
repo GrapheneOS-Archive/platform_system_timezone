@@ -49,8 +49,8 @@ i18nutil.CheckDirExists(timezone_dir, 'system/timezone/zone_zompactor')
 timezone_input_data_dir = os.path.realpath('%s/input_data' % timezone_dir)
 
 # TODO(nfuller): Move to {timezone_dir}/output_data. http://b/36882778
-timezone_output_data_dir = '%s/bionic/libc/zoneinfo' % android_build_top
-i18nutil.CheckDirExists(timezone_output_data_dir, 'bionic/libc/zoneinfo')
+timezone_output_data_dir = '%s/output_data' % timezone_dir
+i18nutil.CheckDirExists(timezone_output_data_dir, 'output_data')
 
 tmp_dir = tempfile.mkdtemp('-tzdata')
 
@@ -117,15 +117,17 @@ def BuildTzdata(iana_tar_file):
                          '%s/main/java/ZoneCompactor.java' % zone_compactor_dir])
 
   zone_tab_file = '%s/zone.tab' % extracted_iana_dir
+
+  iana_output_data_dir = '%s/iana' % timezone_output_data_dir
   subprocess.check_call(['java', '-cp', class_files_dir, 'ZoneCompactor',
                          zone_compactor_setup_file, zic_output_dir, zone_tab_file,
-                         timezone_output_data_dir, new_version])
+                         iana_output_data_dir, new_version])
 
 
 def BuildTzlookup():
   # We currently just copy a manually-maintained xml file.
   tzlookup_source_file = '%s/android/tzlookup.xml' % timezone_input_data_dir
-  tzlookup_dest_file = '%s/tzlookup.xml' % timezone_output_data_dir
+  tzlookup_dest_file = '%s/android/tzlookup.xml' % timezone_output_data_dir
   shutil.copyfile(tzlookup_source_file, tzlookup_dest_file)
 
 
