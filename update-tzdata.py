@@ -16,9 +16,7 @@
 
 """Generates the timezone data files used by Android."""
 
-import ftplib
 import glob
-import httplib
 import os
 import re
 import shutil
@@ -27,7 +25,7 @@ import sys
 import tarfile
 import tempfile
 
-sys.path.append('../../external/icu/tools')
+sys.path.append('%s/external/icu/tools' % os.environ.get('ANDROID_BUILD_TOP'))
 import i18nutil
 import icuutil
 import tzdatautil
@@ -48,7 +46,6 @@ i18nutil.CheckDirExists(timezone_dir, 'system/timezone/zone_zompactor')
 
 timezone_input_data_dir = os.path.realpath('%s/input_data' % timezone_dir)
 
-# TODO(nfuller): Move to {timezone_dir}/output_data. http://b/36882778
 timezone_output_data_dir = '%s/output_data' % timezone_dir
 i18nutil.CheckDirExists(timezone_output_data_dir, 'output_data')
 
@@ -94,9 +91,15 @@ def BuildIcuData(iana_tar_file):
   icuutil.MakeAndCopyOverlayTzIcuData(icu_build_dir, icu_overlay_dat_file)
 
 
-def BuildTzdata(iana_tar_file):
+def ExtractIanaVersion(iana_tar_file):
   iana_tar_filename = os.path.basename(iana_tar_file)
-  new_version = re.search('(tzdata.+)\\.tar\\.gz', iana_tar_filename).group(1)
+  iana_version = re.search('tzdata(.+)\\.tar\\.gz', iana_tar_filename).group(1)
+  return iana_version
+
+
+def BuildTzdata(iana_tar_file):
+  iana_version = ExtractIanaVersion(iana_tar_file)
+  header_string = 'tzdata%s' % iana_version
 
   print 'Extracting...'
   extracted_iana_dir = '%s/extracted_iana' % tmp_dir
@@ -115,7 +118,7 @@ def BuildTzdata(iana_tar_file):
 
   zone_compactor_setup_file = WriteSetupFile(extracted_iana_dir)
 
-  print 'Calling ZoneCompactor to update tzdata to %s...' % new_version
+  print 'Calling ZoneCompactor to update tzdata to %s...' % iana_version
   class_files_dir = '%s/classes' % tmp_dir
   os.mkdir(class_files_dir)
 
@@ -127,7 +130,7 @@ def BuildTzdata(iana_tar_file):
   iana_output_data_dir = '%s/iana' % timezone_output_data_dir
   subprocess.check_call(['java', '-cp', class_files_dir, 'ZoneCompactor',
                          zone_compactor_setup_file, zic_output_dir, zone_tab_file,
-                         iana_output_data_dir, new_version])
+                         iana_output_data_dir, header_string])
 
 
 def BuildTzlookup():
@@ -137,6 +140,31 @@ def BuildTzlookup():
   shutil.copyfile(tzlookup_source_file, tzlookup_dest_file)
 
 
+def CreateDistroFiles(iana_version, output_dir):
+  create_distro_script = '%s/distro/tools/create-distro.py' % timezone_dir
+
+  tzdata_file = '%s/iana/tzdata' % timezone_output_data_dir
+  icu_file = '%s/icu_overlay/icu_tzdata.dat' % timezone_output_data_dir
+  tzlookup_file = '%s/android/tzlookup.xml' % timezone_output_data_dir
+
+  distro_file_pattern = '%s/*.zip' % output_dir
+  existing_distro_files = glob.glob(distro_file_pattern)
+
+  distro_file_metadata_pattern = '%s/*.txt' % output_dir
+  existing_distro_metadata_files = glob.glob(distro_file_metadata_pattern)
+  existing_files = existing_distro_files + existing_distro_metadata_files
+
+  print 'Removing %s' % existing_files
+  for existing_file in existing_files:
+    os.remove(existing_file)
+
+  subprocess.check_call([create_distro_script,
+      '-iana_version', iana_version,
+      '-tzdata', tzdata_file,
+      '-icu', icu_file,
+      '-tzlookup', tzlookup_file,
+      '-output', output_dir])
+
 
 # Run with no arguments from any directory, with no special setup required.
 # See http://www.iana.org/time-zones/ for more about the source of this data.
@@ -145,7 +173,8 @@ def main():
 
   iana_data_dir = '%s/iana' % timezone_input_data_dir
   iana_tar_file = tzdatautil.GetIanaTarFile(iana_data_dir)
-  print 'Found IANA time zone data %s ...' % iana_tar_file
+  iana_version = ExtractIanaVersion(iana_tar_file)
+  print 'Found IANA time zone data release %s in %s ...' % (iana_version, iana_tar_file)
 
   print 'Found android output dir in %s ...' % timezone_output_data_dir
 
@@ -155,7 +184,12 @@ def main():
   BuildIcuData(iana_tar_file)
   BuildTzdata(iana_tar_file)
   BuildTzlookup()
-  print 'Look in %s and %s for new data files' % (timezone_output_data_dir, icu_dir)
+
+  # Create a distro file from the output from prior stages.
+  distro_output_dir = '%s/distro' % timezone_output_data_dir
+  CreateDistroFiles(iana_version, distro_output_dir)
+
+  print 'Look in %s and %s for new files' % (timezone_output_data_dir, icu_dir)
   sys.exit(0)
 
 
