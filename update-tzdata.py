@@ -29,8 +29,8 @@ import tempfile
 
 sys.path.append('../../external/icu/tools')
 import i18nutil
+import icuutil
 import tzdatautil
-import updateicudata
 
 regions = ['africa', 'antarctica', 'asia', 'australasia',
            'etcetera', 'europe', 'northamerica', 'southamerica',
@@ -83,9 +83,15 @@ def WriteSetupFile(extracted_iana_dir):
 def BuildIcuData(iana_tar_file):
   icu_build_dir = '%s/icu' % tmp_dir
 
-  updateicudata.PrepareIcuBuild(icu_build_dir)
-  updateicudata.MakeTzDataFiles(icu_build_dir, iana_tar_file)
-  updateicudata.MakeAndCopyIcuDataFiles(icu_build_dir)
+  icuutil.PrepareIcuBuild(icu_build_dir)
+  icuutil.MakeTzDataFiles(icu_build_dir, iana_tar_file)
+
+  # Create ICU system image files.
+  icuutil.MakeAndCopyIcuDataFiles(icu_build_dir)
+
+  # Create the ICU overlay time zone file.
+  icu_overlay_dat_file = '%s/icu_overlay/icu_tzdata.dat' % timezone_output_data_dir
+  icuutil.MakeAndCopyOverlayTzIcuData(icu_build_dir, icu_overlay_dat_file)
 
 
 def BuildTzdata(iana_tar_file):
@@ -142,12 +148,14 @@ def main():
   print 'Found IANA time zone data %s ...' % iana_tar_file
 
   print 'Found android output dir in %s ...' % timezone_output_data_dir
-  print 'Found icu in %s ...' % updateicudata.icuDir()
+
+  icu_dir = icuutil.icuDir()
+  print 'Found icu in %s ...' % icu_dir
 
   BuildIcuData(iana_tar_file)
   BuildTzdata(iana_tar_file)
   BuildTzlookup()
-  print 'Look in %s and %s for new data files' % (timezone_output_data_dir, updateicudata.icuDir())
+  print 'Look in %s and %s for new data files' % (timezone_output_data_dir, icu_dir)
   sys.exit(0)
 
 
