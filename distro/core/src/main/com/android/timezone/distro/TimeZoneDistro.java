@@ -61,10 +61,6 @@ public final class TimeZoneDistro {
         this.bytes = bytes;
     }
 
-    public byte[] getBytes() {
-        return bytes;
-    }
-
     public DistroVersion getDistroVersion() throws DistroException, IOException {
         byte[] contents = getEntryContents(
                 new ByteArrayInputStream(bytes), DISTRO_VERSION_FILE_NAME);
