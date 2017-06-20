@@ -99,9 +99,17 @@ public final class TimeZoneDistroBuilder {
     }
 
     /**
-     * For use in tests. Use {@link #build()}.
+     * For use in tests. Use {@link #build()} for a version with validation.
      */
     public TimeZoneDistro buildUnvalidated() throws DistroException {
+        byte[] bytes = buildUnvalidatedBytes();
+        return new TimeZoneDistro(bytes);
+    }
+
+    /**
+     * For use in tests. Use {@link #buildBytes()} for a version with validation.
+     */
+    public byte[] buildUnvalidatedBytes() throws DistroException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (ZipOutputStream zos = new ZipOutputStream(baos)) {
             if (distroVersion != null) {
@@ -121,13 +129,20 @@ public final class TimeZoneDistroBuilder {
         } catch (IOException e) {
             throw new DistroException("Unable to create zip file", e);
         }
-        return new TimeZoneDistro(baos.toByteArray());
+        return baos.toByteArray();
     }
 
     /**
      * Builds a {@link TimeZoneDistro}.
      */
     public TimeZoneDistro build() throws DistroException {
+        return new TimeZoneDistro(buildBytes());
+    }
+
+    /**
+     * Builds a {@code byte[]} for a Distro .zip file.
+     */
+    public byte[] buildBytes() throws DistroException {
         if (distroVersion == null) {
             throw new IllegalStateException("Missing distroVersion");
         }
@@ -137,7 +152,7 @@ public final class TimeZoneDistroBuilder {
         if (tzData == null) {
             throw new IllegalStateException("Missing tzData");
         }
-        return buildUnvalidated();
+        return buildUnvalidatedBytes();
     }
 
     private static void addZipEntry(ZipOutputStream zos, String name, byte[] content)
