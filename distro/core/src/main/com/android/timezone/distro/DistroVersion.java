@@ -94,7 +94,8 @@ public class DistroVersion {
         try {
             Matcher matcher = DISTRO_VERSION_PATTERN.matcher(distroVersion);
             if (!matcher.matches()) {
-                throw new DistroException("Invalid distro version string: " + distroVersion);
+                throw new DistroException(
+                        "Invalid distro version string: \"" + distroVersion + "\"");
             }
             String formatMajorVersion = matcher.group(1);
             String formatMinorVersion = matcher.group(2);
@@ -107,7 +108,7 @@ public class DistroVersion {
                     from3DigitVersionString(revision));
         } catch (IndexOutOfBoundsException e) {
             // The use of the regexp above should make this impossible.
-            throw new DistroException("Distro version string too short:" + distroVersion);
+            throw new DistroException("Distro version string too short: \"" + distroVersion + "\"");
         }
     }
 
