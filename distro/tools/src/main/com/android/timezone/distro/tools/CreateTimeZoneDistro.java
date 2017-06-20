@@ -16,7 +16,6 @@
 package com.android.timezone.distro.tools;
 
 import com.android.timezone.distro.DistroVersion;
-import com.android.timezone.distro.TimeZoneDistro;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -61,10 +60,12 @@ public class CreateTimeZoneDistro {
                 .setIcuDataFile(getMandatoryPropertyFile(p, "icu.file"))
                 .setTzLookupFile(getMandatoryPropertyFile(p, "tzlookup.file"));
 
-        TimeZoneDistro distro = builder.build();
+        byte[] distroBytes = builder.buildBytes();
+
+        // Write the distro file.
         File outputFile = new File(args[1]);
         try (OutputStream os = new FileOutputStream(outputFile)) {
-            os.write(distro.getBytes());
+            os.write(distroBytes);
         }
         System.out.println("Wrote: " + outputFile);
     }
