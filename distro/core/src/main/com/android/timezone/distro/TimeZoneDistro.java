@@ -22,12 +22,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.function.Supplier;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
- * A time zone distro. This is a thin wrapper around some in-memory bytes representing a zip
- * archive and logic for its safe extraction.
+ * A time zone distro. This is a thin wrapper around a supplier of bytes for a zip archive and logic
+ * for its safe extraction.
  */
 public final class TimeZoneDistro {
 
@@ -55,15 +56,27 @@ public final class TimeZoneDistro {
      */
     private static final long MAX_GET_ENTRY_CONTENTS_SIZE = 128 * 1024;
 
-    private final byte[] bytes;
+    private final Supplier<InputStream> inputStreamSupplier;
 
+    /**
+     * Creates a TimeZoneDistro using a byte array. Objects created in this way can be compared
+     * using {@link #equals(Object)} to compare backing arrays.
+     */
     public TimeZoneDistro(byte[] bytes) {
-        this.bytes = bytes;
+        this(new ByteStreamSupplier(bytes));
+    }
+
+    /**
+     * Creates a TimeZoneDistro using a {@link Supplier<InputStream>}. Objects created in this way
+     * can only be compared using {@link #equals(Object)} if the supplier implementation correctly
+     * implements {@link #equals(Object)}.
+     */
+    public TimeZoneDistro(Supplier<InputStream> inputStreamSupplier) {
+        this.inputStreamSupplier = inputStreamSupplier;
     }
 
     public DistroVersion getDistroVersion() throws DistroException, IOException {
-        byte[] contents = getEntryContents(
-                new ByteArrayInputStream(bytes), DISTRO_VERSION_FILE_NAME);
+        byte[] contents = getEntryContents(inputStreamSupplier.get(), DISTRO_VERSION_FILE_NAME);
         if (contents == null) {
             throw new DistroException("Distro version file entry not found");
         }
@@ -98,7 +111,7 @@ public final class TimeZoneDistro {
     }
 
     public void extractTo(File targetDir) throws IOException {
-        extractZipSafely(new ByteArrayInputStream(bytes), targetDir, true /* makeWorldReadable */);
+        extractZipSafely(inputStreamSupplier.get(), targetDir, true /* makeWorldReadable */);
     }
 
     /** Visible for testing */
@@ -156,10 +169,48 @@ public final class TimeZoneDistro {
 
         TimeZoneDistro that = (TimeZoneDistro) o;
 
-        if (!Arrays.equals(bytes, that.bytes)) {
-            return false;
+        return inputStreamSupplier.equals(that.inputStreamSupplier);
+    }
+
+    @Override
+    public int hashCode() {
+        return inputStreamSupplier.hashCode();
+    }
+
+    /**
+     * An implementation of {@link Supplier<InputStream>} wrapping a byte array that implements
+     * equals() for convenient comparison during tests.
+     */
+    private static class ByteStreamSupplier implements Supplier<InputStream> {
+
+        private final byte[] bytes;
+
+        ByteStreamSupplier(byte[] bytes) {
+            this.bytes = bytes;
         }
 
-        return true;
+        @Override
+        public InputStream get() {
+            return new ByteArrayInputStream(bytes);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            ByteStreamSupplier that = (ByteStreamSupplier) o;
+
+            return Arrays.equals(bytes, that.bytes);
+        }
+
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(bytes);
+        }
     }
 }

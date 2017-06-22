@@ -27,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import libcore.io.IoUtils;
@@ -59,6 +60,55 @@ public class TimeZoneDistroTest extends TestCase {
 
         TimeZoneDistro distro = new TimeZoneDistro(baos.toByteArray());
         assertEquals(distroVersion, distro.getDistroVersion());
+    }
+
+    public void testGetDistroVersion_closesStream() throws Exception {
+        DistroVersion distroVersion = new DistroVersion(DistroVersion.CURRENT_FORMAT_MAJOR_VERSION,
+                DistroVersion.CURRENT_FORMAT_MINOR_VERSION, "2016c", 1);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(baos)) {
+            addZipEntry(zipOutputStream, TimeZoneDistro.DISTRO_VERSION_FILE_NAME,
+                    distroVersion.toBytes());
+        }
+        byte[] bytes = baos.toByteArray();
+
+        TestInputStreamSupplier inputStreamSupplier = new TestInputStreamSupplier(bytes);
+        TimeZoneDistro distro = new TimeZoneDistro(inputStreamSupplier);
+        assertEquals(distroVersion, distro.getDistroVersion());
+
+        inputStreamSupplier.assertStreamCount(1);
+        inputStreamSupplier.getInputStreamStream(0).assertClosed();
+    }
+
+    public void testExtractTo_closesStream() throws Exception {
+        DistroVersion distroVersion = new DistroVersion(DistroVersion.CURRENT_FORMAT_MAJOR_VERSION,
+                DistroVersion.CURRENT_FORMAT_MINOR_VERSION, "2016c", 1);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(baos)) {
+            addZipEntry(zipOutputStream, TimeZoneDistro.DISTRO_VERSION_FILE_NAME,
+                    distroVersion.toBytes());
+        }
+        byte[] bytes = baos.toByteArray();
+
+        TestInputStreamSupplier inputStreamSupplier = new TestInputStreamSupplier(bytes);
+        TimeZoneDistro distro = new TimeZoneDistro(inputStreamSupplier);
+        distro.extractTo(createTempDir());
+
+        inputStreamSupplier.assertStreamCount(1);
+        inputStreamSupplier.getInputStreamStream(0).assertClosed();
+    }
+
+    public void testBytesConstructorEquals() throws Exception {
+        byte[] bytes1 = new byte[4];
+        byte[] sameAsBytes1 = new byte[4];
+        byte[] bytes2 = new byte[5];
+
+        TimeZoneDistro distro1 = new TimeZoneDistro(bytes1);
+        assertEquals(distro1, distro1);
+
+        assertEquals(new TimeZoneDistro(sameAsBytes1), distro1);
+
+        assertFalse(new TimeZoneDistro(bytes2).equals(distro1));
     }
 
     public void testExtractZipSafely_goodZip() throws Exception {
@@ -165,6 +215,31 @@ public class TimeZoneDistroTest extends TestCase {
 
         public void assertClosed() {
             assertTrue(closed);
+        }
+    }
+
+    private static class TestInputStreamSupplier implements Supplier<InputStream> {
+
+        private List<TestInputStream> inputStreams = new ArrayList<>();
+        private final byte[] bytes;
+
+        TestInputStreamSupplier(byte[] bytes) {
+            this.bytes = bytes;
+        }
+
+        @Override
+        public InputStream get() {
+            TestInputStream is = new TestInputStream(new ByteArrayInputStream(bytes));
+            inputStreams.add(is);
+            return is;
+        }
+
+        public void assertStreamCount(int expected) {
+            assertEquals(expected, inputStreams.size());
+        }
+
+        public TestInputStream getInputStreamStream(int index) {
+            return inputStreams.get(index);
         }
     }
 }
