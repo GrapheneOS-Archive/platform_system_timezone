@@ -16,6 +16,7 @@
 package com.android.timezone.distro.tools;
 
 import com.android.timezone.distro.DistroVersion;
+import com.android.timezone.distro.TimeZoneDistro;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,11 +28,35 @@ import java.io.Reader;
 import java.util.Properties;
 
 /**
- * A command-line tool for creating a timezone update distro.
+ * A command-line tool for creating a time zone update distro file.
  *
- * Args:
- * tzdata.properties file - the file describing the distro (see template file in tzdata/tools2)
- * output file - the name of the file to be generated
+ * <p>Args:
+ * <dl>
+ *     <dt>input properties file</dt>
+ *     <dd>the file describing the distro</dd>
+ *     <dt>output dir</dt>
+ *     <dd>the directory to generate files into</dd>
+ * </dl>
+ *
+ * <p>The input properties file must have the entries:
+ * <dl>
+ *     <dt>rules.version</dt>
+ *     <dd>The IANA rules version.</dd>
+ *     <dt>revision</dt>
+ *     <dd>The distro revision (typically 1).</dd>
+ *     <dt>tzdata.file</dt>
+ *     <dd>The location of the tzdata file.</dd>
+ *     <dt>icu.file</dt>
+ *     <dd>The location of the ICU overlay .dat file.</dd>
+ *     <dt>tzlookup.file</dt>
+ *     <dd>The location of the tzlookup.xml file.</dd>
+ * </dl>
+ *
+ * <p>The output consists of:
+ * <ul>
+ *     <li>A distro .zip containing the input files. See
+ *     {@link com.android.timezone.distro.TimeZoneDistro}</li>
+ * </ul>
  */
 public class CreateTimeZoneDistro {
 
@@ -48,26 +73,29 @@ public class CreateTimeZoneDistro {
             printUsage();
             System.exit(2);
         }
-        Properties p = loadProperties(f);
+        Properties inputProperties = loadProperties(f);
+        String ianaRulesVersion = getMandatoryProperty(inputProperties, "rules.version");
+        int revision = Integer.parseInt(getMandatoryProperty(inputProperties, "revision"));
         DistroVersion distroVersion = new DistroVersion(
                 DistroVersion.CURRENT_FORMAT_MAJOR_VERSION,
                 DistroVersion.CURRENT_FORMAT_MINOR_VERSION,
-                getMandatoryProperty(p, "rules.version"),
-                Integer.parseInt(getMandatoryProperty(p, "revision")));
+                ianaRulesVersion,
+                revision);
         TimeZoneDistroBuilder builder = new TimeZoneDistroBuilder()
                 .setDistroVersion(distroVersion)
-                .setTzDataFile(getMandatoryPropertyFile(p, "tzdata.file"))
-                .setIcuDataFile(getMandatoryPropertyFile(p, "icu.file"))
-                .setTzLookupFile(getMandatoryPropertyFile(p, "tzlookup.file"));
+                .setTzDataFile(getMandatoryPropertyFile(inputProperties, "tzdata.file"))
+                .setIcuDataFile(getMandatoryPropertyFile(inputProperties, "icu.file"))
+                .setTzLookupFile(getMandatoryPropertyFile(inputProperties, "tzlookup.file"));
 
         byte[] distroBytes = builder.buildBytes();
 
         // Write the distro file.
-        File outputFile = new File(args[1]);
-        try (OutputStream os = new FileOutputStream(outputFile)) {
+        File outputDir = new File(args[1]);
+        File outputDistroFile = new File(outputDir, TimeZoneDistro.FILE_NAME);
+        try (OutputStream os = new FileOutputStream(outputDistroFile)) {
             os.write(distroBytes);
         }
-        System.out.println("Wrote: " + outputFile);
+        System.out.println("Wrote " + outputDistroFile);
     }
 
     private static File getMandatoryPropertyFile(Properties p, String propertyName) {
@@ -103,6 +131,6 @@ public class CreateTimeZoneDistro {
     private static void printUsage() {
         System.out.println("Usage:");
         System.out.println("\t" + CreateTimeZoneDistro.class.getName() +
-                " <tzupdate.properties file> <output file>");
+                " <tzupdate.properties file> <output dir>");
     }
 }
