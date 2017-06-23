@@ -27,8 +27,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
- * A time zone distro. This is a thin wrapper around a supplier of bytes for a zip archive and logic
- * for its safe extraction.
+ * A time zone distro. This is a thin wrapper around an {@link InputStream} containing a zip archive
+ * with knowledge of its expected structure and logic for its safe extraction. One of
+ * {@link #extractTo(File)} or {@link #getDistroVersion()} must be called for the
+ * {@link InputStream} to be closed.
  */
 public final class TimeZoneDistro {
 
@@ -59,27 +61,29 @@ public final class TimeZoneDistro {
      */
     private static final long MAX_GET_ENTRY_CONTENTS_SIZE = 128 * 1024;
 
-    private final Supplier<InputStream> inputStreamSupplier;
+    private final InputStream inputStream;
 
     /**
-     * Creates a TimeZoneDistro using a byte array. Objects created in this way can be compared
-     * using {@link #equals(Object)} to compare backing arrays.
+     * Creates a TimeZoneDistro using a byte array. A convenience for
+     * {@code new TimeZoneDistro(new ByteArrayInputStream(bytes))}.
      */
     public TimeZoneDistro(byte[] bytes) {
-        this(new ByteStreamSupplier(bytes));
+        this(new ByteArrayInputStream(bytes));
     }
 
     /**
-     * Creates a TimeZoneDistro using a {@link Supplier<InputStream>}. Objects created in this way
-     * can only be compared using {@link #equals(Object)} if the supplier implementation correctly
-     * implements {@link #equals(Object)}.
+     * Creates a TimeZoneDistro wrapping an {@link InputStream}.
      */
-    public TimeZoneDistro(Supplier<InputStream> inputStreamSupplier) {
-        this.inputStreamSupplier = inputStreamSupplier;
+    public TimeZoneDistro(InputStream inputStream) {
+        this.inputStream = inputStream;
     }
 
+    /**
+     * Consumes the wrapped {@link InputStream} returning only the {@link DistroVersion}.
+     * The wrapped {@link InputStream} is closed after this call.
+     */
     public DistroVersion getDistroVersion() throws DistroException, IOException {
-        byte[] contents = getEntryContents(inputStreamSupplier.get(), DISTRO_VERSION_FILE_NAME);
+        byte[] contents = getEntryContents(inputStream, DISTRO_VERSION_FILE_NAME);
         if (contents == null) {
             throw new DistroException("Distro version file entry not found");
         }
@@ -113,8 +117,12 @@ public final class TimeZoneDistro {
         }
     }
 
+    /**
+     * Consumes the wrapped {@link InputStream}, extracting the content to {@code targetDir}.
+     * The wrapped {@link InputStream} is closed after this call.
+     */
     public void extractTo(File targetDir) throws IOException {
-        extractZipSafely(inputStreamSupplier.get(), targetDir, true /* makeWorldReadable */);
+        extractZipSafely(inputStream, targetDir, true /* makeWorldReadable */);
     }
 
     /** Visible for testing */
@@ -158,62 +166,6 @@ public final class TimeZoneDistro {
                     }
                 }
             }
-        }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        TimeZoneDistro that = (TimeZoneDistro) o;
-
-        return inputStreamSupplier.equals(that.inputStreamSupplier);
-    }
-
-    @Override
-    public int hashCode() {
-        return inputStreamSupplier.hashCode();
-    }
-
-    /**
-     * An implementation of {@link Supplier<InputStream>} wrapping a byte array that implements
-     * equals() for convenient comparison during tests.
-     */
-    private static class ByteStreamSupplier implements Supplier<InputStream> {
-
-        private final byte[] bytes;
-
-        ByteStreamSupplier(byte[] bytes) {
-            this.bytes = bytes;
-        }
-
-        @Override
-        public InputStream get() {
-            return new ByteArrayInputStream(bytes);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            ByteStreamSupplier that = (ByteStreamSupplier) o;
-
-            return Arrays.equals(bytes, that.bytes);
-        }
-
-        @Override
-        public int hashCode() {
-            return Arrays.hashCode(bytes);
         }
     }
 }
