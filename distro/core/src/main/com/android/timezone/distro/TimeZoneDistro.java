@@ -32,6 +32,9 @@ import java.util.zip.ZipInputStream;
  */
 public final class TimeZoneDistro {
 
+    /** The standard name of Android time zone distro files. */
+    public static final String FILE_NAME = "distro.zip";
+
     /** The name of the file inside the distro containing bionic/libcore TZ data. */
     public static final String TZDATA_FILE_NAME = "tzdata";
 

@@ -22,7 +22,7 @@ import shutil
 import subprocess
 import sys
 
-sys.path.append('../../../../external/icu/tools')
+sys.path.append('%s/external/icu/tools' % os.environ.get('ANDROID_BUILD_TOP'))
 import i18nutil
 
 
@@ -31,7 +31,7 @@ android_host_out_dir = i18nutil.GetAndroidHostOutOrDie()
 timezone_dir = os.path.realpath('%s/system/timezone' % android_build_top)
 i18nutil.CheckDirExists(timezone_dir, 'system/timezone')
 
-def RunCreateTimeZoneDistro(properties_file, distro_file):
+def RunCreateTimeZoneDistro(properties_file, distro_output_dir):
   # Build the libraries needed.
   subprocess.check_call(['make', '-C', android_build_top, 'time_zone_distro_tools-host'])
 
@@ -45,10 +45,11 @@ def RunCreateTimeZoneDistro(properties_file, distro_file):
 
   # Run the CreateTimeZoneDistro tool
   subprocess.check_call(['java', '-cp', classpath,
-      'com.android.timezone.distro.tools.CreateTimeZoneDistro', properties_file, distro_file])
+      'com.android.timezone.distro.tools.CreateTimeZoneDistro', properties_file,
+      distro_output_dir])
 
 
-def CreateTimeZoneDistro(iana_version, revision, tzdata_file, icu_file, tzlookup_file, output_file):
+def CreateTimeZoneDistro(iana_version, revision, tzdata_file, icu_file, tzlookup_file, output_dir):
   original_cwd = os.getcwd()
 
   i18nutil.SwitchToNewTemporaryDirectory()
@@ -63,10 +64,7 @@ def CreateTimeZoneDistro(iana_version, revision, tzdata_file, icu_file, tzlookup
     properties.write('icu.file=%s\n' % icu_file)
     properties.write('tzlookup.file=%s\n' % tzlookup_file)
 
-  distro_file = '%s/distro.zip' % working_dir
-  RunCreateTimeZoneDistro(properties_file, distro_file)
-
-  shutil.copyfile(distro_file, output_file)
+  RunCreateTimeZoneDistro(properties_file, output_dir)
 
   os.chdir(original_cwd)
 
@@ -82,7 +80,7 @@ def main():
       help='The location of the ICU overlay .dat file to include')
   parser.add_argument('-tzlookup', required=True,
       help='The location of the tzlookup.xml file to include')
-  parser.add_argument('-output', required=True, help='The output file')
+  parser.add_argument('-output', required=True, help='The output directory')
   args = parser.parse_args()
 
   iana_version = args.iana_version
@@ -90,7 +88,7 @@ def main():
   tzdata_file = os.path.abspath(args.tzdata)
   icu_file = os.path.abspath(args.icu)
   tzlookup_file = os.path.abspath(args.tzlookup)
-  output_file = os.path.abspath(args.output)
+  output_dir = os.path.abspath(args.output)
 
   CreateTimeZoneDistro(
       iana_version=iana_version,
@@ -98,9 +96,9 @@ def main():
       tzdata_file=tzdata_file,
       icu_file=icu_file,
       tzlookup_file=tzlookup_file,
-      output_file=output_file)
+      output_dir=output_dir)
 
-  print 'Distro file created: %s' % output_file
+  print 'Distro files created in %s' % output_dir
   sys.exit(0)
 
 

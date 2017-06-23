@@ -33,6 +33,13 @@ import java.util.zip.ZipOutputStream;
  */
 public final class TimeZoneDistroBuilder {
 
+    /**
+     * An arbitrary timestamp (actually 1/1/2017 00:00:00 UTC) used as the modification time for all
+     * files within a distro to reduce unnecessary differences when a distro is regenerated from the
+     * same input data.
+     */
+    private static long ENTRY_TIMESTAMP = 1483228800000L;
+
     private DistroVersion distroVersion;
     private byte[] tzData;
     private byte[] icuData;
@@ -160,6 +167,8 @@ public final class TimeZoneDistroBuilder {
         try {
             ZipEntry zipEntry = new ZipEntry(name);
             zipEntry.setSize(content.length);
+            // Set the time to a fixed value so the zip entry is deterministic.
+            zipEntry.setTime(ENTRY_TIMESTAMP);
             zos.putNextEntry(zipEntry);
             zos.write(content);
             zos.closeEntry();
