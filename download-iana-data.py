@@ -22,7 +22,7 @@ import shutil
 import subprocess
 import sys
 
-sys.path.append('../../external/icu/tools')
+sys.path.append('%s/external/icu/tools' % os.environ.get('ANDROID_BUILD_TOP'))
 import i18nutil
 import tzdatautil
 
