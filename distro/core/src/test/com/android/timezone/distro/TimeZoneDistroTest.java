@@ -72,12 +72,10 @@ public class TimeZoneDistroTest extends TestCase {
         }
         byte[] bytes = baos.toByteArray();
 
-        TestInputStreamSupplier inputStreamSupplier = new TestInputStreamSupplier(bytes);
-        TimeZoneDistro distro = new TimeZoneDistro(inputStreamSupplier);
+        TestInputStream inputStream = new TestInputStream(new ByteArrayInputStream(bytes));
+        TimeZoneDistro distro = new TimeZoneDistro(inputStream);
         assertEquals(distroVersion, distro.getDistroVersion());
-
-        inputStreamSupplier.assertStreamCount(1);
-        inputStreamSupplier.getInputStreamStream(0).assertClosed();
+        inputStream.assertClosed();
     }
 
     public void testExtractTo_closesStream() throws Exception {
@@ -90,25 +88,11 @@ public class TimeZoneDistroTest extends TestCase {
         }
         byte[] bytes = baos.toByteArray();
 
-        TestInputStreamSupplier inputStreamSupplier = new TestInputStreamSupplier(bytes);
-        TimeZoneDistro distro = new TimeZoneDistro(inputStreamSupplier);
+        TestInputStream inputStream = new TestInputStream(new ByteArrayInputStream(bytes));
+        TimeZoneDistro distro = new TimeZoneDistro(inputStream);
         distro.extractTo(createTempDir());
 
-        inputStreamSupplier.assertStreamCount(1);
-        inputStreamSupplier.getInputStreamStream(0).assertClosed();
-    }
-
-    public void testBytesConstructorEquals() throws Exception {
-        byte[] bytes1 = new byte[4];
-        byte[] sameAsBytes1 = new byte[4];
-        byte[] bytes2 = new byte[5];
-
-        TimeZoneDistro distro1 = new TimeZoneDistro(bytes1);
-        assertEquals(distro1, distro1);
-
-        assertEquals(new TimeZoneDistro(sameAsBytes1), distro1);
-
-        assertFalse(new TimeZoneDistro(bytes2).equals(distro1));
+        inputStream.assertClosed();
     }
 
     public void testExtractZipSafely_goodZip() throws Exception {
@@ -215,31 +199,6 @@ public class TimeZoneDistroTest extends TestCase {
 
         public void assertClosed() {
             assertTrue(closed);
-        }
-    }
-
-    private static class TestInputStreamSupplier implements Supplier<InputStream> {
-
-        private List<TestInputStream> inputStreams = new ArrayList<>();
-        private final byte[] bytes;
-
-        TestInputStreamSupplier(byte[] bytes) {
-            this.bytes = bytes;
-        }
-
-        @Override
-        public InputStream get() {
-            TestInputStream is = new TestInputStream(new ByteArrayInputStream(bytes));
-            inputStreams.add(is);
-            return is;
-        }
-
-        public void assertStreamCount(int expected) {
-            assertEquals(expected, inputStreams.size());
-        }
-
-        public TestInputStream getInputStreamStream(int index) {
-            return inputStreams.get(index);
         }
     }
 }
