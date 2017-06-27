@@ -106,14 +106,6 @@ public final class TimeZoneDistroBuilder {
     }
 
     /**
-     * For use in tests. Use {@link #build()} for a version with validation.
-     */
-    public TimeZoneDistro buildUnvalidated() throws DistroException {
-        byte[] bytes = buildUnvalidatedBytes();
-        return new TimeZoneDistro(bytes);
-    }
-
-    /**
      * For use in tests. Use {@link #buildBytes()} for a version with validation.
      */
     public byte[] buildUnvalidatedBytes() throws DistroException {
@@ -137,13 +129,6 @@ public final class TimeZoneDistroBuilder {
             throw new DistroException("Unable to create zip file", e);
         }
         return baos.toByteArray();
-    }
-
-    /**
-     * Builds a {@link TimeZoneDistro}.
-     */
-    public TimeZoneDistro build() throws DistroException {
-        return new TimeZoneDistro(buildBytes());
     }
 
     /**
