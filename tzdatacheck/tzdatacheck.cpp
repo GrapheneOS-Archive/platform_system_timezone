@@ -32,15 +32,15 @@
 
 // The name of the directory that holds a staged time zone update distro. If this exists it should
 // replace the one in CURRENT_DIR_NAME.
-// See also libcore.tzdata.update2.TimeZoneDistroInstaller.
+// See also com.android.timezone.distro.installer.TimeZoneDistroInstaller.
 static const char* STAGED_DIR_NAME = "/staged";
 
 // The name of the directory that holds the (optional) installed time zone update distro.
-// See also libcore.tzdata.update2.TimeZoneDistroInstaller.
+// See also com.android.timezone.distro.installer.TimeZoneDistroInstaller.
 static const char* CURRENT_DIR_NAME = "/current";
 
 // The name of a file in the staged dir that indicates the staged operation is an "uninstall".
-// See also libcore.tzdata.update2.TimeZoneDistroInstaller.
+// See also com.android.timezone.distro.installer.TimeZoneDistroInstaller.
 static const char* UNINSTALL_TOMBSTONE_FILE_NAME = "/STAGED_UNINSTALL_TOMBSTONE";
 
 // The name of the file containing the distro version information.
