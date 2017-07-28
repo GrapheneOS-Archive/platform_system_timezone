@@ -21,9 +21,8 @@ LOCAL_MODULE := time_zone_distro
 LOCAL_MODULE_TAGS := optional
 LOCAL_SRC_FILES := $(call all-java-files-under, src/main)
 LOCAL_JAVACFLAGS := -encoding UTF-8
-LOCAL_JAVA_LIBRARIES := core-oj core-libart
-LOCAL_NO_STANDARD_LIBRARIES := true
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
+LOCAL_SDK_VERSION := system_current
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
 # Library of classes for handling time zone distros. Used on-device for
@@ -34,6 +33,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_SRC_FILES := $(call all-java-files-under, src/main)
 LOCAL_JAVACFLAGS := -encoding UTF-8
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
+LOCAL_SDK_VERSION := system_current
 include $(BUILD_HOST_JAVA_LIBRARY)
 
 # Tests for time_zone_distro code.
