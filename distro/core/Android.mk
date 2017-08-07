@@ -16,8 +16,22 @@ LOCAL_PATH:= $(call my-dir)
 
 # Library of classes for handling time zone distros. Used on-device for
 # handling distros and within CTS tests.
+#
+# This is distinct from time_zone_distro_unbundled. It should be used
+# for platform code as it avoids circular dependencies when stubs targets
+# need to build framework (as appears to be the case in aosp/master).
 include $(CLEAR_VARS)
 LOCAL_MODULE := time_zone_distro
+LOCAL_MODULE_TAGS := optional
+LOCAL_SRC_FILES := $(call all-java-files-under, src/main)
+LOCAL_JAVACFLAGS := -encoding UTF-8
+LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
+include $(BUILD_STATIC_JAVA_LIBRARY)
+
+# Library of classes for handling time zone distros. Used in unbundled
+# cases. Same as above, except dependent on system_current stubs.
+include $(CLEAR_VARS)
+LOCAL_MODULE := time_zone_distro_unbundled
 LOCAL_MODULE_TAGS := optional
 LOCAL_SRC_FILES := $(call all-java-files-under, src/main)
 LOCAL_JAVACFLAGS := -encoding UTF-8
