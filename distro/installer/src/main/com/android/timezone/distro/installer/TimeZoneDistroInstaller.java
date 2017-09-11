@@ -127,18 +127,6 @@ public class TimeZoneDistroInstaller {
      * Stage an install of the supplied content, to be installed the next time the device boots.
      *
      * <p>Errors during unpacking or staging will throw an {@link IOException}.
-     * If the distro content is invalid this method returns {@code false}.
-     * If the installation completed successfully this method returns {@code true}.
-     */
-    public boolean install(TimeZoneDistro distro) throws IOException {
-        int result = stageInstallWithErrorCode(distro);
-        return result == INSTALL_SUCCESS;
-    }
-
-    /**
-     * Stage an install of the supplied content, to be installed the next time the device boots.
-     *
-     * <p>Errors during unpacking or staging will throw an {@link IOException}.
      * Returns {@link #INSTALL_SUCCESS} on success, or one of the failure codes.
      */
     public int stageInstallWithErrorCode(TimeZoneDistro distro) throws IOException {
