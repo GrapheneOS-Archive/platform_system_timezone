@@ -197,6 +197,28 @@ public class TimeZoneDistroInstallerTest extends TestCase {
         assertNoInstalledDistro();
     }
 
+    /**
+     * Tests staging an update when there's already an uninstall staged still results in a staged
+     * install.
+     */
+    public void testStageInstallWithErrorCode_existingStagedUninstall()
+            throws Exception {
+        byte[] distro1Bytes = createValidTimeZoneDistroBytes(NEW_RULES_VERSION, 1);
+        simulateInstalledDistro(distro1Bytes);
+        assertInstalledDistro(distro1Bytes);
+
+        assertEquals(TimeZoneDistroInstaller.UNINSTALL_SUCCESS, installer.stageUninstall());
+        assertDistroUninstallStaged();
+        assertInstalledDistro(distro1Bytes);
+
+        byte[] distro2Bytes = createValidTimeZoneDistroBytes(NEWER_RULES_VERSION, 1);
+        assertEquals(
+                TimeZoneDistroInstaller.INSTALL_SUCCESS,
+                installer.stageInstallWithErrorCode(new TimeZoneDistro(distro2Bytes)));
+        assertInstalledDistro(distro1Bytes);
+        assertInstallDistroStaged(distro2Bytes);
+    }
+
     /** Tests that a distro with a missing tzdata file will not update the content. */
     public void testStageInstallWithErrorCode_missingTzDataFile() throws Exception {
         byte[] stagedDistroBytes = createValidTimeZoneDistroBytes(NEW_RULES_VERSION, 1);
@@ -371,15 +393,19 @@ public class TimeZoneDistroInstallerTest extends TestCase {
         assertNoInstalledDistro();
     }
 
+    /** Tests what happens if a stageUninstall() is attempted when there's nothing installed. */
     public void testStageUninstall_noExistingDistro() throws Exception {
         // To stage an uninstall, there would need to be installed rules.
-        assertFalse(installer.stageUninstall());
+        assertEquals(
+                TimeZoneDistroInstaller.UNINSTALL_NOTHING_INSTALLED,
+                installer.stageUninstall());
 
         assertNoDistroOperationStaged();
         assertNoInstalledDistro();
     }
 
-    public void testStageUninstall_existingStagedDataDistro() throws Exception {
+    /** Tests what happens if a stageUninstall() is attempted when there's something installed. */
+    public void testStageUninstall_existingInstalledDataDistro() throws Exception {
         // To stage an uninstall, we need to have some installed rules.
         byte[] installedDistroBytes = createValidTimeZoneDistroBytes(NEW_RULES_VERSION, 1);
         simulateInstalledDistro(installedDistroBytes);
@@ -387,11 +413,63 @@ public class TimeZoneDistroInstallerTest extends TestCase {
         File stagedDataDir = installer.getStagedTzDataDir();
         assertTrue(stagedDataDir.mkdir());
 
-        assertTrue(installer.stageUninstall());
+        assertEquals(
+                TimeZoneDistroInstaller.UNINSTALL_SUCCESS,
+                installer.stageUninstall());
         assertDistroUninstallStaged();
         assertInstalledDistro(installedDistroBytes);
     }
 
+    /**
+     * Tests what happens if a stageUninstall() is attempted when there's something installed
+     * and there's a staged install.
+     */
+    public void testStageUninstall_existingStagedInstall() throws Exception {
+        File stagedDataDir = installer.getStagedTzDataDir();
+        assertTrue(stagedDataDir.mkdir());
+
+        // Stage an install.
+        byte[] distroBytes = createValidTimeZoneDistroBytes(NEW_RULES_VERSION, 1);
+        assertEquals(TimeZoneDistroInstaller.INSTALL_SUCCESS,
+                installer.stageInstallWithErrorCode(new TimeZoneDistro(distroBytes)));
+
+        // Now uninstall. It should just remove the staged install.
+        assertEquals(
+                TimeZoneDistroInstaller.UNINSTALL_NOTHING_INSTALLED,
+                installer.stageUninstall());
+        assertNoDistroOperationStaged();
+    }
+
+    /**
+     * Tests what happens if a stageUninstall() is attempted when there's something installed
+     * and there's a staged uninstall.
+     */
+    public void testStageUninstall_existingStagedUninstall() throws Exception {
+        // To stage an uninstall, we need to have some installed rules.
+        byte[] installedDistroBytes = createValidTimeZoneDistroBytes(NEW_RULES_VERSION, 1);
+        simulateInstalledDistro(installedDistroBytes);
+
+        File stagedDataDir = installer.getStagedTzDataDir();
+        assertTrue(stagedDataDir.mkdir());
+
+        assertEquals(
+                TimeZoneDistroInstaller.UNINSTALL_SUCCESS,
+                installer.stageUninstall());
+        assertDistroUninstallStaged();
+        assertInstalledDistro(installedDistroBytes);
+
+        // Now stage a second uninstall.
+        assertEquals(
+                TimeZoneDistroInstaller.UNINSTALL_SUCCESS,
+                installer.stageUninstall());
+        assertDistroUninstallStaged();
+        assertInstalledDistro(installedDistroBytes);
+    }
+
+    /**
+     * Tests what happens if a stageUninstall() is attempted when there are unexpected working
+     * directories present.
+     */
     public void testStageUninstall_oldDirsAlreadyExists() throws Exception {
         // To stage an uninstall, we need to have some installed rules.
         byte[] installedDistroBytes = createValidTimeZoneDistroBytes(NEW_RULES_VERSION, 1);
@@ -403,7 +481,9 @@ public class TimeZoneDistroInstallerTest extends TestCase {
         File workingDir = installer.getWorkingDir();
         assertTrue(workingDir.mkdir());
 
-        assertTrue(installer.stageUninstall());
+        assertEquals(
+                TimeZoneDistroInstaller.UNINSTALL_SUCCESS,
+                installer.stageUninstall());
 
         assertDistroUninstallStaged();
         assertFalse(workingDir.exists());
@@ -444,7 +524,9 @@ public class TimeZoneDistroInstallerTest extends TestCase {
 
         // Check result after unsuccessfully staging an uninstall.
         // Can't stage an uninstall without an installed distro.
-        assertFalse(installer.stageUninstall());
+        assertEquals(
+                TimeZoneDistroInstaller.UNINSTALL_NOTHING_INSTALLED,
+                installer.stageUninstall());
         assertNull(installer.getStagedDistroOperation());
         assertNoDistroOperationStaged();
         assertNoInstalledDistro();
@@ -461,7 +543,9 @@ public class TimeZoneDistroInstallerTest extends TestCase {
 
         // Check result after unsuccessfully staging an uninstall (but after removing a staged
         // install). Can't stage an uninstall without an installed distro.
-        assertFalse(installer.stageUninstall());
+        assertEquals(
+                TimeZoneDistroInstaller.UNINSTALL_NOTHING_INSTALLED,
+                installer.stageUninstall());
         assertNull(installer.getStagedDistroOperation());
         assertNoDistroOperationStaged();
         assertNoInstalledDistro();
@@ -471,7 +555,9 @@ public class TimeZoneDistroInstallerTest extends TestCase {
         assertInstalledDistro(distro1Bytes);
 
         // Check state after successfully staging an uninstall.
-        assertTrue(installer.stageUninstall());
+        assertEquals(
+                TimeZoneDistroInstaller.UNINSTALL_SUCCESS,
+                installer.stageUninstall());
         StagedDistroOperation expectedStagedUninstall = StagedDistroOperation.uninstall();
         assertEquals(expectedStagedUninstall, installer.getStagedDistroOperation());
         assertDistroUninstallStaged();
