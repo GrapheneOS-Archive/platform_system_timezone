@@ -36,14 +36,42 @@ import libcore.util.ZoneInfoDB;
 public class TimeZoneDistroInstaller {
     /** {@link #stageInstallWithErrorCode(TimeZoneDistro)} result code: Success. */
     public final static int INSTALL_SUCCESS = 0;
+
     /** {@link #stageInstallWithErrorCode(TimeZoneDistro)} result code: Distro corrupt. */
     public final static int INSTALL_FAIL_BAD_DISTRO_STRUCTURE = 1;
-    /** {@link #stageInstallWithErrorCode(TimeZoneDistro)} result code: Distro version incompatible. */
+
+    /**
+     * {@link #stageInstallWithErrorCode(TimeZoneDistro)} result code: Distro version incompatible.
+     */
     public final static int INSTALL_FAIL_BAD_DISTRO_FORMAT_VERSION = 2;
-    /** {@link #stageInstallWithErrorCode(TimeZoneDistro)} result code: Distro rules too old for device. */
+
+    /**
+     * {@link #stageInstallWithErrorCode(TimeZoneDistro)} result code: Distro rules too old for
+     * device.
+     */
     public final static int INSTALL_FAIL_RULES_TOO_OLD = 3;
-    /** {@link #stageInstallWithErrorCode(TimeZoneDistro)} result code: Distro content failed validation. */
+
+    /**
+     * {@link #stageInstallWithErrorCode(TimeZoneDistro)} result code: Distro content failed
+     * validation.
+     */
     public final static int INSTALL_FAIL_VALIDATION_ERROR = 4;
+
+    /**
+     * {@link #stageUninstall()} result code: An uninstall has been successfully staged.
+     */
+    public final static int UNINSTALL_SUCCESS = 0;
+
+    /**
+     * {@link #stageUninstall()} result code: Nothing was installed that required an uninstall to be
+     * staged.
+     */
+    public final static int UNINSTALL_NOTHING_INSTALLED = 1;
+
+    /**
+     * {@link #stageUninstall()} result code: The uninstall could not be staged.
+     */
+    public final static int UNINSTALL_FAIL = 2;
 
     // This constant must match one in system/timezone/tzdatacheck/tzdatacheck.cpp.
     private static final String STAGED_TZ_DATA_DIR_NAME = "staged";
@@ -111,7 +139,7 @@ public class TimeZoneDistroInstaller {
      * Stage an install of the supplied content, to be installed the next time the device boots.
      *
      * <p>Errors during unpacking or staging will throw an {@link IOException}.
-     * Returns {@link #INSTALL_SUCCESS} or an error code.
+     * Returns {@link #INSTALL_SUCCESS} on success, or one of the failure codes.
      */
     public int stageInstallWithErrorCode(TimeZoneDistro distro) throws IOException {
         if (oldStagedDataDir.exists()) {
@@ -212,13 +240,17 @@ public class TimeZoneDistroInstaller {
 
     /**
      * Stage an uninstall of the current timezone update in /data which, on reboot, will return the
-     * device to using data from /system. Returns {@code true} if staging the uninstallation was
-     * successful, {@code false} if there was nothing installed in /data to uninstall. If there was
-     * something else staged it will be replaced by this call.
+     * device to using data from /system. If there was something else already staged it will be
+     * removed by this call.
+     *
+     * Returns {@link #UNINSTALL_SUCCESS} if staging the uninstallation was
+     * successful and reboot will be required. Returns {@link #UNINSTALL_NOTHING_INSTALLED} if
+     * there was nothing installed in /data that required an uninstall to be staged, anything that
+     * was staged will have been removed and therefore no reboot is required.
      *
      * <p>Errors encountered during uninstallation will throw an {@link IOException}.
      */
-    public boolean stageUninstall() throws IOException {
+    public int stageUninstall() throws IOException {
         Slog.i(logTag, "Uninstalling time zone update");
 
         if (oldStagedDataDir.exists()) {
@@ -244,7 +276,7 @@ public class TimeZoneDistroInstaller {
             // stage anything.
             if (!currentTzDataDir.exists()) {
                 Slog.i(logTag, "Nothing to uninstall at " + currentTzDataDir);
-                return false;
+                return UNINSTALL_NOTHING_INSTALLED;
             }
 
             // Stage an uninstall in workingDir.
@@ -256,7 +288,7 @@ public class TimeZoneDistroInstaller {
             FileUtils.rename(workingDir, stagedTzDataDir);
             Slog.i(logTag, "Uninstall staged: " + stagedTzDataDir + " successfully created");
 
-            return true;
+            return UNINSTALL_SUCCESS;
         } finally {
             deleteBestEffort(oldStagedDataDir);
             deleteBestEffort(workingDir);
