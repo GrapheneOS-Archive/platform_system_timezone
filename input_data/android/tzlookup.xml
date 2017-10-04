@@ -16,7 +16,7 @@
 ** limitations under the License.
 */
 -->
-<timezones>
+<timezones ianaversion="2017b">
   <!-- Time zones by country.
 
        Data in this file originates from IANA's zone.tab file.
