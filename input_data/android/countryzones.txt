@@ -1,0 +1,3102 @@
+#
+# Copyright 2006, The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Time zones by country.
+#
+# This is a proto file in text format.
+#
+# Some data in this file originates from IANA's zone.tab file but
+# some of the ordering and meta-data is originated by the Android
+# project.
+#
+# The file is used to generate the on-device file used when picking
+# a time zone for an Android device.
+
+# ianaVersion: The version of the IANA rules this file matches.
+ianaVersion:"2017b"
+
+# countries:
+#
+# The ordering of country elements is not important but is kept in ASCII
+# order by ISO code for easier maintenance. There must only be one country
+# element per unique code.
+
+# Country:
+#
+# isoCode:
+# The (lower cased) ISO 3166 2-character country code used in the IANA
+# zones.tab file.
+#
+# defaultTimeZoneId:
+# The (optional) defaultTimeZoneId is used to specify which of the time
+# zones associated with the country should be used if only
+# a country code is available. If it is not specified and the country
+# has only one obvious choice then the defaultTimeZoneId can be omitted.
+#
+# timeZones:
+# Time zones associated with the country.
+#
+# The ordering of TimeZone elements is important because it influence the
+# order that time zones in a country are considered when the device
+# has a known local time, offset from UTC and whether the local zone is
+# currently observing DST.
+#
+# There will often be several time zones within a country that could match
+# at any given instant, but the first zone that matches a user's country,
+# offset and DST state is chosen. Therefore the IDs should be ordered so
+# that the time zones with the highest likelihood of matching the user's
+# needs are first.
+#
+# For example, a sensible ordering for TimeZone entries for a country
+# would be by population of users that observe the offset/DST to maximize
+# the probability of matching the truth for an arbitrary user in that country.
+#
+# Currently the TimeZone entries are mostly primarily ordered by raw
+# (non-DST) offset and then an ill-defined "desirability". This ordering
+# is an historical artifact that is likely to change in future.
+
+# TimeZone:
+#
+# id:
+# The ID of the time zone.
+#
+# utcOffset:
+# The expected non-DST offset for the time zone. Used as a form of
+# redundancy check. Changes to this may influence the correct ordering
+# indicate a change to time zones that may need further attention.
+
+# ANDORRA
+countries:<
+  isoCode:"ad"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Andorra"
+  >
+>
+
+# UNITED ARAB EMIRATES
+countries:<
+  isoCode:"ae"
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Asia/Dubai"
+  >
+>
+
+# AFGHANISTAN
+countries:<
+  isoCode:"af"
+  timeZones:<
+    utcOffset:"4:30"
+    id:"Asia/Kabul"
+  >
+>
+
+# ANTIGUA AND BARBUDA
+countries:<
+  isoCode:"ag"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Antigua"
+  >
+>
+
+# ANGUILLA
+countries:<
+  isoCode:"ai"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Anguilla"
+  >
+>
+
+# ALBANIA
+countries:<
+  isoCode:"al"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Tirane"
+  >
+>
+
+# ARMENIA
+countries:<
+  isoCode:"am"
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Asia/Yerevan"
+  >
+>
+
+# ANGOLA
+countries:<
+  isoCode:"ao"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Luanda"
+  >
+>
+
+# ANTARCTICA
+countries:<
+  isoCode:"aq"
+  defaultTimeZoneId:"Antarctica/McMurdo"
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Antarctica/McMurdo"
+  >
+
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Antarctica/DumontDUrville"
+  >
+
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Antarctica/Casey"
+  >
+
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Antarctica/Davis"
+  >
+
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Antarctica/Mawson"
+  >
+
+  timeZones:<
+    utcOffset:"6:00"
+    id:"Antarctica/Vostok"
+  >
+
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Antarctica/Syowa"
+  >
+
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Antarctica/Troll"
+  >
+
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"Antarctica/Rothera"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"Antarctica/Palmer"
+  >
+>
+
+# ARGENTINA
+countries:<
+  isoCode:"ar"
+  defaultTimeZoneId:"America/Argentina/Buenos_Aires"
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/Buenos_Aires"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/Cordoba"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/Salta"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/Jujuy"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/Tucuman"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/Catamarca"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/La_Rioja"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/San_Juan"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/Mendoza"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/San_Luis"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/Rio_Gallegos"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Argentina/Ushuaia"
+  >
+>
+
+# AMERICAN SAMOA
+countries:<
+  isoCode:"as"
+  timeZones:<
+    utcOffset:"-11:00"
+    id:"Pacific/Pago_Pago"
+  >
+>
+
+# AUSTRIA
+countries:<
+  isoCode:"at"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Vienna"
+  >
+>
+
+# AUSTRALIA
+countries:<
+  isoCode:"au"
+  defaultTimeZoneId:"Australia/Sydney"
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Australia/Sydney"
+  >
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Australia/Melbourne"
+  >
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Australia/Brisbane"
+  >
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Australia/Hobart"
+  >
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Australia/Currie"
+  >
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Australia/Lindeman"
+  >
+
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Antarctica/Macquarie"
+  >
+
+  timeZones:<
+    utcOffset:"10:30"
+    id:"Australia/Lord_Howe"
+  >
+
+  timeZones:<
+    utcOffset:"9:30"
+    id:"Australia/Adelaide"
+  >
+  timeZones:<
+    utcOffset:"9:30"
+    id:"Australia/Broken_Hill"
+  >
+  timeZones:<
+    utcOffset:"9:30"
+    id:"Australia/Darwin"
+  >
+
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Australia/Perth"
+  >
+
+  timeZones:<
+    utcOffset:"8:45"
+    id:"Australia/Eucla"
+  >
+>
+
+# ARUBA
+countries:<
+  isoCode:"aw"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Aruba"
+  >
+>
+
+# ALAND ISLANDS
+countries:<
+  isoCode:"ax"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Mariehamn"
+  >
+>
+
+# AZERBAIJAN
+countries:<
+  isoCode:"az"
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Asia/Baku"
+  >
+>
+
+# BOSNIA AND HERZEGOVINA
+countries:<
+  isoCode:"ba"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Sarajevo"
+  >
+>
+
+# BARBADOS
+countries:<
+  isoCode:"bb"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Barbados"
+  >
+>
+
+# BANGLADESH
+countries:<
+  isoCode:"bd"
+  timeZones:<
+    utcOffset:"6:00"
+    id:"Asia/Dhaka"
+  >
+>
+
+# BELGIUM
+countries:<
+  isoCode:"be"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Brussels"
+  >
+>
+
+# BURKINA FASO
+countries:<
+  isoCode:"bf"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Ouagadougou"
+  >
+>
+
+# BULGARIA
+countries:<
+  isoCode:"bg"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Sofia"
+  >
+>
+
+# BAHRAIN
+countries:<
+  isoCode:"bh"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Asia/Bahrain"
+  >
+>
+
+# BURUNDI
+countries:<
+  isoCode:"bi"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Bujumbura"
+  >
+>
+
+# BENIN
+countries:<
+  isoCode:"bj"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Porto-Novo"
+  >
+>
+
+# Saint Barthélemy
+countries:<
+  isoCode:"bl"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/St_Barthelemy"
+  >
+>
+
+# BERMUDA
+countries:<
+  isoCode:"bm"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"Atlantic/Bermuda"
+  >
+>
+
+# BRUNEI DARUSSALAM
+countries:<
+  isoCode:"bn"
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Brunei"
+  >
+>
+
+# BOLIVIA
+countries:<
+  isoCode:"bo"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/La_Paz"
+  >
+>
+
+# Caribbean Netherlands
+countries:<
+  isoCode:"bq"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Kralendijk"
+  >
+>
+
+# BRAZIL
+countries:<
+  isoCode:"br"
+  defaultTimeZoneId:"America/Noronha"
+  timeZones:<
+    utcOffset:"-2:00"
+    id:"America/Noronha"
+  >
+
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Sao_Paulo"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Belem"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Fortaleza"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Recife"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Araguaina"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Maceio"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Bahia"
+  >
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Santarem"
+  >
+
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Manaus"
+  >
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Campo_Grande"
+  >
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Cuiaba"
+  >
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Porto_Velho"
+  >
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Boa_Vista"
+  >
+
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Eirunepe"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Rio_Branco"
+  >
+>
+
+# BAHAMAS
+countries:<
+  isoCode:"bs"
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Nassau"
+  >
+>
+
+# BHUTAN
+countries:<
+  isoCode:"bt"
+  timeZones:<
+    utcOffset:"6:00"
+    id:"Asia/Thimphu"
+  >
+>
+
+# BOTSWANA
+countries:<
+  isoCode:"bw"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Gaborone"
+  >
+>
+
+# BELARUS
+countries:<
+  isoCode:"by"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Europe/Minsk"
+  >
+>
+
+# BELIZE
+countries:<
+  isoCode:"bz"
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Belize"
+  >
+>
+
+# CANADA
+countries:<
+  isoCode:"ca"
+  defaultTimeZoneId:"America/St_Johns"
+  timeZones:<
+    utcOffset:"-3:30"
+    id:"America/St_Johns"
+  >
+
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Halifax"
+  >
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Glace_Bay"
+  >
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Moncton"
+  >
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Goose_Bay"
+  >
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Blanc-Sablon"
+  >
+
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Toronto"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Nipigon"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Thunder_Bay"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Iqaluit"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Pangnirtung"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Atikokan"
+  >
+
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Winnipeg"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Regina"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Rankin_Inlet"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Rainy_River"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Swift_Current"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Resolute"
+  >
+
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Edmonton"
+  >
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Cambridge_Bay"
+  >
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Yellowknife"
+  >
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Inuvik"
+  >
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Dawson_Creek"
+  >
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Creston"
+  >
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Fort_Nelson"
+  >
+
+  timeZones:<
+    utcOffset:"-8:00"
+    id:"America/Vancouver"
+  >
+  timeZones:<
+    utcOffset:"-8:00"
+    id:"America/Whitehorse"
+  >
+  timeZones:<
+    utcOffset:"-8:00"
+    id:"America/Dawson"
+  >
+>
+
+# COCOS (KEELING) ISLANDS
+countries:<
+  isoCode:"cc"
+  timeZones:<
+    utcOffset:"6:30"
+    id:"Indian/Cocos"
+  >
+>
+
+# CONGO, THE DEMOCRATIC REPUBLIC OF THE
+countries:<
+  isoCode:"cd"
+  defaultTimeZoneId:"Africa/Lubumbashi"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Lubumbashi"
+  >
+
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Kinshasa"
+  >
+>
+
+# CENTRAL AFRICAN REPUBLIC
+countries:<
+  isoCode:"cf"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Bangui"
+  >
+>
+
+# CONGO
+countries:<
+  isoCode:"cg"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Brazzaville"
+  >
+>
+
+# SWITZERLAND
+countries:<
+  isoCode:"ch"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Zurich"
+  >
+>
+
+# COTE D'IVOIRE
+countries:<
+  isoCode:"ci"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Abidjan"
+  >
+>
+
+# COOK ISLANDS
+countries:<
+  isoCode:"ck"
+  timeZones:<
+    utcOffset:"-10:00"
+    id:"Pacific/Rarotonga"
+  >
+>
+
+# CHILE
+countries:<
+  isoCode:"cl"
+  defaultTimeZoneId:"America/Punta_Arenas"
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Punta_Arenas"
+  >
+
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Santiago"
+  >
+
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"Pacific/Easter"
+  >
+>
+
+# CAMEROON
+countries:<
+  isoCode:"cm"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Douala"
+  >
+>
+
+# CHINA
+countries:<
+  isoCode:"cn"
+  defaultTimeZoneId:"Asia/Shanghai"
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Shanghai"
+  >
+
+  timeZones:<
+    utcOffset:"6:00"
+    id:"Asia/Urumqi"
+  >
+>
+
+# COLOMBIA
+countries:<
+  isoCode:"co"
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Bogota"
+  >
+>
+
+# COSTA RICA
+countries:<
+  isoCode:"cr"
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Costa_Rica"
+  >
+>
+
+# CUBA
+countries:<
+  isoCode:"cu"
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Havana"
+  >
+>
+
+# CAPE VERDE
+countries:<
+  isoCode:"cv"
+  timeZones:<
+    utcOffset:"-1:00"
+    id:"Atlantic/Cape_Verde"
+  >
+>
+
+# Curaçao
+countries:<
+  isoCode:"cw"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Curacao"
+  >
+>
+
+# CHRISTMAS ISLAND
+countries:<
+  isoCode:"cx"
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Indian/Christmas"
+  >
+>
+
+# CYPRUS
+countries:<
+  isoCode:"cy"
+  defaultTimeZoneId:"Asia/Nicosia"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Asia/Nicosia"
+  >
+
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Asia/Famagusta"
+  >
+>
+
+# CZECH REPUBLIC
+countries:<
+  isoCode:"cz"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Prague"
+  >
+>
+
+# GERMANY
+countries:<
+  isoCode:"de"
+  defaultTimeZoneId:"Europe/Berlin"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Berlin"
+  >
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Busingen"
+  >
+>
+
+# DJIBOUTI
+countries:<
+  isoCode:"dj"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Africa/Djibouti"
+  >
+>
+
+# DENMARK
+countries:<
+  isoCode:"dk"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Copenhagen"
+  >
+>
+
+# DOMINICA
+countries:<
+  isoCode:"dm"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Dominica"
+  >
+>
+
+# DOMINICAN REPUBLIC
+countries:<
+  isoCode:"do"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Santo_Domingo"
+  >
+>
+
+# ALGERIA
+countries:<
+  isoCode:"dz"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Algiers"
+  >
+>
+
+# ECUADOR
+countries:<
+  isoCode:"ec"
+  defaultTimeZoneId:"America/Guayaquil"
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Guayaquil"
+  >
+
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"Pacific/Galapagos"
+  >
+>
+
+# ESTONIA
+countries:<
+  isoCode:"ee"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Tallinn"
+  >
+>
+
+# EGYPT
+countries:<
+  isoCode:"eg"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Cairo"
+  >
+>
+
+# WESTERN SAHARA
+countries:<
+  isoCode:"eh"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/El_Aaiun"
+  >
+>
+
+# ERITREA
+countries:<
+  isoCode:"er"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Africa/Asmara"
+  >
+>
+
+# SPAIN
+countries:<
+  isoCode:"es"
+  defaultTimeZoneId:"Europe/Madrid"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Madrid"
+  >
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Ceuta"
+  >
+
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Atlantic/Canary"
+  >
+>
+
+# ETHIOPIA
+countries:<
+  isoCode:"et"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Africa/Addis_Ababa"
+  >
+>
+
+# FINLAND
+countries:<
+  isoCode:"fi"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Helsinki"
+  >
+>
+
+# FIJI
+countries:<
+  isoCode:"fj"
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Pacific/Fiji"
+  >
+>
+
+# FALKLAND ISLANDS (MALVINAS)
+countries:<
+  isoCode:"fk"
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"Atlantic/Stanley"
+  >
+>
+
+# MICRONESIA, FEDERATED STATES OF
+countries:<
+  isoCode:"fm"
+  defaultTimeZoneId:"Pacific/Pohnpei"
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Pacific/Pohnpei"
+  >
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Pacific/Kosrae"
+  >
+
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Pacific/Chuuk"
+  >
+>
+
+# FAROE ISLANDS
+countries:<
+  isoCode:"fo"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Atlantic/Faroe"
+  >
+>
+
+# FRANCE
+countries:<
+  isoCode:"fr"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Paris"
+  >
+>
+
+# GABON
+countries:<
+  isoCode:"ga"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Libreville"
+  >
+>
+
+# UNITED KINGDOM
+countries:<
+  isoCode:"gb"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Europe/London"
+  >
+>
+
+# GRENADA
+countries:<
+  isoCode:"gd"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Grenada"
+  >
+>
+
+# GEORGIA
+countries:<
+  isoCode:"ge"
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Asia/Tbilisi"
+  >
+>
+
+# FRENCH GUIANA
+countries:<
+  isoCode:"gf"
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Cayenne"
+  >
+>
+
+# GUERNSEY
+countries:<
+  isoCode:"gg"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Europe/Guernsey"
+  >
+>
+
+# GHANA
+countries:<
+  isoCode:"gh"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Accra"
+  >
+>
+
+# GIBRALTAR
+countries:<
+  isoCode:"gi"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Gibraltar"
+  >
+>
+
+# GREENLAND
+countries:<
+  isoCode:"gl"
+  defaultTimeZoneId:"America/Danmarkshavn"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"America/Danmarkshavn"
+  >
+
+  timeZones:<
+    utcOffset:"-1:00"
+    id:"America/Scoresbysund"
+  >
+
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Godthab"
+  >
+
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Thule"
+  >
+>
+
+# GAMBIA
+countries:<
+  isoCode:"gm"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Banjul"
+  >
+>
+
+# GUINEA
+countries:<
+  isoCode:"gn"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Conakry"
+  >
+>
+
+# GUADELOUPE
+countries:<
+  isoCode:"gp"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Guadeloupe"
+  >
+>
+
+# EQUATORIAL GUINEA
+countries:<
+  isoCode:"gq"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Malabo"
+  >
+>
+
+# GREECE
+countries:<
+  isoCode:"gr"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Athens"
+  >
+>
+
+# SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS
+countries:<
+  isoCode:"gs"
+  timeZones:<
+    utcOffset:"-2:00"
+    id:"Atlantic/South_Georgia"
+  >
+>
+
+# GUATEMALA
+countries:<
+  isoCode:"gt"
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Guatemala"
+  >
+>
+
+# GUAM
+countries:<
+  isoCode:"gu"
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Pacific/Guam"
+  >
+>
+
+# GUINEA-BISSAU
+countries:<
+  isoCode:"gw"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Bissau"
+  >
+>
+
+# GUYANA
+countries:<
+  isoCode:"gy"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Guyana"
+  >
+>
+
+# HONG KONG
+countries:<
+  isoCode:"hk"
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Hong_Kong"
+  >
+>
+
+# HONDURAS
+countries:<
+  isoCode:"hn"
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Tegucigalpa"
+  >
+>
+
+# CROATIA
+countries:<
+  isoCode:"hr"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Zagreb"
+  >
+>
+
+# HAITI
+countries:<
+  isoCode:"ht"
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Port-au-Prince"
+  >
+>
+
+# HUNGARY
+countries:<
+  isoCode:"hu"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Budapest"
+  >
+>
+
+# INDONESIA
+countries:<
+  isoCode:"id"
+  defaultTimeZoneId:"Asia/Jayapura"
+  timeZones:<
+    utcOffset:"9:00"
+    id:"Asia/Jayapura"
+  >
+
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Makassar"
+  >
+
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Jakarta"
+  >
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Pontianak"
+  >
+>
+
+# IRELAND
+countries:<
+  isoCode:"ie"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Europe/Dublin"
+  >
+>
+
+# ISRAEL
+countries:<
+  isoCode:"il"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Asia/Jerusalem"
+  >
+>
+
+# ISLE OF MAN
+countries:<
+  isoCode:"im"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Europe/Isle_of_Man"
+  >
+>
+
+# INDIA
+countries:<
+  isoCode:"in"
+  timeZones:<
+    utcOffset:"5:30"
+    id:"Asia/Kolkata"
+  >
+>
+
+# BRITISH INDIAN OCEAN TERRITORY
+countries:<
+  isoCode:"io"
+  timeZones:<
+    utcOffset:"6:00"
+    id:"Indian/Chagos"
+  >
+>
+
+# IRAQ
+countries:<
+  isoCode:"iq"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Asia/Baghdad"
+  >
+>
+
+# IRAN, ISLAMIC REPUBLIC OF
+countries:<
+  isoCode:"ir"
+  timeZones:<
+    utcOffset:"3:30"
+    id:"Asia/Tehran"
+  >
+>
+
+# ICELAND
+countries:<
+  isoCode:"is"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Atlantic/Reykjavik"
+  >
+>
+
+# ITALY
+countries:<
+  isoCode:"it"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Rome"
+  >
+>
+
+# JERSEY
+countries:<
+  isoCode:"je"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Europe/Jersey"
+  >
+>
+
+# JAMAICA
+countries:<
+  isoCode:"jm"
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Jamaica"
+  >
+>
+
+# JORDAN
+countries:<
+  isoCode:"jo"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Asia/Amman"
+  >
+>
+
+# JAPAN
+countries:<
+  isoCode:"jp"
+  timeZones:<
+    utcOffset:"9:00"
+    id:"Asia/Tokyo"
+  >
+>
+
+# KENYA
+countries:<
+  isoCode:"ke"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Africa/Nairobi"
+  >
+>
+
+# KYRGYZSTAN
+countries:<
+  isoCode:"kg"
+  timeZones:<
+    utcOffset:"6:00"
+    id:"Asia/Bishkek"
+  >
+>
+
+# CAMBODIA
+countries:<
+  isoCode:"kh"
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Phnom_Penh"
+  >
+>
+
+# KIRIBATI
+countries:<
+  isoCode:"ki"
+  defaultTimeZoneId:"Pacific/Kiritimati"
+  timeZones:<
+    utcOffset:"14:00"
+    id:"Pacific/Kiritimati"
+  >
+
+  timeZones:<
+    utcOffset:"13:00"
+    id:"Pacific/Enderbury"
+  >
+
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Pacific/Tarawa"
+  >
+>
+
+# COMOROS
+countries:<
+  isoCode:"km"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Indian/Comoro"
+  >
+>
+
+# SAINT KITTS AND NEVIS
+countries:<
+  isoCode:"kn"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/St_Kitts"
+  >
+>
+
+# KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF
+countries:<
+  isoCode:"kp"
+  timeZones:<
+    utcOffset:"8:30"
+    id:"Asia/Pyongyang"
+  >
+>
+
+# KOREA, REPUBLIC OF
+countries:<
+  isoCode:"kr"
+  timeZones:<
+    utcOffset:"9:00"
+    id:"Asia/Seoul"
+  >
+>
+
+# KUWAIT
+countries:<
+  isoCode:"kw"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Asia/Kuwait"
+  >
+>
+
+# CAYMAN ISLANDS
+countries:<
+  isoCode:"ky"
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Cayman"
+  >
+>
+
+# KAZAKHSTAN
+countries:<
+  isoCode:"kz"
+  defaultTimeZoneId:"Asia/Almaty"
+  timeZones:<
+    utcOffset:"6:00"
+    id:"Asia/Almaty"
+  >
+  timeZones:<
+    utcOffset:"6:00"
+    id:"Asia/Qyzylorda"
+  >
+
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Asia/Aqtau"
+  >
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Asia/Oral"
+  >
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Asia/Aqtobe"
+  >
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Asia/Atyrau"
+  >
+>
+
+# LAO PEOPLE'S DEMOCRATIC REPUBLIC
+countries:<
+  isoCode:"la"
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Vientiane"
+  >
+>
+
+# LEBANON
+countries:<
+  isoCode:"lb"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Asia/Beirut"
+  >
+>
+
+# SAINT LUCIA
+countries:<
+  isoCode:"lc"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/St_Lucia"
+  >
+>
+
+# LIECHTENSTEIN
+countries:<
+  isoCode:"li"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Vaduz"
+  >
+>
+
+# SRI LANKA
+countries:<
+  isoCode:"lk"
+  timeZones:<
+    utcOffset:"5:30"
+    id:"Asia/Colombo"
+  >
+>
+
+# LIBERIA
+countries:<
+  isoCode:"lr"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Monrovia"
+  >
+>
+
+# LESOTHO
+countries:<
+  isoCode:"ls"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Maseru"
+  >
+>
+
+# LITHUANIA
+countries:<
+  isoCode:"lt"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Vilnius"
+  >
+>
+
+# LUXEMBOURG
+countries:<
+  isoCode:"lu"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Luxembourg"
+  >
+>
+
+# LATVIA
+countries:<
+  isoCode:"lv"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Riga"
+  >
+>
+
+# LIBYAN ARAB JAMAHIRIYA
+countries:<
+  isoCode:"ly"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Tripoli"
+  >
+>
+
+# MOROCCO
+countries:<
+  isoCode:"ma"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Casablanca"
+  >
+>
+
+# MONACO
+countries:<
+  isoCode:"mc"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Monaco"
+  >
+>
+
+# MOLDOVA
+countries:<
+  isoCode:"md"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Chisinau"
+  >
+>
+
+# MONTENEGRO
+countries:<
+  isoCode:"me"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Podgorica"
+  >
+>
+
+# Collectivity of Saint Martin
+countries:<
+  isoCode:"mf"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Marigot"
+  >
+>
+
+# MADAGASCAR
+countries:<
+  isoCode:"mg"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Indian/Antananarivo"
+  >
+>
+
+# MARSHALL ISLANDS
+countries:<
+  isoCode:"mh"
+  defaultTimeZoneId:"Pacific/Majuro"
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Pacific/Majuro"
+  >
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Pacific/Kwajalein"
+  >
+>
+
+# MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF
+countries:<
+  isoCode:"mk"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Skopje"
+  >
+>
+
+# MALI
+countries:<
+  isoCode:"ml"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Bamako"
+  >
+>
+
+# MYANMAR
+countries:<
+  isoCode:"mm"
+  timeZones:<
+    utcOffset:"6:30"
+    id:"Asia/Yangon"
+  >
+>
+
+# MONGOLIA
+countries:<
+  isoCode:"mn"
+  defaultTimeZoneId:"Asia/Choibalsan"
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Choibalsan"
+  >
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Ulaanbaatar"
+  >
+
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Hovd"
+  >
+>
+
+# MACAO
+countries:<
+  isoCode:"mo"
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Macau"
+  >
+>
+
+# NORTHERN MARIANA ISLANDS
+countries:<
+  isoCode:"mp"
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Pacific/Saipan"
+  >
+>
+
+# MARTINIQUE
+countries:<
+  isoCode:"mq"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Martinique"
+  >
+>
+
+# MAURITANIA
+countries:<
+  isoCode:"mr"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Nouakchott"
+  >
+>
+
+# MONTSERRAT
+countries:<
+  isoCode:"ms"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Montserrat"
+  >
+>
+
+# MALTA
+countries:<
+  isoCode:"mt"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Malta"
+  >
+>
+
+# MAURITIUS
+countries:<
+  isoCode:"mu"
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Indian/Mauritius"
+  >
+>
+
+# MALDIVES
+countries:<
+  isoCode:"mv"
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Indian/Maldives"
+  >
+>
+
+# MALAWI
+countries:<
+  isoCode:"mw"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Blantyre"
+  >
+>
+
+# MEXICO
+countries:<
+  isoCode:"mx"
+  defaultTimeZoneId:"America/Mexico_City"
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Mexico_City"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Merida"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Monterrey"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Matamoros"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Bahia_Banderas"
+  >
+
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Cancun"
+  >
+
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Chihuahua"
+  >
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Hermosillo"
+  >
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Mazatlan"
+  >
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Ojinaga"
+  >
+
+  timeZones:<
+    utcOffset:"-8:00"
+    id:"America/Tijuana"
+  >
+>
+
+# MALAYSIA
+countries:<
+  isoCode:"my"
+  defaultTimeZoneId:"Asia/Kuala_Lumpur"
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Kuala_Lumpur"
+  >
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Kuching"
+  >
+>
+
+# MOZAMBIQUE
+countries:<
+  isoCode:"mz"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Maputo"
+  >
+>
+
+# NAMIBIA
+countries:<
+  isoCode:"na"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Windhoek"
+  >
+>
+
+# NEW CALEDONIA
+countries:<
+  isoCode:"nc"
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Pacific/Noumea"
+  >
+>
+
+# NIGER
+countries:<
+  isoCode:"ne"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Niamey"
+  >
+>
+
+# NORFOLK ISLAND
+countries:<
+  isoCode:"nf"
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Pacific/Norfolk"
+  >
+>
+
+# NIGERIA
+countries:<
+  isoCode:"ng"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Lagos"
+  >
+>
+
+# NICARAGUA
+countries:<
+  isoCode:"ni"
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Managua"
+  >
+>
+
+# NETHERLANDS
+countries:<
+  isoCode:"nl"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Amsterdam"
+  >
+>
+
+# NORWAY
+countries:<
+  isoCode:"no"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Oslo"
+  >
+>
+
+# NEPAL
+countries:<
+  isoCode:"np"
+  timeZones:<
+    utcOffset:"5:45"
+    id:"Asia/Kathmandu"
+  >
+>
+
+# NAURU
+countries:<
+  isoCode:"nr"
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Pacific/Nauru"
+  >
+>
+
+# NIUE
+countries:<
+  isoCode:"nu"
+  timeZones:<
+    utcOffset:"-11:00"
+    id:"Pacific/Niue"
+  >
+>
+
+# NEW ZEALAND
+countries:<
+  isoCode:"nz"
+  defaultTimeZoneId:"Pacific/Auckland"
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Pacific/Auckland"
+  >
+
+  timeZones:<
+    utcOffset:"12:45"
+    id:"Pacific/Chatham"
+  >
+>
+
+# OMAN
+countries:<
+  isoCode:"om"
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Asia/Muscat"
+  >
+>
+
+# PANAMA
+countries:<
+  isoCode:"pa"
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Panama"
+  >
+>
+
+# PERU
+countries:<
+  isoCode:"pe"
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Lima"
+  >
+>
+
+# FRENCH POLYNESIA
+countries:<
+  isoCode:"pf"
+  defaultTimeZoneId:"Pacific/Gambier"
+  timeZones:<
+    utcOffset:"-9:00"
+    id:"Pacific/Gambier"
+  >
+
+  timeZones:<
+    utcOffset:"-9:30"
+    id:"Pacific/Marquesas"
+  >
+
+  timeZones:<
+    utcOffset:"-10:00"
+    id:"Pacific/Tahiti"
+  >
+>
+
+# PAPUA NEW GUINEA
+countries:<
+  isoCode:"pg"
+  defaultTimeZoneId:"Pacific/Port_Moresby"
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Pacific/Port_Moresby"
+  >
+
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Pacific/Bougainville"
+  >
+>
+
+# PHILIPPINES
+countries:<
+  isoCode:"ph"
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Manila"
+  >
+>
+
+# PAKISTAN
+countries:<
+  isoCode:"pk"
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Asia/Karachi"
+  >
+>
+
+# POLAND
+countries:<
+  isoCode:"pl"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Warsaw"
+  >
+>
+
+# SAINT PIERRE AND MIQUELON
+countries:<
+  isoCode:"pm"
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Miquelon"
+  >
+>
+
+# PITCAIRN
+countries:<
+  isoCode:"pn"
+  timeZones:<
+    utcOffset:"-8:00"
+    id:"Pacific/Pitcairn"
+  >
+>
+
+# PUERTO RICO
+countries:<
+  isoCode:"pr"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Puerto_Rico"
+  >
+>
+
+# PALESTINE
+countries:<
+  isoCode:"ps"
+  defaultTimeZoneId:"Asia/Gaza"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Asia/Gaza"
+  >
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Asia/Hebron"
+  >
+>
+
+# PORTUGAL
+countries:<
+  isoCode:"pt"
+  defaultTimeZoneId:"Europe/Lisbon"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Europe/Lisbon"
+  >
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Atlantic/Madeira"
+  >
+
+  timeZones:<
+    utcOffset:"-1:00"
+    id:"Atlantic/Azores"
+  >
+>
+
+# PALAU
+countries:<
+  isoCode:"pw"
+  timeZones:<
+    utcOffset:"9:00"
+    id:"Pacific/Palau"
+  >
+>
+
+# PARAGUAY
+countries:<
+  isoCode:"py"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Asuncion"
+  >
+>
+
+# QATAR
+countries:<
+  isoCode:"qa"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Asia/Qatar"
+  >
+>
+
+# REUNION
+countries:<
+  isoCode:"re"
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Indian/Reunion"
+  >
+>
+
+# ROMANIA
+countries:<
+  isoCode:"ro"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Bucharest"
+  >
+>
+
+# SERBIA
+countries:<
+  isoCode:"rs"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Belgrade"
+  >
+>
+
+# RUSSIAN FEDERATION
+countries:<
+  isoCode:"ru"
+  defaultTimeZoneId:"Asia/Kamchatka"
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Asia/Kamchatka"
+  >
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Asia/Anadyr"
+  >
+
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Asia/Magadan"
+  >
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Asia/Sakhalin"
+  >
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Asia/Srednekolymsk"
+  >
+
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Asia/Vladivostok"
+  >
+  timeZones:<
+    utcOffset:"10:00"
+    id:"Asia/Ust-Nera"
+  >
+
+  timeZones:<
+    utcOffset:"9:00"
+    id:"Asia/Yakutsk"
+  >
+  timeZones:<
+    utcOffset:"9:00"
+    id:"Asia/Chita"
+  >
+  timeZones:<
+    utcOffset:"9:00"
+    id:"Asia/Khandyga"
+  >
+
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Irkutsk"
+  >
+
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Krasnoyarsk"
+  >
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Novosibirsk"
+  >
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Barnaul"
+  >
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Novokuznetsk"
+  >
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Tomsk"
+  >
+
+  timeZones:<
+    utcOffset:"6:00"
+    id:"Asia/Omsk"
+  >
+
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Asia/Yekaterinburg"
+  >
+
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Europe/Samara"
+  >
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Europe/Astrakhan"
+  >
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Europe/Ulyanovsk"
+  >
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Europe/Saratov"
+  >
+
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Europe/Moscow"
+  >
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Europe/Volgograd"
+  >
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Europe/Kirov"
+  >
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Europe/Simferopol"
+  >
+
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Kaliningrad"
+  >
+>
+
+# RWANDA
+countries:<
+  isoCode:"rw"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Kigali"
+  >
+>
+
+# SAUDI ARABIA
+countries:<
+  isoCode:"sa"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Asia/Riyadh"
+  >
+>
+
+# SOLOMON ISLANDS
+countries:<
+  isoCode:"sb"
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Pacific/Guadalcanal"
+  >
+>
+
+# SEYCHELLES
+countries:<
+  isoCode:"sc"
+  timeZones:<
+    utcOffset:"4:00"
+    id:"Indian/Mahe"
+  >
+>
+
+# SUDAN
+countries:<
+  isoCode:"sd"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Africa/Khartoum"
+  >
+>
+
+# SWEDEN
+countries:<
+  isoCode:"se"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Stockholm"
+  >
+>
+
+# SINGAPORE
+countries:<
+  isoCode:"sg"
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Singapore"
+  >
+>
+
+# SAINT HELENA
+countries:<
+  isoCode:"sh"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Atlantic/St_Helena"
+  >
+>
+
+# SLOVENIA
+countries:<
+  isoCode:"si"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Ljubljana"
+  >
+>
+
+# SVALBARD AND JAN MAYEN
+countries:<
+  isoCode:"sj"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Arctic/Longyearbyen"
+  >
+>
+
+# SLOVAKIA
+countries:<
+  isoCode:"sk"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Bratislava"
+  >
+>
+
+# SIERRA LEONE
+countries:<
+  isoCode:"sl"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Freetown"
+  >
+>
+
+# SAN MARINO
+countries:<
+  isoCode:"sm"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/San_Marino"
+  >
+>
+
+# SENEGAL
+countries:<
+  isoCode:"sn"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Dakar"
+  >
+>
+
+# SOMALIA
+countries:<
+  isoCode:"so"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Africa/Mogadishu"
+  >
+>
+
+# SURINAME
+countries:<
+  isoCode:"sr"
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Paramaribo"
+  >
+>
+
+# South Sudan
+countries:<
+  isoCode:"ss"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Africa/Juba"
+  >
+>
+
+# SAO TOME AND PRINCIPE
+countries:<
+  isoCode:"st"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Sao_Tome"
+  >
+>
+
+# EL SALVADOR
+countries:<
+  isoCode:"sv"
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/El_Salvador"
+  >
+>
+
+# Sint Maarten
+countries:<
+  isoCode:"sx"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Lower_Princes"
+  >
+>
+
+# SYRIAN ARAB REPUBLIC
+countries:<
+  isoCode:"sy"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Asia/Damascus"
+  >
+>
+
+# SWAZILAND
+countries:<
+  isoCode:"sz"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Mbabane"
+  >
+>
+
+# TURKS AND CAICOS ISLANDS
+countries:<
+  isoCode:"tc"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Grand_Turk"
+  >
+>
+
+# CHAD
+countries:<
+  isoCode:"td"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Ndjamena"
+  >
+>
+
+# FRENCH SOUTHERN TERRITORIES
+countries:<
+  isoCode:"tf"
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Indian/Kerguelen"
+  >
+>
+
+# TOGO
+countries:<
+  isoCode:"tg"
+  timeZones:<
+    utcOffset:"0:00"
+    id:"Africa/Lome"
+  >
+>
+
+# THAILAND
+countries:<
+  isoCode:"th"
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Bangkok"
+  >
+>
+
+# TAJIKISTAN
+countries:<
+  isoCode:"tj"
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Asia/Dushanbe"
+  >
+>
+
+# TOKELAU
+countries:<
+  isoCode:"tk"
+  timeZones:<
+    utcOffset:"13:00"
+    id:"Pacific/Fakaofo"
+  >
+>
+
+# TIMOR-LESTE
+countries:<
+  isoCode:"tl"
+  timeZones:<
+    utcOffset:"9:00"
+    id:"Asia/Dili"
+  >
+>
+
+# TURKMENISTAN
+countries:<
+  isoCode:"tm"
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Asia/Ashgabat"
+  >
+>
+
+# TUNISIA
+countries:<
+  isoCode:"tn"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Africa/Tunis"
+  >
+>
+
+# TONGA
+countries:<
+  isoCode:"to"
+  timeZones:<
+    utcOffset:"13:00"
+    id:"Pacific/Tongatapu"
+  >
+>
+
+# TURKEY
+countries:<
+  isoCode:"tr"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Europe/Istanbul"
+  >
+>
+
+# TRINIDAD AND TOBAGO
+countries:<
+  isoCode:"tt"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Port_of_Spain"
+  >
+>
+
+# TUVALU
+countries:<
+  isoCode:"tv"
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Pacific/Funafuti"
+  >
+>
+
+# TAIWAN, PROVINCE OF CHINA
+countries:<
+  isoCode:"tw"
+  timeZones:<
+    utcOffset:"8:00"
+    id:"Asia/Taipei"
+  >
+>
+
+# TANZANIA, UNITED REPUBLIC OF
+countries:<
+  isoCode:"tz"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Africa/Dar_es_Salaam"
+  >
+>
+
+# UKRAINE
+countries:<
+  isoCode:"ua"
+  defaultTimeZoneId:"Europe/Kiev"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Kiev"
+  >
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Uzhgorod"
+  >
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Europe/Zaporozhye"
+  >
+>
+
+# UGANDA
+countries:<
+  isoCode:"ug"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Africa/Kampala"
+  >
+>
+
+# UNITED STATES MINOR OUTLYING ISLANDS
+countries:<
+  isoCode:"um"
+  defaultTimeZoneId:"Pacific/Wake"
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Pacific/Wake"
+  >
+
+  timeZones:<
+    utcOffset:"-11:00"
+    id:"Pacific/Midway"
+  >
+>
+
+# UNITED STATES
+countries:<
+  isoCode:"us"
+  defaultTimeZoneId:"America/New_York"
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/New_York"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Detroit"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Kentucky/Louisville"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Kentucky/Monticello"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Indiana/Indianapolis"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Indiana/Vincennes"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Indiana/Winamac"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Indiana/Marengo"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Indiana/Petersburg"
+  >
+  timeZones:<
+    utcOffset:"-5:00"
+    id:"America/Indiana/Vevay"
+  >
+
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Chicago"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Indiana/Knox"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Menominee"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/North_Dakota/Center"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/North_Dakota/New_Salem"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/Indiana/Tell_City"
+  >
+  timeZones:<
+    utcOffset:"-6:00"
+    id:"America/North_Dakota/Beulah"
+  >
+
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Denver"
+  >
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Boise"
+  >
+  timeZones:<
+    utcOffset:"-7:00"
+    id:"America/Phoenix"
+  >
+
+  timeZones:<
+    utcOffset:"-8:00"
+    id:"America/Los_Angeles"
+  >
+
+  timeZones:<
+    utcOffset:"-9:00"
+    id:"America/Anchorage"
+  >
+  timeZones:<
+    utcOffset:"-9:00"
+    id:"America/Juneau"
+  >
+  timeZones:<
+    utcOffset:"-9:00"
+    id:"America/Yakutat"
+  >
+  timeZones:<
+    utcOffset:"-9:00"
+    id:"America/Nome"
+  >
+  timeZones:<
+    utcOffset:"-9:00"
+    id:"America/Metlakatla"
+  >
+  timeZones:<
+    utcOffset:"-9:00"
+    id:"America/Sitka"
+  >
+
+  timeZones:<
+    utcOffset:"-10:00"
+    id:"Pacific/Honolulu"
+  >
+  timeZones:<
+    utcOffset:"-10:00"
+    id:"America/Adak"
+  >
+>
+
+# URUGUAY
+countries:<
+  isoCode:"uy"
+  timeZones:<
+    utcOffset:"-3:00"
+    id:"America/Montevideo"
+  >
+>
+
+# UZBEKISTAN
+countries:<
+  isoCode:"uz"
+  defaultTimeZoneId:"Asia/Tashkent"
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Asia/Tashkent"
+  >
+  timeZones:<
+    utcOffset:"5:00"
+    id:"Asia/Samarkand"
+  >
+>
+
+# HOLY SEE (VATICAN CITY STATE)
+countries:<
+  isoCode:"va"
+  timeZones:<
+    utcOffset:"1:00"
+    id:"Europe/Vatican"
+  >
+>
+
+# SAINT VINCENT AND THE GRENADINES
+countries:<
+  isoCode:"vc"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/St_Vincent"
+  >
+>
+
+# VENEZUELA
+countries:<
+  isoCode:"ve"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Caracas"
+  >
+>
+
+# VIRGIN ISLANDS, BRITISH
+countries:<
+  isoCode:"vg"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/Tortola"
+  >
+>
+
+# VIRGIN ISLANDS, U.S.
+countries:<
+  isoCode:"vi"
+  timeZones:<
+    utcOffset:"-4:00"
+    id:"America/St_Thomas"
+  >
+>
+
+# VIET NAM
+countries:<
+  isoCode:"vn"
+  timeZones:<
+    utcOffset:"7:00"
+    id:"Asia/Ho_Chi_Minh"
+  >
+>
+
+# VANUATU
+countries:<
+  isoCode:"vu"
+  timeZones:<
+    utcOffset:"11:00"
+    id:"Pacific/Efate"
+  >
+>
+
+# WALLIS AND FUTUNA
+countries:<
+  isoCode:"wf"
+  timeZones:<
+    utcOffset:"12:00"
+    id:"Pacific/Wallis"
+  >
+>
+
+# SAMOA
+countries:<
+  isoCode:"ws"
+  timeZones:<
+    utcOffset:"13:00"
+    id:"Pacific/Apia"
+  >
+>
+
+# YEMEN
+countries:<
+  isoCode:"ye"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Asia/Aden"
+  >
+>
+
+# MAYOTTE
+countries:<
+  isoCode:"yt"
+  timeZones:<
+    utcOffset:"3:00"
+    id:"Indian/Mayotte"
+  >
+>
+
+# SOUTH AFRICA
+countries:<
+  isoCode:"za"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Johannesburg"
+  >
+>
+
+# ZAMBIA
+countries:<
+  isoCode:"zm"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Lusaka"
+  >
+>
+
+# ZIMBABWE
+countries:<
+  isoCode:"zw"
+  timeZones:<
+    utcOffset:"2:00"
+    id:"Africa/Harare"
+  >
+>
