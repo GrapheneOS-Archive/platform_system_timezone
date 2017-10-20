@@ -170,6 +170,11 @@ def CreateDistroFiles(iana_version, output_dir):
       '-tzlookup', tzlookup_file,
       '-output', output_dir])
 
+def UpdateTestFiles():
+  testing_data_dir = '%s/testing/data' % timezone_dir
+  update_test_files_script = '%s/create-test-data.sh' % testing_data_dir
+  subprocess.check_call([update_test_files_script], cwd=testing_data_dir)
+
 
 # Run with no arguments from any directory, with no special setup required.
 # See http://www.iana.org/time-zones/ for more about the source of this data.
@@ -194,6 +199,9 @@ def main():
   # Create a distro file from the output from prior stages.
   distro_output_dir = '%s/distro' % timezone_output_data_dir
   CreateDistroFiles(iana_version, distro_output_dir)
+
+  # Update test versions of distro files too.
+  UpdateTestFiles()
 
   print 'Look in %s and %s for new files' % (timezone_output_data_dir, icu_dir)
   sys.exit(0)
