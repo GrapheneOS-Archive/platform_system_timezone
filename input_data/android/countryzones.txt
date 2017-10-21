@@ -744,7 +744,7 @@ countries:<
 # CONGO, THE DEMOCRATIC REPUBLIC OF THE
 countries:<
   isoCode:"cd"
-  defaultTimeZoneId:"Africa/Lubumbashi"
+  defaultTimeZoneId:"Africa/Kinshasa"
   timeZones:<
     utcOffset:"2:00"
     id:"Africa/Lubumbashi"
@@ -804,7 +804,7 @@ countries:<
 # CHILE
 countries:<
   isoCode:"cl"
-  defaultTimeZoneId:"America/Punta_Arenas"
+  defaultTimeZoneId:"America/Santiago"
   timeZones:<
     utcOffset:"-3:00"
     id:"America/Punta_Arenas"
@@ -1200,7 +1200,7 @@ countries:<
 # GREENLAND
 countries:<
   isoCode:"gl"
-  defaultTimeZoneId:"America/Danmarkshavn"
+  defaultTimeZoneId:"America/Godthab"
   timeZones:<
     utcOffset:"0:00"
     id:"America/Danmarkshavn"
@@ -1360,7 +1360,7 @@ countries:<
 # INDONESIA
 countries:<
   isoCode:"id"
-  defaultTimeZoneId:"Asia/Jayapura"
+  defaultTimeZoneId:"Asia/Jakarta"
   timeZones:<
     utcOffset:"9:00"
     id:"Asia/Jayapura"
@@ -1528,7 +1528,7 @@ countries:<
 # KIRIBATI
 countries:<
   isoCode:"ki"
-  defaultTimeZoneId:"Pacific/Kiritimati"
+  defaultTimeZoneId:"Pacific/Tarawa"
   timeZones:<
     utcOffset:"14:00"
     id:"Pacific/Kiritimati"
@@ -1827,7 +1827,7 @@ countries:<
 # MONGOLIA
 countries:<
   isoCode:"mn"
-  defaultTimeZoneId:"Asia/Choibalsan"
+  defaultTimeZoneId:"Asia/Ulaanbaatar"
   timeZones:<
     utcOffset:"8:00"
     id:"Asia/Choibalsan"
@@ -2144,7 +2144,7 @@ countries:<
 # FRENCH POLYNESIA
 countries:<
   isoCode:"pf"
-  defaultTimeZoneId:"Pacific/Gambier"
+  defaultTimeZoneId:"Pacific/Tahiti"
   timeZones:<
     utcOffset:"-9:00"
     id:"Pacific/Gambier"
@@ -2320,7 +2320,7 @@ countries:<
 # RUSSIAN FEDERATION
 countries:<
   isoCode:"ru"
-  defaultTimeZoneId:"Asia/Kamchatka"
+  defaultTimeZoneId:"Europe/Moscow"
   timeZones:<
     utcOffset:"12:00"
     id:"Asia/Kamchatka"
