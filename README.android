@@ -62,15 +62,12 @@ When IANA release new time zone rules, the update process is:
   e.g. see http://bugs.icu-project.org/trac/search?q=2015d
 4) Run update-tzdata.py to regenerate the system/timezone/output_data,
   system/timezone/testing/data and external/icu runtime files.
-5) Regenerate test data files by running:
-    cd testing/data
-    ./create-test-data.sh
-6) Build/flash a device image with the changes and run CTS:
+5) Build/flash a device image with the changes and run CTS:
     cts-tradefed
     run cts -m CtsLibcoreTestCases
     run cts -m CtsIcuTestCases
    (And any others that you think may have been affected)
-7) Upload, review, submit the changes from external/icu and system/timezone.
+6) Upload, review, submit the changes from external/icu and system/timezone.
 
 REMINDER: Any prebuilt apks of OEM-specific time zone data apps .apk files
 (i.e. ones that that contain distro files) will also need to be regenerated
