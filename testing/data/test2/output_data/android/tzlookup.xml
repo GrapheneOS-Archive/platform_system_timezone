@@ -192,7 +192,7 @@
   <country code="cc" default="Indian/Cocos">
    <id>Indian/Cocos</id>
   </country>
-  <country code="cd" default="Africa/Lubumbashi">
+  <country code="cd" default="Africa/Kinshasa">
    <id>Africa/Lubumbashi</id>
    <id>Africa/Kinshasa</id>
   </country>
@@ -211,7 +211,7 @@
   <country code="ck" default="Pacific/Rarotonga">
    <id>Pacific/Rarotonga</id>
   </country>
-  <country code="cl" default="America/Punta_Arenas">
+  <country code="cl" default="America/Santiago">
    <id>America/Punta_Arenas</id>
    <id>America/Santiago</id>
    <id>Pacific/Easter</id>
@@ -335,7 +335,7 @@
   <country code="gi" default="Europe/Gibraltar">
    <id>Europe/Gibraltar</id>
   </country>
-  <country code="gl" default="America/Danmarkshavn">
+  <country code="gl" default="America/Godthab">
    <id>America/Danmarkshavn</id>
    <id>America/Scoresbysund</id>
    <id>America/Godthab</id>
@@ -386,7 +386,7 @@
   <country code="hu" default="Europe/Budapest">
    <id>Europe/Budapest</id>
   </country>
-  <country code="id" default="Asia/Jayapura">
+  <country code="id" default="Asia/Jakarta">
    <id>Asia/Jayapura</id>
    <id>Asia/Makassar</id>
    <id>Asia/Jakarta</id>
@@ -440,7 +440,7 @@
   <country code="kh" default="Asia/Phnom_Penh">
    <id>Asia/Phnom_Penh</id>
   </country>
-  <country code="ki" default="Pacific/Kiritimati">
+  <country code="ki" default="Pacific/Tarawa">
    <id>Pacific/Kiritimati</id>
    <id>Pacific/Enderbury</id>
    <id>Pacific/Tarawa</id>
@@ -535,7 +535,7 @@
   <country code="mm" default="Asia/Yangon">
    <id>Asia/Yangon</id>
   </country>
-  <country code="mn" default="Asia/Choibalsan">
+  <country code="mn" default="Asia/Ulaanbaatar">
    <id>Asia/Choibalsan</id>
    <id>Asia/Ulaanbaatar</id>
    <id>Asia/Hovd</id>
@@ -633,7 +633,7 @@
   <country code="pe" default="America/Lima">
    <id>America/Lima</id>
   </country>
-  <country code="pf" default="Pacific/Gambier">
+  <country code="pf" default="Pacific/Tahiti">
    <id>Pacific/Gambier</id>
    <id>Pacific/Marquesas</id>
    <id>Pacific/Tahiti</id>
@@ -687,7 +687,7 @@
   <country code="rs" default="Europe/Belgrade">
    <id>Europe/Belgrade</id>
   </country>
-  <country code="ru" default="Asia/Kamchatka">
+  <country code="ru" default="Europe/Moscow">
    <id>Asia/Kamchatka</id>
    <id>Asia/Anadyr</id>
    <id>Asia/Magadan</id>
