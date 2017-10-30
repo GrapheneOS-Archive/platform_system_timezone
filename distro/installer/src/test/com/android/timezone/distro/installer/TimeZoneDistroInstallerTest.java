@@ -585,13 +585,13 @@ public class TimeZoneDistroInstallerTest extends TestCase {
 
         byte[] tzData = createTzData(rulesVersion);
         byte[] icuData = new byte[] { 'a' };
-        String tzlookupXml = "<timezones>\n"
+        String tzlookupXml = "<timezones ianaversion=\"" + rulesVersion + "\">\n"
                 + "  <countryzones>\n"
-                + "    <country code=\"us\">\n"
+                + "    <country code=\"us\" default=\"America/New_York\">\n"
                 + "      <id>America/New_York\"</id>\n"
                 + "      <id>America/Los_Angeles</id>\n"
                 + "    </country>\n"
-                + "    <country code=\"gb\">\n"
+                + "    <country code=\"gb\" default=\"Europe/London\">\n"
                 + "      <id>Europe/London</id>\n"
                 + "    </country>\n"
                 + "  </countryzones>\n"
