@@ -588,7 +588,7 @@ public class TimeZoneDistroInstallerTest extends TestCase {
         String tzlookupXml = "<timezones ianaversion=\"" + rulesVersion + "\">\n"
                 + "  <countryzones>\n"
                 + "    <country code=\"us\" default=\"America/New_York\">\n"
-                + "      <id>America/New_York\"</id>\n"
+                + "      <id>America/New_York</id>\n"
                 + "      <id>America/Los_Angeles</id>\n"
                 + "    </country>\n"
                 + "    <country code=\"gb\" default=\"Europe/London\">\n"
