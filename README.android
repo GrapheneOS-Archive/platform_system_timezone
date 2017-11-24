@@ -61,7 +61,7 @@ When IANA release new time zone rules, the update process is:
   that should be applied to Android's copy of ICU.
   e.g. see http://bugs.icu-project.org/trac/search?q=2015d
 4) Run update-tzdata.py to regenerate the system/timezone/output_data,
-  system/timezone/testing/data and external/icu runtime files.
+  system/timezone/testing/data, external/icu runtime files and testing equivalents.
 5) Build/flash a device image with the changes and run CTS:
     cts-tradefed
     run cts -m CtsLibcoreTestCases
@@ -122,22 +122,19 @@ Changing the distro format version
 2) Modify: tzdatacheck/tzdatacheck.cpp
   - SUPPORTED_DISTRO_MAJOR_VERSION, SUPPORTED_DISTRO_MINOR_VERSION
 3) Run update-tzdata.py to regenerate the system/timezone/output_data,
-  system/timezone/testing/data and external/icu runtime files.
-4) Regenerate test data files by running:
-    cd testing/data
-    ./create-test-data.sh
-5) Build/flash a device image with the changes and run CTS:
+  system/timezone/testing/data, external/icu runtime files and testing equivalents.
+4) Build/flash a device image with the changes and run CTS:
     cts-tradefed
     run cts -m CtsHostTzDataTests
     run cts -m CtsLibcoreTestCases
-6) Run non-CTS test cases:
+5) Run non-CTS test cases:
     make -j30 FrameworksServicesTests
     adb install -r -g \
         "${ANDROID_PRODUCT_OUT}/data/app/FrameworksServicesTests/FrameworksServicesTests.apk"
     adb shell am instrument -e package com.android.server.timezone -w \
         com.android.frameworks.servicestests \
         "com.android.frameworks.servicestests/android.support.test.runner.AndroidJUnitRunner"
-7) Upload, review, submit the changes from system/timezone.
+6) Upload, review, submit the changes from system/timezone.
 
 REMINDER: Any prebuilt apks of OEM-specific time zone data apps .apk files
 (i.e. ones that that contain distro files) will also need to be regenerated
