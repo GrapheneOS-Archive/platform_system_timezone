@@ -16,12 +16,14 @@
 
 package com.android.libcore.timezone.tzlookup;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -32,6 +34,12 @@ import java.util.stream.Collectors;
  * Arbitrary static utility methods.
  */
 final class Utils {
+
+    private static final DateFormat UTC_FORMAT;
+    static {
+        UTC_FORMAT = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+        UTC_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     private Utils() {}
 
@@ -105,5 +113,9 @@ final class Utils {
         };
         Predicate<String> nonLowerCaseAscii = onlyLowerCaseAscii.negate();
         return !strings.stream().anyMatch(nonLowerCaseAscii);
+    }
+
+    static String formatUtc(long timeMillis) {
+        return UTC_FORMAT.format(timeMillis);
     }
 }
