@@ -16,6 +16,8 @@
 package com.android.libcore.timezone.tzlookup;
 
 import com.android.libcore.timezone.tzlookup.proto.CountryZonesFile;
+import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.GregorianCalendar;
 import com.ibm.icu.util.TimeZone;
 
 import java.io.IOException;
@@ -122,6 +124,8 @@ public final class TzLookupGenerator {
         TzLookupFile.CountryZones countryZonesOut = new TzLookupFile.CountryZones();
         timeZonesOut.setCountryZones(countryZonesOut);
 
+        final long offsetSampleTimeMillis = getSampleTimeMillisForData(inputIanaVersion);
+
         Errors processingErrors = new Errors();
 
         // Process each Country.
@@ -204,7 +208,8 @@ public final class TzLookupGenerator {
                             "offset=" + timeZoneIn.getUtcOffset() + ", id=" + timeZoneIn.getId());
                     try {
                         // Validate the offset information in countryzones.
-                        validateNonDstOffset(countryIn, timeZoneIn, processingErrors);
+                        validateNonDstOffset(offsetSampleTimeMillis, countryIn, timeZoneIn,
+                                processingErrors);
 
                         String timeZoneInId = timeZoneIn.getId();
                         // Add the id to the output structure.
@@ -240,12 +245,28 @@ public final class TzLookupGenerator {
         return !processingErrors.isFatal();
     }
 
+    /**
+     * Returns a sample time related to the IANA version to enable any time-based validation to be
+     * repeatable (rather than depending on the current time when the tool is run).
+     */
+    private static long getSampleTimeMillisForData(String inputIanaVersion) {
+        // Uses <year>/07/02 12:00:00 UTC, where year is taken from the IANA version + 1.
+        // This is fairly arbitrary, but reflects the fact that we want a point in the future
+        // WRT to the data, and once a year has been picked then half-way through seems about right.
+        String yearString = inputIanaVersion.substring(0, inputIanaVersion.length() - 1);
+        int year = Integer.parseInt(yearString) + 1;
+        Calendar calendar = new GregorianCalendar(TimeZone.GMT_ZONE);
+        calendar.clear();
+        calendar.set(year, Calendar.JULY, 2, 12, 0, 0);
+        return calendar.getTimeInMillis();
+    }
+
     private static boolean validTimeZoneId(String timeZoneId) {
         TimeZone zone = TimeZone.getTimeZone(timeZoneId);
         return !zone.getID().equals(TimeZone.UNKNOWN_ZONE_ID);
     }
 
-    private static void validateNonDstOffset(
+    private static void validateNonDstOffset(long offsetSampleTimeMillis,
             CountryZonesFile.Country country, CountryZonesFile.TimeZone timeZoneIn, Errors errors) {
         String utcOffsetString = timeZoneIn.getUtcOffset();
         long utcOffsetMillis;
@@ -270,12 +291,15 @@ public final class TzLookupGenerator {
 
         // Check the offset Android has matches what ICU thinks.
         TimeZone timeZone = TimeZone.getTimeZone(timeZoneIdIn);
-        int actualOffsetMillis = timeZone.getRawOffset();
+        int[] offsets = new int[2];
+        timeZone.getOffset(offsetSampleTimeMillis, false /* local */, offsets);
+        int actualOffsetMillis = offsets[0];
         if (actualOffsetMillis != utcOffsetMillis) {
             errors.addFatal("Offset mismatch: You will want to confirm the ordering for "
                     + country.getIsoCode() + " still makes sense. Raw offset for "
                     + timeZoneIdIn + " is " + Utils.toUtcOffsetString(actualOffsetMillis)
-                    + " and not " + Utils.toUtcOffsetString(utcOffsetMillis));
+                    + " and not " + Utils.toUtcOffsetString(utcOffsetMillis)
+                    + " at " + Utils.formatUtc(offsetSampleTimeMillis));
         }
     }
 
