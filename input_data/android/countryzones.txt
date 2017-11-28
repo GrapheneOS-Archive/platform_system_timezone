@@ -907,9 +907,8 @@ countries:<
     utcOffset:"2:00"
     id:"Asia/Nicosia"
   >
-
   timeZones:<
-    utcOffset:"3:00"
+    utcOffset:"2:00"
     id:"Asia/Famagusta"
   >
 >
@@ -2481,7 +2480,7 @@ countries:<
 countries:<
   isoCode:"sd"
   timeZones:<
-    utcOffset:"3:00"
+    utcOffset:"2:00"
     id:"Africa/Khartoum"
   >
 >
@@ -2643,7 +2642,7 @@ countries:<
 countries:<
   isoCode:"tc"
   timeZones:<
-    utcOffset:"-4:00"
+    utcOffset:"-5:00"
     id:"America/Grand_Turk"
   >
 >
