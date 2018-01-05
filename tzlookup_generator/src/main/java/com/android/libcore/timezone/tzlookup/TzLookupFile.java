@@ -44,6 +44,7 @@ final class TzLookupFile {
     private static final String COUNTRY_ELEMENT = "country";
     private static final String COUNTRY_CODE_ATTRIBUTE = "code";
     private static final String DEFAULT_ATTRIBUTE = "default";
+    private static final String EVER_USES_UTC_ATTRIBUTE = "everutc";
     private static final String ID_ELEMENT = "id";
 
     static void write(TimeZones timeZones, String outputFile)
@@ -52,7 +53,7 @@ final class TzLookupFile {
          * The required XML structure is:
          * <timezones ianaversion="2017b">
          *   <countryzones>
-         *     <country code="us" default="America/New_York">
+         *     <country code="us" default="America/New_York" everutc="n">
          *       <!-- -5:00 -->
          *       <id>America/New_York"</id>
          *       ...
@@ -60,7 +61,7 @@ final class TzLookupFile {
          *       <id>America/Los_Angeles</id>
          *       ...
          *     </country>
-         *     <country code="gb" default="Europe/London">
+         *     <country code="gb" default="Europe/London" everutc="y">
          *       <!-- 0:00 -->
          *       <id>Europe/London</id>
          *     </country>
@@ -145,11 +146,13 @@ final class TzLookupFile {
 
         private final String isoCode;
         private final String defaultTimeZoneId;
+        private final boolean everUsesUtc;
         private final List<TimeZoneIdentifier> timeZoneIds = new ArrayList<>();
 
-        Country(String isoCode, String defaultTimeZoneId) {
+        Country(String isoCode, String defaultTimeZoneId, boolean everUsesUtc) {
             this.defaultTimeZoneId = defaultTimeZoneId;
             this.isoCode = isoCode;
+            this.everUsesUtc = everUsesUtc;
         }
 
         void addTimeZoneIdentifier(TimeZoneIdentifier timeZoneId) {
@@ -161,6 +164,7 @@ final class TzLookupFile {
             writer.writeStartElement(COUNTRY_ELEMENT);
             writer.writeAttribute(COUNTRY_CODE_ATTRIBUTE, country.isoCode);
             writer.writeAttribute(DEFAULT_ATTRIBUTE, country.defaultTimeZoneId);
+            writer.writeAttribute(EVER_USES_UTC_ATTRIBUTE, country.everUsesUtc ? "y" : "n");
             for (TimeZoneIdentifier timeZoneId : country.timeZoneIds) {
                 TimeZoneIdentifier.writeXml(timeZoneId, writer);
             }
