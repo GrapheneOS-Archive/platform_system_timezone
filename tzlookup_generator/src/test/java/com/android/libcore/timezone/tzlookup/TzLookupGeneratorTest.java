@@ -189,23 +189,9 @@ public class TzLookupGeneratorTest {
         String gbTimeZoneId = validCountryGb.getTimeZones(0).getId();
         CountryZonesFile.Country gbWithoutDefault = validCountryGb.toBuilder()
                 .clearDefaultTimeZoneId().build();
-
-        CountryZonesFile.CountryZones gbCountryZones = createValidCountryZones(gbWithoutDefault);
-        String countryZonesFile = createCountryZonesFile(gbCountryZones);
-
         List<ZoneTabFile.CountryEntry> gbZoneTabEntries = createValidZoneTabEntriesGb();
-        String zoneTabFile = createZoneTabFile(gbZoneTabEntries);
 
-        String outputFile = Files.createTempFile(tempDir, "out", null /* suffix */).toString();
-
-        TzLookupGenerator tzLookupGenerator =
-                new TzLookupGenerator(countryZonesFile, zoneTabFile, outputFile);
-        assertTrue(tzLookupGenerator.execute());
-
-        Path outputFilePath = Paths.get(outputFile);
-        assertTrue(Files.exists(outputFilePath));
-
-        String tzLookupXml = readFileToString(outputFilePath);
+        String tzLookupXml = generateTzLookupXml(gbWithoutDefault, gbZoneTabEntries);
 
         // Check gb's time zone was defaulted.
         assertContains(tzLookupXml, "code=\"gb\" default=\"" + gbTimeZoneId + "\"");
@@ -220,24 +206,9 @@ public class TzLookupGeneratorTest {
                 validCountryGb.toBuilder()
                         .setDefaultTimeZoneId(gbTimeZoneId)
                         .build();
-
-        CountryZonesFile.CountryZones gbCountryZones =
-                createValidCountryZones(gbWithExplicitDefaultTimeZone);
-        String countryZonesFile = createCountryZonesFile(gbCountryZones);
-
         List<ZoneTabFile.CountryEntry> gbZoneTabEntries = createValidZoneTabEntriesGb();
-        String zoneTabFile = createZoneTabFile(gbZoneTabEntries);
 
-        String outputFile = Files.createTempFile(tempDir, "out", null /* suffix */).toString();
-
-        TzLookupGenerator tzLookupGenerator =
-                new TzLookupGenerator(countryZonesFile, zoneTabFile, outputFile);
-        assertTrue(tzLookupGenerator.execute());
-
-        Path outputFilePath = Paths.get(outputFile);
-        assertTrue(Files.exists(outputFilePath));
-
-        String tzLookupXml = readFileToString(outputFilePath);
+        String tzLookupXml = generateTzLookupXml(gbWithExplicitDefaultTimeZone, gbZoneTabEntries);
 
         // Check gb's time zone was defaulted.
         assertContains(tzLookupXml, "code=\"gb\" default=\"" + gbTimeZoneId + "\"");
@@ -397,6 +368,44 @@ public class TzLookupGeneratorTest {
         assertEquals(0, Files.size(outputFilePath));
     }
 
+    @Test
+    public void everUtc_true() throws Exception {
+        CountryZonesFile.Country validCountryGb = createValidCountryGb();
+        String tzLookupXml = generateTzLookupXml(validCountryGb, createValidZoneTabEntriesGb());
+
+        // Check gb's entry contains everutc="y".
+        assertContains(tzLookupXml, "everutc=\"y\"");
+    }
+
+    @Test
+    public void everUtc_false() throws Exception {
+        CountryZonesFile.Country validCountryFr = createValidCountryFr();
+        String tzLookupXml = generateTzLookupXml(validCountryFr, createValidZoneTabEntriesFr());
+
+        // Check fr's entry contains everutc="n".
+        assertContains(tzLookupXml, "everutc=\"n\"");
+    }
+
+    private String generateTzLookupXml(CountryZonesFile.Country country,
+            List<ZoneTabFile.CountryEntry> zoneTabEntries) throws Exception {
+
+        CountryZonesFile.CountryZones countryZones = createValidCountryZones(country);
+        String countryZonesFile = createCountryZonesFile(countryZones);
+
+        String zoneTabFile = createZoneTabFile(zoneTabEntries);
+
+        String outputFile = Files.createTempFile(tempDir, "out", null /* suffix */).toString();
+
+        TzLookupGenerator tzLookupGenerator =
+                new TzLookupGenerator(countryZonesFile, zoneTabFile, outputFile);
+        assertTrue(tzLookupGenerator.execute());
+
+        Path outputFilePath = Paths.get(outputFile);
+        assertTrue(Files.exists(outputFilePath));
+
+        return readFileToString(outputFilePath);
+    }
+
     private static String readFileToString(Path file) throws IOException {
         return new String(Files.readAllBytes(file), StandardCharsets.UTF_8);
     }
@@ -415,7 +424,7 @@ public class TzLookupGeneratorTest {
         return TestUtils.createFile(tempDir, TextFormat.printToString(countryZones));
     }
 
-    private CountryZonesFile.CountryZones createValidCountryZones(
+    private static CountryZonesFile.CountryZones createValidCountryZones(
             CountryZonesFile.Country... countries) {
         CountryZonesFile.CountryZones.Builder builder =
                 CountryZonesFile.CountryZones.newBuilder()
@@ -426,7 +435,7 @@ public class TzLookupGeneratorTest {
         return builder.build();
     }
 
-    private CountryZonesFile.Country createValidCountryGb() {
+    private static CountryZonesFile.Country createValidCountryGb() {
         return CountryZonesFile.Country.newBuilder()
                 .setIsoCode("gb")
                 .addTimeZones(CountryZonesFile.TimeZone.newBuilder()
@@ -435,7 +444,7 @@ public class TzLookupGeneratorTest {
                 .build();
     }
 
-    private CountryZonesFile.Country createValidCountryFr() {
+    private static CountryZonesFile.Country createValidCountryFr() {
         return CountryZonesFile.Country.newBuilder()
                 .setIsoCode("fr")
                 .addTimeZones(CountryZonesFile.TimeZone.newBuilder()
@@ -444,17 +453,17 @@ public class TzLookupGeneratorTest {
                 .build();
     }
 
-    private List<ZoneTabFile.CountryEntry> createValidZoneTabEntriesGb() {
+    private static List<ZoneTabFile.CountryEntry> createValidZoneTabEntriesGb() {
         return Arrays.asList(new ZoneTabFile.CountryEntry("GB", "Europe/London"));
     }
 
-    private List<ZoneTabFile.CountryEntry> createValidZoneTabEntriesUs() {
+    private static List<ZoneTabFile.CountryEntry> createValidZoneTabEntriesUs() {
         return Arrays.asList(
                 new ZoneTabFile.CountryEntry("US", "America/New_York"),
                 new ZoneTabFile.CountryEntry("US", "America/Los_Angeles"));
     }
 
-    private List<ZoneTabFile.CountryEntry> createValidZoneTabEntriesFr() {
+    private static List<ZoneTabFile.CountryEntry> createValidZoneTabEntriesFr() {
         return Arrays.asList(
                 new ZoneTabFile.CountryEntry("FR", "Europe/Paris"));
     }

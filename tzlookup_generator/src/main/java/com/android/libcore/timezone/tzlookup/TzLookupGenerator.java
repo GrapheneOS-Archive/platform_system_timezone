@@ -16,9 +16,11 @@
 package com.android.libcore.timezone.tzlookup;
 
 import com.android.libcore.timezone.tzlookup.proto.CountryZonesFile;
+import com.ibm.icu.util.BasicTimeZone;
 import com.ibm.icu.util.Calendar;
 import com.ibm.icu.util.GregorianCalendar;
 import com.ibm.icu.util.TimeZone;
+import com.ibm.icu.util.TimeZoneRule;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -124,7 +126,7 @@ public final class TzLookupGenerator {
         TzLookupFile.CountryZones countryZonesOut = new TzLookupFile.CountryZones();
         timeZonesOut.setCountryZones(countryZonesOut);
 
-        final long offsetSampleTimeMillis = getSampleTimeMillisForData(inputIanaVersion);
+        final long offsetSampleTimeMillis = getSampleOffsetTimeMillisForData(inputIanaVersion);
 
         Errors processingErrors = new Errors();
 
@@ -171,9 +173,15 @@ public final class TzLookupGenerator {
                             + " is not one of the country's zones=" + countryTimeZoneIds);
                 }
 
+                // Work out the hint for whether the country uses a zero offset from UTC.
+                // We don't care about historical use of UTC (e.g. parts of Europe like France prior
+                // to WW2) so we start looking at the beginning of "this year".
+                long startTimeMillis = getYearStartTimeMillisForData(inputIanaVersion);
+                boolean everUsesUtc = anyZonesUseUtc(countryTimeZoneIds, startTimeMillis);
+
                 // Add the country to the output structure.
                 TzLookupFile.Country countryOut =
-                        new TzLookupFile.Country(isoCode, defaultTimeZoneId);
+                        new TzLookupFile.Country(isoCode, defaultTimeZoneId, everUsesUtc);
                 countryZonesOut.addCountry(countryOut);
 
                 // Validate the country information against the equivalent information in zone.tab.
@@ -245,20 +253,49 @@ public final class TzLookupGenerator {
         return !processingErrors.isFatal();
     }
 
+    private boolean anyZonesUseUtc(List<String> countryTimeZoneIds, long startTimeMillis) {
+        for (String countryTimeZoneId : countryTimeZoneIds) {
+            BasicTimeZone timeZone = (BasicTimeZone) TimeZone.getTimeZone(countryTimeZoneId);
+            TimeZoneRule[] rules = timeZone.getTimeZoneRules(startTimeMillis);
+            for (TimeZoneRule rule : rules) {
+                int utcOffset = rule.getRawOffset() + rule.getDSTSavings();
+                if (utcOffset == 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
-     * Returns a sample time related to the IANA version to enable any time-based validation to be
+     * Returns a sample time related to the IANA version to enable any offset validation to be
      * repeatable (rather than depending on the current time when the tool is run).
      */
-    private static long getSampleTimeMillisForData(String inputIanaVersion) {
+    private static long getSampleOffsetTimeMillisForData(String inputIanaVersion) {
         // Uses <year>/07/02 12:00:00 UTC, where year is taken from the IANA version + 1.
         // This is fairly arbitrary, but reflects the fact that we want a point in the future
         // WRT to the data, and once a year has been picked then half-way through seems about right.
+        Calendar calendar = getYearStartForData(inputIanaVersion);
+        calendar.set(calendar.get(Calendar.YEAR) + 1, Calendar.JULY, 2, 12, 0, 0);
+        return calendar.getTimeInMillis();
+    }
+
+    /**
+     * Returns the 1st Jan 00:00:00 UTC time on the year the IANA version relates to. Therefore
+     * guaranteed to be before the data is ever used and can be treated as "the beginning of time"
+     * (assuming derived information won't be used for historical calculations).
+     */
+    private static long getYearStartTimeMillisForData(String inputIanaVersion) {
+        return getYearStartForData(inputIanaVersion).getTimeInMillis();
+    }
+
+    private static Calendar getYearStartForData(String inputIanaVersion) {
         String yearString = inputIanaVersion.substring(0, inputIanaVersion.length() - 1);
-        int year = Integer.parseInt(yearString) + 1;
+        int year = Integer.parseInt(yearString);
         Calendar calendar = new GregorianCalendar(TimeZone.GMT_ZONE);
         calendar.clear();
-        calendar.set(year, Calendar.JULY, 2, 12, 0, 0);
-        return calendar.getTimeInMillis();
+        calendar.set(year, Calendar.JANUARY, 1, 0, 0, 0);
+        return calendar;
     }
 
     private static boolean validTimeZoneId(String timeZoneId) {
