@@ -4,31 +4,31 @@
 
 --><timezones ianaversion="2030a">
  <countryzones>
-  <country code="ad" default="Europe/Andorra">
+  <country code="ad" default="Europe/Andorra" everutc="n">
    <id>Europe/Andorra</id>
   </country>
-  <country code="ae" default="Asia/Dubai">
+  <country code="ae" default="Asia/Dubai" everutc="n">
    <id>Asia/Dubai</id>
   </country>
-  <country code="af" default="Asia/Kabul">
+  <country code="af" default="Asia/Kabul" everutc="n">
    <id>Asia/Kabul</id>
   </country>
-  <country code="ag" default="America/Antigua">
+  <country code="ag" default="America/Antigua" everutc="n">
    <id>America/Antigua</id>
   </country>
-  <country code="ai" default="America/Anguilla">
+  <country code="ai" default="America/Anguilla" everutc="n">
    <id>America/Anguilla</id>
   </country>
-  <country code="al" default="Europe/Tirane">
+  <country code="al" default="Europe/Tirane" everutc="n">
    <id>Europe/Tirane</id>
   </country>
-  <country code="am" default="Asia/Yerevan">
+  <country code="am" default="Asia/Yerevan" everutc="n">
    <id>Asia/Yerevan</id>
   </country>
-  <country code="ao" default="Africa/Luanda">
+  <country code="ao" default="Africa/Luanda" everutc="n">
    <id>Africa/Luanda</id>
   </country>
-  <country code="aq" default="Antarctica/McMurdo">
+  <country code="aq" default="Antarctica/McMurdo" everutc="y">
    <id>Antarctica/McMurdo</id>
    <id>Antarctica/DumontDUrville</id>
    <id>Antarctica/Casey</id>
@@ -40,7 +40,7 @@
    <id>Antarctica/Rothera</id>
    <id>Antarctica/Palmer</id>
   </country>
-  <country code="ar" default="America/Argentina/Buenos_Aires">
+  <country code="ar" default="America/Argentina/Buenos_Aires" everutc="n">
    <id>America/Argentina/Buenos_Aires</id>
    <id>America/Argentina/Cordoba</id>
    <id>America/Argentina/Salta</id>
@@ -54,13 +54,13 @@
    <id>America/Argentina/Rio_Gallegos</id>
    <id>America/Argentina/Ushuaia</id>
   </country>
-  <country code="as" default="Pacific/Pago_Pago">
+  <country code="as" default="Pacific/Pago_Pago" everutc="n">
    <id>Pacific/Pago_Pago</id>
   </country>
-  <country code="at" default="Europe/Vienna">
+  <country code="at" default="Europe/Vienna" everutc="n">
    <id>Europe/Vienna</id>
   </country>
-  <country code="au" default="Australia/Sydney">
+  <country code="au" default="Australia/Sydney" everutc="n">
    <id>Australia/Sydney</id>
    <id>Australia/Melbourne</id>
    <id>Australia/Brisbane</id>
@@ -75,58 +75,58 @@
    <id>Australia/Perth</id>
    <id>Australia/Eucla</id>
   </country>
-  <country code="aw" default="America/Aruba">
+  <country code="aw" default="America/Aruba" everutc="n">
    <id>America/Aruba</id>
   </country>
-  <country code="ax" default="Europe/Mariehamn">
+  <country code="ax" default="Europe/Mariehamn" everutc="n">
    <id>Europe/Mariehamn</id>
   </country>
-  <country code="az" default="Asia/Baku">
+  <country code="az" default="Asia/Baku" everutc="n">
    <id>Asia/Baku</id>
   </country>
-  <country code="ba" default="Europe/Sarajevo">
+  <country code="ba" default="Europe/Sarajevo" everutc="n">
    <id>Europe/Sarajevo</id>
   </country>
-  <country code="bb" default="America/Barbados">
+  <country code="bb" default="America/Barbados" everutc="n">
    <id>America/Barbados</id>
   </country>
-  <country code="bd" default="Asia/Dhaka">
+  <country code="bd" default="Asia/Dhaka" everutc="n">
    <id>Asia/Dhaka</id>
   </country>
-  <country code="be" default="Europe/Brussels">
+  <country code="be" default="Europe/Brussels" everutc="n">
    <id>Europe/Brussels</id>
   </country>
-  <country code="bf" default="Africa/Ouagadougou">
+  <country code="bf" default="Africa/Ouagadougou" everutc="y">
    <id>Africa/Ouagadougou</id>
   </country>
-  <country code="bg" default="Europe/Sofia">
+  <country code="bg" default="Europe/Sofia" everutc="n">
    <id>Europe/Sofia</id>
   </country>
-  <country code="bh" default="Asia/Bahrain">
+  <country code="bh" default="Asia/Bahrain" everutc="n">
    <id>Asia/Bahrain</id>
   </country>
-  <country code="bi" default="Africa/Bujumbura">
+  <country code="bi" default="Africa/Bujumbura" everutc="n">
    <id>Africa/Bujumbura</id>
   </country>
-  <country code="bj" default="Africa/Porto-Novo">
+  <country code="bj" default="Africa/Porto-Novo" everutc="n">
    <id>Africa/Porto-Novo</id>
   </country>
-  <country code="bl" default="America/St_Barthelemy">
+  <country code="bl" default="America/St_Barthelemy" everutc="n">
    <id>America/St_Barthelemy</id>
   </country>
-  <country code="bm" default="Atlantic/Bermuda">
+  <country code="bm" default="Atlantic/Bermuda" everutc="n">
    <id>Atlantic/Bermuda</id>
   </country>
-  <country code="bn" default="Asia/Brunei">
+  <country code="bn" default="Asia/Brunei" everutc="n">
    <id>Asia/Brunei</id>
   </country>
-  <country code="bo" default="America/La_Paz">
+  <country code="bo" default="America/La_Paz" everutc="n">
    <id>America/La_Paz</id>
   </country>
-  <country code="bq" default="America/Kralendijk">
+  <country code="bq" default="America/Kralendijk" everutc="n">
    <id>America/Kralendijk</id>
   </country>
-  <country code="br" default="America/Noronha">
+  <country code="br" default="America/Noronha" everutc="n">
    <id>America/Noronha</id>
    <id>America/Sao_Paulo</id>
    <id>America/Belem</id>
@@ -144,22 +144,22 @@
    <id>America/Eirunepe</id>
    <id>America/Rio_Branco</id>
   </country>
-  <country code="bs" default="America/Nassau">
+  <country code="bs" default="America/Nassau" everutc="n">
    <id>America/Nassau</id>
   </country>
-  <country code="bt" default="Asia/Thimphu">
+  <country code="bt" default="Asia/Thimphu" everutc="n">
    <id>Asia/Thimphu</id>
   </country>
-  <country code="bw" default="Africa/Gaborone">
+  <country code="bw" default="Africa/Gaborone" everutc="n">
    <id>Africa/Gaborone</id>
   </country>
-  <country code="by" default="Europe/Minsk">
+  <country code="by" default="Europe/Minsk" everutc="n">
    <id>Europe/Minsk</id>
   </country>
-  <country code="bz" default="America/Belize">
+  <country code="bz" default="America/Belize" everutc="n">
    <id>America/Belize</id>
   </country>
-  <country code="ca" default="America/St_Johns">
+  <country code="ca" default="America/St_Johns" everutc="n">
    <id>America/St_Johns</id>
    <id>America/Halifax</id>
    <id>America/Glace_Bay</id>
@@ -189,281 +189,281 @@
    <id>America/Whitehorse</id>
    <id>America/Dawson</id>
   </country>
-  <country code="cc" default="Indian/Cocos">
+  <country code="cc" default="Indian/Cocos" everutc="n">
    <id>Indian/Cocos</id>
   </country>
-  <country code="cd" default="Africa/Kinshasa">
+  <country code="cd" default="Africa/Kinshasa" everutc="n">
    <id>Africa/Lubumbashi</id>
    <id>Africa/Kinshasa</id>
   </country>
-  <country code="cf" default="Africa/Bangui">
+  <country code="cf" default="Africa/Bangui" everutc="n">
    <id>Africa/Bangui</id>
   </country>
-  <country code="cg" default="Africa/Brazzaville">
+  <country code="cg" default="Africa/Brazzaville" everutc="n">
    <id>Africa/Brazzaville</id>
   </country>
-  <country code="ch" default="Europe/Zurich">
+  <country code="ch" default="Europe/Zurich" everutc="n">
    <id>Europe/Zurich</id>
   </country>
-  <country code="ci" default="Africa/Abidjan">
+  <country code="ci" default="Africa/Abidjan" everutc="y">
    <id>Africa/Abidjan</id>
   </country>
-  <country code="ck" default="Pacific/Rarotonga">
+  <country code="ck" default="Pacific/Rarotonga" everutc="n">
    <id>Pacific/Rarotonga</id>
   </country>
-  <country code="cl" default="America/Santiago">
+  <country code="cl" default="America/Santiago" everutc="n">
    <id>America/Punta_Arenas</id>
    <id>America/Santiago</id>
    <id>Pacific/Easter</id>
   </country>
-  <country code="cm" default="Africa/Douala">
+  <country code="cm" default="Africa/Douala" everutc="n">
    <id>Africa/Douala</id>
   </country>
-  <country code="cn" default="Asia/Shanghai">
+  <country code="cn" default="Asia/Shanghai" everutc="n">
    <id>Asia/Shanghai</id>
    <id>Asia/Urumqi</id>
   </country>
-  <country code="co" default="America/Bogota">
+  <country code="co" default="America/Bogota" everutc="n">
    <id>America/Bogota</id>
   </country>
-  <country code="cr" default="America/Costa_Rica">
+  <country code="cr" default="America/Costa_Rica" everutc="n">
    <id>America/Costa_Rica</id>
   </country>
-  <country code="cu" default="America/Havana">
+  <country code="cu" default="America/Havana" everutc="n">
    <id>America/Havana</id>
   </country>
-  <country code="cv" default="Atlantic/Cape_Verde">
+  <country code="cv" default="Atlantic/Cape_Verde" everutc="n">
    <id>Atlantic/Cape_Verde</id>
   </country>
-  <country code="cw" default="America/Curacao">
+  <country code="cw" default="America/Curacao" everutc="n">
    <id>America/Curacao</id>
   </country>
-  <country code="cx" default="Indian/Christmas">
+  <country code="cx" default="Indian/Christmas" everutc="n">
    <id>Indian/Christmas</id>
   </country>
-  <country code="cy" default="Asia/Nicosia">
+  <country code="cy" default="Asia/Nicosia" everutc="n">
    <id>Asia/Nicosia</id>
    <id>Asia/Famagusta</id>
   </country>
-  <country code="cz" default="Europe/Prague">
+  <country code="cz" default="Europe/Prague" everutc="n">
    <id>Europe/Prague</id>
   </country>
-  <country code="de" default="Europe/Berlin">
+  <country code="de" default="Europe/Berlin" everutc="n">
    <id>Europe/Berlin</id>
    <id>Europe/Busingen</id>
   </country>
-  <country code="dj" default="Africa/Djibouti">
+  <country code="dj" default="Africa/Djibouti" everutc="n">
    <id>Africa/Djibouti</id>
   </country>
-  <country code="dk" default="Europe/Copenhagen">
+  <country code="dk" default="Europe/Copenhagen" everutc="n">
    <id>Europe/Copenhagen</id>
   </country>
-  <country code="dm" default="America/Dominica">
+  <country code="dm" default="America/Dominica" everutc="n">
    <id>America/Dominica</id>
   </country>
-  <country code="do" default="America/Santo_Domingo">
+  <country code="do" default="America/Santo_Domingo" everutc="n">
    <id>America/Santo_Domingo</id>
   </country>
-  <country code="dz" default="Africa/Algiers">
+  <country code="dz" default="Africa/Algiers" everutc="n">
    <id>Africa/Algiers</id>
   </country>
-  <country code="ec" default="America/Guayaquil">
+  <country code="ec" default="America/Guayaquil" everutc="n">
    <id>America/Guayaquil</id>
    <id>Pacific/Galapagos</id>
   </country>
-  <country code="ee" default="Europe/Tallinn">
+  <country code="ee" default="Europe/Tallinn" everutc="n">
    <id>Europe/Tallinn</id>
   </country>
-  <country code="eg" default="Africa/Cairo">
+  <country code="eg" default="Africa/Cairo" everutc="n">
    <id>Africa/Cairo</id>
   </country>
-  <country code="eh" default="Africa/El_Aaiun">
+  <country code="eh" default="Africa/El_Aaiun" everutc="y">
    <id>Africa/El_Aaiun</id>
   </country>
-  <country code="er" default="Africa/Asmara">
+  <country code="er" default="Africa/Asmara" everutc="n">
    <id>Africa/Asmara</id>
   </country>
-  <country code="es" default="Europe/Madrid">
+  <country code="es" default="Europe/Madrid" everutc="y">
    <id>Europe/Madrid</id>
    <id>Africa/Ceuta</id>
    <id>Atlantic/Canary</id>
   </country>
-  <country code="et" default="Africa/Addis_Ababa">
+  <country code="et" default="Africa/Addis_Ababa" everutc="n">
    <id>Africa/Addis_Ababa</id>
   </country>
-  <country code="fi" default="Europe/Helsinki">
+  <country code="fi" default="Europe/Helsinki" everutc="n">
    <id>Europe/Helsinki</id>
   </country>
-  <country code="fj" default="Pacific/Fiji">
+  <country code="fj" default="Pacific/Fiji" everutc="n">
    <id>Pacific/Fiji</id>
   </country>
-  <country code="fk" default="Atlantic/Stanley">
+  <country code="fk" default="Atlantic/Stanley" everutc="n">
    <id>Atlantic/Stanley</id>
   </country>
-  <country code="fm" default="Pacific/Pohnpei">
+  <country code="fm" default="Pacific/Pohnpei" everutc="n">
    <id>Pacific/Pohnpei</id>
    <id>Pacific/Kosrae</id>
    <id>Pacific/Chuuk</id>
   </country>
-  <country code="fo" default="Atlantic/Faroe">
+  <country code="fo" default="Atlantic/Faroe" everutc="y">
    <id>Atlantic/Faroe</id>
   </country>
-  <country code="fr" default="Europe/Paris">
+  <country code="fr" default="Europe/Paris" everutc="n">
    <id>Europe/Paris</id>
   </country>
-  <country code="ga" default="Africa/Libreville">
+  <country code="ga" default="Africa/Libreville" everutc="n">
    <id>Africa/Libreville</id>
   </country>
-  <country code="gb" default="Europe/London">
+  <country code="gb" default="Europe/London" everutc="y">
    <id>Europe/London</id>
   </country>
-  <country code="gd" default="America/Grenada">
+  <country code="gd" default="America/Grenada" everutc="n">
    <id>America/Grenada</id>
   </country>
-  <country code="ge" default="Asia/Tbilisi">
+  <country code="ge" default="Asia/Tbilisi" everutc="n">
    <id>Asia/Tbilisi</id>
   </country>
-  <country code="gf" default="America/Cayenne">
+  <country code="gf" default="America/Cayenne" everutc="n">
    <id>America/Cayenne</id>
   </country>
-  <country code="gg" default="Europe/Guernsey">
+  <country code="gg" default="Europe/Guernsey" everutc="y">
    <id>Europe/Guernsey</id>
   </country>
-  <country code="gh" default="Africa/Accra">
+  <country code="gh" default="Africa/Accra" everutc="y">
    <id>Africa/Accra</id>
   </country>
-  <country code="gi" default="Europe/Gibraltar">
+  <country code="gi" default="Europe/Gibraltar" everutc="n">
    <id>Europe/Gibraltar</id>
   </country>
-  <country code="gl" default="America/Godthab">
+  <country code="gl" default="America/Godthab" everutc="y">
    <id>America/Danmarkshavn</id>
    <id>America/Scoresbysund</id>
    <id>America/Godthab</id>
    <id>America/Thule</id>
   </country>
-  <country code="gm" default="Africa/Banjul">
+  <country code="gm" default="Africa/Banjul" everutc="y">
    <id>Africa/Banjul</id>
   </country>
-  <country code="gn" default="Africa/Conakry">
+  <country code="gn" default="Africa/Conakry" everutc="y">
    <id>Africa/Conakry</id>
   </country>
-  <country code="gp" default="America/Guadeloupe">
+  <country code="gp" default="America/Guadeloupe" everutc="n">
    <id>America/Guadeloupe</id>
   </country>
-  <country code="gq" default="Africa/Malabo">
+  <country code="gq" default="Africa/Malabo" everutc="n">
    <id>Africa/Malabo</id>
   </country>
-  <country code="gr" default="Europe/Athens">
+  <country code="gr" default="Europe/Athens" everutc="n">
    <id>Europe/Athens</id>
   </country>
-  <country code="gs" default="Atlantic/South_Georgia">
+  <country code="gs" default="Atlantic/South_Georgia" everutc="n">
    <id>Atlantic/South_Georgia</id>
   </country>
-  <country code="gt" default="America/Guatemala">
+  <country code="gt" default="America/Guatemala" everutc="n">
    <id>America/Guatemala</id>
   </country>
-  <country code="gu" default="Pacific/Guam">
+  <country code="gu" default="Pacific/Guam" everutc="n">
    <id>Pacific/Guam</id>
   </country>
-  <country code="gw" default="Africa/Bissau">
+  <country code="gw" default="Africa/Bissau" everutc="y">
    <id>Africa/Bissau</id>
   </country>
-  <country code="gy" default="America/Guyana">
+  <country code="gy" default="America/Guyana" everutc="n">
    <id>America/Guyana</id>
   </country>
-  <country code="hk" default="Asia/Hong_Kong">
+  <country code="hk" default="Asia/Hong_Kong" everutc="n">
    <id>Asia/Hong_Kong</id>
   </country>
-  <country code="hn" default="America/Tegucigalpa">
+  <country code="hn" default="America/Tegucigalpa" everutc="n">
    <id>America/Tegucigalpa</id>
   </country>
-  <country code="hr" default="Europe/Zagreb">
+  <country code="hr" default="Europe/Zagreb" everutc="n">
    <id>Europe/Zagreb</id>
   </country>
-  <country code="ht" default="America/Port-au-Prince">
+  <country code="ht" default="America/Port-au-Prince" everutc="n">
    <id>America/Port-au-Prince</id>
   </country>
-  <country code="hu" default="Europe/Budapest">
+  <country code="hu" default="Europe/Budapest" everutc="n">
    <id>Europe/Budapest</id>
   </country>
-  <country code="id" default="Asia/Jakarta">
+  <country code="id" default="Asia/Jakarta" everutc="n">
    <id>Asia/Jayapura</id>
    <id>Asia/Makassar</id>
    <id>Asia/Jakarta</id>
    <id>Asia/Pontianak</id>
   </country>
-  <country code="ie" default="Europe/Dublin">
+  <country code="ie" default="Europe/Dublin" everutc="y">
    <id>Europe/Dublin</id>
   </country>
-  <country code="il" default="Asia/Jerusalem">
+  <country code="il" default="Asia/Jerusalem" everutc="n">
    <id>Asia/Jerusalem</id>
   </country>
-  <country code="im" default="Europe/Isle_of_Man">
+  <country code="im" default="Europe/Isle_of_Man" everutc="y">
    <id>Europe/Isle_of_Man</id>
   </country>
-  <country code="in" default="Asia/Kolkata">
+  <country code="in" default="Asia/Kolkata" everutc="n">
    <id>Asia/Kolkata</id>
   </country>
-  <country code="io" default="Indian/Chagos">
+  <country code="io" default="Indian/Chagos" everutc="n">
    <id>Indian/Chagos</id>
   </country>
-  <country code="iq" default="Asia/Baghdad">
+  <country code="iq" default="Asia/Baghdad" everutc="n">
    <id>Asia/Baghdad</id>
   </country>
-  <country code="ir" default="Asia/Tehran">
+  <country code="ir" default="Asia/Tehran" everutc="n">
    <id>Asia/Tehran</id>
   </country>
-  <country code="is" default="Atlantic/Reykjavik">
+  <country code="is" default="Atlantic/Reykjavik" everutc="y">
    <id>Atlantic/Reykjavik</id>
   </country>
-  <country code="it" default="Europe/Rome">
+  <country code="it" default="Europe/Rome" everutc="n">
    <id>Europe/Rome</id>
   </country>
-  <country code="je" default="Europe/Jersey">
+  <country code="je" default="Europe/Jersey" everutc="y">
    <id>Europe/Jersey</id>
   </country>
-  <country code="jm" default="America/Jamaica">
+  <country code="jm" default="America/Jamaica" everutc="n">
    <id>America/Jamaica</id>
   </country>
-  <country code="jo" default="Asia/Amman">
+  <country code="jo" default="Asia/Amman" everutc="n">
    <id>Asia/Amman</id>
   </country>
-  <country code="jp" default="Asia/Tokyo">
+  <country code="jp" default="Asia/Tokyo" everutc="n">
    <id>Asia/Tokyo</id>
   </country>
-  <country code="ke" default="Africa/Nairobi">
+  <country code="ke" default="Africa/Nairobi" everutc="n">
    <id>Africa/Nairobi</id>
   </country>
-  <country code="kg" default="Asia/Bishkek">
+  <country code="kg" default="Asia/Bishkek" everutc="n">
    <id>Asia/Bishkek</id>
   </country>
-  <country code="kh" default="Asia/Phnom_Penh">
+  <country code="kh" default="Asia/Phnom_Penh" everutc="n">
    <id>Asia/Phnom_Penh</id>
   </country>
-  <country code="ki" default="Pacific/Tarawa">
+  <country code="ki" default="Pacific/Tarawa" everutc="n">
    <id>Pacific/Kiritimati</id>
    <id>Pacific/Enderbury</id>
    <id>Pacific/Tarawa</id>
   </country>
-  <country code="km" default="Indian/Comoro">
+  <country code="km" default="Indian/Comoro" everutc="n">
    <id>Indian/Comoro</id>
   </country>
-  <country code="kn" default="America/St_Kitts">
+  <country code="kn" default="America/St_Kitts" everutc="n">
    <id>America/St_Kitts</id>
   </country>
-  <country code="kp" default="Asia/Pyongyang">
+  <country code="kp" default="Asia/Pyongyang" everutc="n">
    <id>Asia/Pyongyang</id>
   </country>
-  <country code="kr" default="Asia/Seoul">
+  <country code="kr" default="Asia/Seoul" everutc="n">
    <id>Asia/Seoul</id>
   </country>
-  <country code="kw" default="Asia/Kuwait">
+  <country code="kw" default="Asia/Kuwait" everutc="n">
    <id>Asia/Kuwait</id>
   </country>
-  <country code="ky" default="America/Cayman">
+  <country code="ky" default="America/Cayman" everutc="n">
    <id>America/Cayman</id>
   </country>
-  <country code="kz" default="Asia/Almaty">
+  <country code="kz" default="Asia/Almaty" everutc="n">
    <id>Asia/Almaty</id>
    <id>Asia/Qyzylorda</id>
    <id>Asia/Aqtau</id>
@@ -471,103 +471,103 @@
    <id>Asia/Aqtobe</id>
    <id>Asia/Atyrau</id>
   </country>
-  <country code="la" default="Asia/Vientiane">
+  <country code="la" default="Asia/Vientiane" everutc="n">
    <id>Asia/Vientiane</id>
   </country>
-  <country code="lb" default="Asia/Beirut">
+  <country code="lb" default="Asia/Beirut" everutc="n">
    <id>Asia/Beirut</id>
   </country>
-  <country code="lc" default="America/St_Lucia">
+  <country code="lc" default="America/St_Lucia" everutc="n">
    <id>America/St_Lucia</id>
   </country>
-  <country code="li" default="Europe/Vaduz">
+  <country code="li" default="Europe/Vaduz" everutc="n">
    <id>Europe/Vaduz</id>
   </country>
-  <country code="lk" default="Asia/Colombo">
+  <country code="lk" default="Asia/Colombo" everutc="n">
    <id>Asia/Colombo</id>
   </country>
-  <country code="lr" default="Africa/Monrovia">
+  <country code="lr" default="Africa/Monrovia" everutc="y">
    <id>Africa/Monrovia</id>
   </country>
-  <country code="ls" default="Africa/Maseru">
+  <country code="ls" default="Africa/Maseru" everutc="n">
    <id>Africa/Maseru</id>
   </country>
-  <country code="lt" default="Europe/Vilnius">
+  <country code="lt" default="Europe/Vilnius" everutc="n">
    <id>Europe/Vilnius</id>
   </country>
-  <country code="lu" default="Europe/Luxembourg">
+  <country code="lu" default="Europe/Luxembourg" everutc="n">
    <id>Europe/Luxembourg</id>
   </country>
-  <country code="lv" default="Europe/Riga">
+  <country code="lv" default="Europe/Riga" everutc="n">
    <id>Europe/Riga</id>
   </country>
-  <country code="ly" default="Africa/Tripoli">
+  <country code="ly" default="Africa/Tripoli" everutc="n">
    <id>Africa/Tripoli</id>
   </country>
-  <country code="ma" default="Africa/Casablanca">
+  <country code="ma" default="Africa/Casablanca" everutc="y">
    <id>Africa/Casablanca</id>
   </country>
-  <country code="mc" default="Europe/Monaco">
+  <country code="mc" default="Europe/Monaco" everutc="n">
    <id>Europe/Monaco</id>
   </country>
-  <country code="md" default="Europe/Chisinau">
+  <country code="md" default="Europe/Chisinau" everutc="n">
    <id>Europe/Chisinau</id>
   </country>
-  <country code="me" default="Europe/Podgorica">
+  <country code="me" default="Europe/Podgorica" everutc="n">
    <id>Europe/Podgorica</id>
   </country>
-  <country code="mf" default="America/Marigot">
+  <country code="mf" default="America/Marigot" everutc="n">
    <id>America/Marigot</id>
   </country>
-  <country code="mg" default="Indian/Antananarivo">
+  <country code="mg" default="Indian/Antananarivo" everutc="n">
    <id>Indian/Antananarivo</id>
   </country>
-  <country code="mh" default="Pacific/Majuro">
+  <country code="mh" default="Pacific/Majuro" everutc="n">
    <id>Pacific/Majuro</id>
    <id>Pacific/Kwajalein</id>
   </country>
-  <country code="mk" default="Europe/Skopje">
+  <country code="mk" default="Europe/Skopje" everutc="n">
    <id>Europe/Skopje</id>
   </country>
-  <country code="ml" default="Africa/Bamako">
+  <country code="ml" default="Africa/Bamako" everutc="y">
    <id>Africa/Bamako</id>
   </country>
-  <country code="mm" default="Asia/Yangon">
+  <country code="mm" default="Asia/Yangon" everutc="n">
    <id>Asia/Yangon</id>
   </country>
-  <country code="mn" default="Asia/Ulaanbaatar">
+  <country code="mn" default="Asia/Ulaanbaatar" everutc="n">
    <id>Asia/Choibalsan</id>
    <id>Asia/Ulaanbaatar</id>
    <id>Asia/Hovd</id>
   </country>
-  <country code="mo" default="Asia/Macau">
+  <country code="mo" default="Asia/Macau" everutc="n">
    <id>Asia/Macau</id>
   </country>
-  <country code="mp" default="Pacific/Saipan">
+  <country code="mp" default="Pacific/Saipan" everutc="n">
    <id>Pacific/Saipan</id>
   </country>
-  <country code="mq" default="America/Martinique">
+  <country code="mq" default="America/Martinique" everutc="n">
    <id>America/Martinique</id>
   </country>
-  <country code="mr" default="Africa/Nouakchott">
+  <country code="mr" default="Africa/Nouakchott" everutc="y">
    <id>Africa/Nouakchott</id>
   </country>
-  <country code="ms" default="America/Montserrat">
+  <country code="ms" default="America/Montserrat" everutc="n">
    <id>America/Montserrat</id>
   </country>
-  <country code="mt" default="Europe/Malta">
+  <country code="mt" default="Europe/Malta" everutc="n">
    <id>Europe/Malta</id>
   </country>
-  <country code="mu" default="Indian/Mauritius">
+  <country code="mu" default="Indian/Mauritius" everutc="n">
    <id>Indian/Mauritius</id>
   </country>
-  <country code="mv" default="Indian/Maldives">
+  <country code="mv" default="Indian/Maldives" everutc="n">
    <id>Indian/Maldives</id>
   </country>
-  <country code="mw" default="Africa/Blantyre">
+  <country code="mw" default="Africa/Blantyre" everutc="n">
    <id>Africa/Blantyre</id>
   </country>
-  <country code="mx" default="America/Mexico_City">
+  <country code="mx" default="America/Mexico_City" everutc="n">
    <id>America/Mexico_City</id>
    <id>America/Merida</id>
    <id>America/Monterrey</id>
@@ -580,114 +580,114 @@
    <id>America/Ojinaga</id>
    <id>America/Tijuana</id>
   </country>
-  <country code="my" default="Asia/Kuala_Lumpur">
+  <country code="my" default="Asia/Kuala_Lumpur" everutc="n">
    <id>Asia/Kuala_Lumpur</id>
    <id>Asia/Kuching</id>
   </country>
-  <country code="mz" default="Africa/Maputo">
+  <country code="mz" default="Africa/Maputo" everutc="n">
    <id>Africa/Maputo</id>
   </country>
-  <country code="na" default="Africa/Windhoek">
+  <country code="na" default="Africa/Windhoek" everutc="n">
    <id>Africa/Windhoek</id>
   </country>
-  <country code="nc" default="Pacific/Noumea">
+  <country code="nc" default="Pacific/Noumea" everutc="n">
    <id>Pacific/Noumea</id>
   </country>
-  <country code="ne" default="Africa/Niamey">
+  <country code="ne" default="Africa/Niamey" everutc="n">
    <id>Africa/Niamey</id>
   </country>
-  <country code="nf" default="Pacific/Norfolk">
+  <country code="nf" default="Pacific/Norfolk" everutc="n">
    <id>Pacific/Norfolk</id>
   </country>
-  <country code="ng" default="Africa/Lagos">
+  <country code="ng" default="Africa/Lagos" everutc="n">
    <id>Africa/Lagos</id>
   </country>
-  <country code="ni" default="America/Managua">
+  <country code="ni" default="America/Managua" everutc="n">
    <id>America/Managua</id>
   </country>
-  <country code="nl" default="Europe/Amsterdam">
+  <country code="nl" default="Europe/Amsterdam" everutc="n">
    <id>Europe/Amsterdam</id>
   </country>
-  <country code="no" default="Europe/Oslo">
+  <country code="no" default="Europe/Oslo" everutc="n">
    <id>Europe/Oslo</id>
   </country>
-  <country code="np" default="Asia/Kathmandu">
+  <country code="np" default="Asia/Kathmandu" everutc="n">
    <id>Asia/Kathmandu</id>
   </country>
-  <country code="nr" default="Pacific/Nauru">
+  <country code="nr" default="Pacific/Nauru" everutc="n">
    <id>Pacific/Nauru</id>
   </country>
-  <country code="nu" default="Pacific/Niue">
+  <country code="nu" default="Pacific/Niue" everutc="n">
    <id>Pacific/Niue</id>
   </country>
-  <country code="nz" default="Pacific/Auckland">
+  <country code="nz" default="Pacific/Auckland" everutc="n">
    <id>Pacific/Auckland</id>
    <id>Pacific/Chatham</id>
   </country>
-  <country code="om" default="Asia/Muscat">
+  <country code="om" default="Asia/Muscat" everutc="n">
    <id>Asia/Muscat</id>
   </country>
-  <country code="pa" default="America/Panama">
+  <country code="pa" default="America/Panama" everutc="n">
    <id>America/Panama</id>
   </country>
-  <country code="pe" default="America/Lima">
+  <country code="pe" default="America/Lima" everutc="n">
    <id>America/Lima</id>
   </country>
-  <country code="pf" default="Pacific/Tahiti">
+  <country code="pf" default="Pacific/Tahiti" everutc="n">
    <id>Pacific/Gambier</id>
    <id>Pacific/Marquesas</id>
    <id>Pacific/Tahiti</id>
   </country>
-  <country code="pg" default="Pacific/Port_Moresby">
+  <country code="pg" default="Pacific/Port_Moresby" everutc="n">
    <id>Pacific/Port_Moresby</id>
    <id>Pacific/Bougainville</id>
   </country>
-  <country code="ph" default="Asia/Manila">
+  <country code="ph" default="Asia/Manila" everutc="n">
    <id>Asia/Manila</id>
   </country>
-  <country code="pk" default="Asia/Karachi">
+  <country code="pk" default="Asia/Karachi" everutc="n">
    <id>Asia/Karachi</id>
   </country>
-  <country code="pl" default="Europe/Warsaw">
+  <country code="pl" default="Europe/Warsaw" everutc="n">
    <id>Europe/Warsaw</id>
   </country>
-  <country code="pm" default="America/Miquelon">
+  <country code="pm" default="America/Miquelon" everutc="n">
    <id>America/Miquelon</id>
   </country>
-  <country code="pn" default="Pacific/Pitcairn">
+  <country code="pn" default="Pacific/Pitcairn" everutc="n">
    <id>Pacific/Pitcairn</id>
   </country>
-  <country code="pr" default="America/Puerto_Rico">
+  <country code="pr" default="America/Puerto_Rico" everutc="n">
    <id>America/Puerto_Rico</id>
   </country>
-  <country code="ps" default="Asia/Gaza">
+  <country code="ps" default="Asia/Gaza" everutc="n">
    <id>Asia/Gaza</id>
    <id>Asia/Hebron</id>
   </country>
-  <country code="pt" default="Europe/Lisbon">
+  <country code="pt" default="Europe/Lisbon" everutc="y">
    <id>Europe/Lisbon</id>
    <id>Atlantic/Madeira</id>
    <id>Atlantic/Azores</id>
   </country>
-  <country code="pw" default="Pacific/Palau">
+  <country code="pw" default="Pacific/Palau" everutc="n">
    <id>Pacific/Palau</id>
   </country>
-  <country code="py" default="America/Asuncion">
+  <country code="py" default="America/Asuncion" everutc="n">
    <id>America/Asuncion</id>
   </country>
-  <country code="qa" default="Asia/Qatar">
+  <country code="qa" default="Asia/Qatar" everutc="n">
    <id>Asia/Qatar</id>
   </country>
-  <country code="re" default="Indian/Reunion">
+  <country code="re" default="Indian/Reunion" everutc="n">
    <id>Indian/Reunion</id>
   </country>
-  <country code="ro" default="Europe/Bucharest">
+  <country code="ro" default="Europe/Bucharest" everutc="n">
    <id>Europe/Bucharest</id>
   </country>
-  <country code="rs" default="Europe/Belgrade">
+  <country code="rs" default="Europe/Belgrade" everutc="n">
    <id>Europe/Belgrade</id>
   </country>
-  <country code="ru" default="Europe/Moscow">
+  <country code="ru" default="Europe/Moscow" everutc="n">
    <id>Asia/Kamchatka</id>
    <id>Asia/Anadyr</id>
    <id>Asia/Magadan</id>
@@ -716,133 +716,133 @@
    <id>Europe/Simferopol</id>
    <id>Europe/Kaliningrad</id>
   </country>
-  <country code="rw" default="Africa/Kigali">
+  <country code="rw" default="Africa/Kigali" everutc="n">
    <id>Africa/Kigali</id>
   </country>
-  <country code="sa" default="Asia/Riyadh">
+  <country code="sa" default="Asia/Riyadh" everutc="n">
    <id>Asia/Riyadh</id>
   </country>
-  <country code="sb" default="Pacific/Guadalcanal">
+  <country code="sb" default="Pacific/Guadalcanal" everutc="n">
    <id>Pacific/Guadalcanal</id>
   </country>
-  <country code="sc" default="Indian/Mahe">
+  <country code="sc" default="Indian/Mahe" everutc="n">
    <id>Indian/Mahe</id>
   </country>
-  <country code="sd" default="Africa/Khartoum">
+  <country code="sd" default="Africa/Khartoum" everutc="n">
    <id>Africa/Khartoum</id>
   </country>
-  <country code="se" default="Europe/Stockholm">
+  <country code="se" default="Europe/Stockholm" everutc="n">
    <id>Europe/Stockholm</id>
   </country>
-  <country code="sg" default="Asia/Singapore">
+  <country code="sg" default="Asia/Singapore" everutc="n">
    <id>Asia/Singapore</id>
   </country>
-  <country code="sh" default="Atlantic/St_Helena">
+  <country code="sh" default="Atlantic/St_Helena" everutc="y">
    <id>Atlantic/St_Helena</id>
   </country>
-  <country code="si" default="Europe/Ljubljana">
+  <country code="si" default="Europe/Ljubljana" everutc="n">
    <id>Europe/Ljubljana</id>
   </country>
-  <country code="sj" default="Arctic/Longyearbyen">
+  <country code="sj" default="Arctic/Longyearbyen" everutc="n">
    <id>Arctic/Longyearbyen</id>
   </country>
-  <country code="sk" default="Europe/Bratislava">
+  <country code="sk" default="Europe/Bratislava" everutc="n">
    <id>Europe/Bratislava</id>
   </country>
-  <country code="sl" default="Africa/Freetown">
+  <country code="sl" default="Africa/Freetown" everutc="y">
    <id>Africa/Freetown</id>
   </country>
-  <country code="sm" default="Europe/San_Marino">
+  <country code="sm" default="Europe/San_Marino" everutc="n">
    <id>Europe/San_Marino</id>
   </country>
-  <country code="sn" default="Africa/Dakar">
+  <country code="sn" default="Africa/Dakar" everutc="y">
    <id>Africa/Dakar</id>
   </country>
-  <country code="so" default="Africa/Mogadishu">
+  <country code="so" default="Africa/Mogadishu" everutc="n">
    <id>Africa/Mogadishu</id>
   </country>
-  <country code="sr" default="America/Paramaribo">
+  <country code="sr" default="America/Paramaribo" everutc="n">
    <id>America/Paramaribo</id>
   </country>
-  <country code="ss" default="Africa/Juba">
+  <country code="ss" default="Africa/Juba" everutc="n">
    <id>Africa/Juba</id>
   </country>
-  <country code="st" default="Africa/Sao_Tome">
+  <country code="st" default="Africa/Sao_Tome" everutc="y">
    <id>Africa/Sao_Tome</id>
   </country>
-  <country code="sv" default="America/El_Salvador">
+  <country code="sv" default="America/El_Salvador" everutc="n">
    <id>America/El_Salvador</id>
   </country>
-  <country code="sx" default="America/Lower_Princes">
+  <country code="sx" default="America/Lower_Princes" everutc="n">
    <id>America/Lower_Princes</id>
   </country>
-  <country code="sy" default="Asia/Damascus">
+  <country code="sy" default="Asia/Damascus" everutc="n">
    <id>Asia/Damascus</id>
   </country>
-  <country code="sz" default="Africa/Mbabane">
+  <country code="sz" default="Africa/Mbabane" everutc="n">
    <id>Africa/Mbabane</id>
   </country>
-  <country code="tc" default="America/Grand_Turk">
+  <country code="tc" default="America/Grand_Turk" everutc="n">
    <id>America/Grand_Turk</id>
   </country>
-  <country code="td" default="Africa/Ndjamena">
+  <country code="td" default="Africa/Ndjamena" everutc="n">
    <id>Africa/Ndjamena</id>
   </country>
-  <country code="tf" default="Indian/Kerguelen">
+  <country code="tf" default="Indian/Kerguelen" everutc="n">
    <id>Indian/Kerguelen</id>
   </country>
-  <country code="tg" default="Africa/Lome">
+  <country code="tg" default="Africa/Lome" everutc="y">
    <id>Africa/Lome</id>
   </country>
-  <country code="th" default="Asia/Bangkok">
+  <country code="th" default="Asia/Bangkok" everutc="n">
    <id>Asia/Bangkok</id>
   </country>
-  <country code="tj" default="Asia/Dushanbe">
+  <country code="tj" default="Asia/Dushanbe" everutc="n">
    <id>Asia/Dushanbe</id>
   </country>
-  <country code="tk" default="Pacific/Fakaofo">
+  <country code="tk" default="Pacific/Fakaofo" everutc="n">
    <id>Pacific/Fakaofo</id>
   </country>
-  <country code="tl" default="Asia/Dili">
+  <country code="tl" default="Asia/Dili" everutc="n">
    <id>Asia/Dili</id>
   </country>
-  <country code="tm" default="Asia/Ashgabat">
+  <country code="tm" default="Asia/Ashgabat" everutc="n">
    <id>Asia/Ashgabat</id>
   </country>
-  <country code="tn" default="Africa/Tunis">
+  <country code="tn" default="Africa/Tunis" everutc="n">
    <id>Africa/Tunis</id>
   </country>
-  <country code="to" default="Pacific/Tongatapu">
+  <country code="to" default="Pacific/Tongatapu" everutc="n">
    <id>Pacific/Tongatapu</id>
   </country>
-  <country code="tr" default="Europe/Istanbul">
+  <country code="tr" default="Europe/Istanbul" everutc="n">
    <id>Europe/Istanbul</id>
   </country>
-  <country code="tt" default="America/Port_of_Spain">
+  <country code="tt" default="America/Port_of_Spain" everutc="n">
    <id>America/Port_of_Spain</id>
   </country>
-  <country code="tv" default="Pacific/Funafuti">
+  <country code="tv" default="Pacific/Funafuti" everutc="n">
    <id>Pacific/Funafuti</id>
   </country>
-  <country code="tw" default="Asia/Taipei">
+  <country code="tw" default="Asia/Taipei" everutc="n">
    <id>Asia/Taipei</id>
   </country>
-  <country code="tz" default="Africa/Dar_es_Salaam">
+  <country code="tz" default="Africa/Dar_es_Salaam" everutc="n">
    <id>Africa/Dar_es_Salaam</id>
   </country>
-  <country code="ua" default="Europe/Kiev">
+  <country code="ua" default="Europe/Kiev" everutc="n">
    <id>Europe/Kiev</id>
    <id>Europe/Uzhgorod</id>
    <id>Europe/Zaporozhye</id>
   </country>
-  <country code="ug" default="Africa/Kampala">
+  <country code="ug" default="Africa/Kampala" everutc="n">
    <id>Africa/Kampala</id>
   </country>
-  <country code="um" default="Pacific/Wake">
+  <country code="um" default="Pacific/Wake" everutc="n">
    <id>Pacific/Wake</id>
    <id>Pacific/Midway</id>
   </country>
-  <country code="us" default="America/New_York">
+  <country code="us" default="America/New_York" everutc="n">
    <id>America/New_York</id>
    <id>America/Detroit</id>
    <id>America/Kentucky/Louisville</id>
@@ -873,53 +873,53 @@
    <id>Pacific/Honolulu</id>
    <id>America/Adak</id>
   </country>
-  <country code="uy" default="America/Montevideo">
+  <country code="uy" default="America/Montevideo" everutc="n">
    <id>America/Montevideo</id>
   </country>
-  <country code="uz" default="Asia/Tashkent">
+  <country code="uz" default="Asia/Tashkent" everutc="n">
    <id>Asia/Tashkent</id>
    <id>Asia/Samarkand</id>
   </country>
-  <country code="va" default="Europe/Vatican">
+  <country code="va" default="Europe/Vatican" everutc="n">
    <id>Europe/Vatican</id>
   </country>
-  <country code="vc" default="America/St_Vincent">
+  <country code="vc" default="America/St_Vincent" everutc="n">
    <id>America/St_Vincent</id>
   </country>
-  <country code="ve" default="America/Caracas">
+  <country code="ve" default="America/Caracas" everutc="n">
    <id>America/Caracas</id>
   </country>
-  <country code="vg" default="America/Tortola">
+  <country code="vg" default="America/Tortola" everutc="n">
    <id>America/Tortola</id>
   </country>
-  <country code="vi" default="America/St_Thomas">
+  <country code="vi" default="America/St_Thomas" everutc="n">
    <id>America/St_Thomas</id>
   </country>
-  <country code="vn" default="Asia/Ho_Chi_Minh">
+  <country code="vn" default="Asia/Ho_Chi_Minh" everutc="n">
    <id>Asia/Ho_Chi_Minh</id>
   </country>
-  <country code="vu" default="Pacific/Efate">
+  <country code="vu" default="Pacific/Efate" everutc="n">
    <id>Pacific/Efate</id>
   </country>
-  <country code="wf" default="Pacific/Wallis">
+  <country code="wf" default="Pacific/Wallis" everutc="n">
    <id>Pacific/Wallis</id>
   </country>
-  <country code="ws" default="Pacific/Apia">
+  <country code="ws" default="Pacific/Apia" everutc="n">
    <id>Pacific/Apia</id>
   </country>
-  <country code="ye" default="Asia/Aden">
+  <country code="ye" default="Asia/Aden" everutc="n">
    <id>Asia/Aden</id>
   </country>
-  <country code="yt" default="Indian/Mayotte">
+  <country code="yt" default="Indian/Mayotte" everutc="n">
    <id>Indian/Mayotte</id>
   </country>
-  <country code="za" default="Africa/Johannesburg">
+  <country code="za" default="Africa/Johannesburg" everutc="n">
    <id>Africa/Johannesburg</id>
   </country>
-  <country code="zm" default="Africa/Lusaka">
+  <country code="zm" default="Africa/Lusaka" everutc="n">
    <id>Africa/Lusaka</id>
   </country>
-  <country code="zw" default="Africa/Harare">
+  <country code="zw" default="Africa/Harare" everutc="n">
    <id>Africa/Harare</id>
   </country>
  </countryzones>
