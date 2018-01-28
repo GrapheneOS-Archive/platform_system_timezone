@@ -30,9 +30,9 @@ import tzdatautil
 
 regions = ['africa', 'antarctica', 'asia', 'australasia',
            'etcetera', 'europe', 'northamerica', 'southamerica',
-           # These two deliberately come last so they override what came
-           # before (and each other).
-           'backward', 'backzone' ]
+           # This deliberately comes last so it can override what came
+           # before.
+           'backward' ]
 
 # Calculate the paths that are referred to by multiple functions.
 android_build_top = i18nutil.GetAndroidRootOrDie()

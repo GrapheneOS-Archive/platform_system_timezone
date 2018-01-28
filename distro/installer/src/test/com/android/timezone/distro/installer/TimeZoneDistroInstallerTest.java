@@ -587,11 +587,11 @@ public class TimeZoneDistroInstallerTest extends TestCase {
         byte[] icuData = new byte[] { 'a' };
         String tzlookupXml = "<timezones ianaversion=\"" + rulesVersion + "\">\n"
                 + "  <countryzones>\n"
-                + "    <country code=\"us\" default=\"America/New_York\">\n"
+                + "    <country code=\"us\" default=\"America/New_York\" everutc=\"n\">\n"
                 + "      <id>America/New_York</id>\n"
                 + "      <id>America/Los_Angeles</id>\n"
                 + "    </country>\n"
-                + "    <country code=\"gb\" default=\"Europe/London\">\n"
+                + "    <country code=\"gb\" default=\"Europe/London\" everutc=\"y\">\n"
                 + "      <id>Europe/London</id>\n"
                 + "    </country>\n"
                 + "  </countryzones>\n"
