@@ -52,9 +52,9 @@ final class CountryZonesFileSupport {
                 .collect(Collectors.toList());
     }
 
-    static List<String> extractIds(List<CountryZonesFile.TimeZone> timeZones) {
+    static List<String> extractIds(List<CountryZonesFile.TimeZoneMapping> timeZones) {
         return timeZones.stream()
-                .map(CountryZonesFile.TimeZone::getId)
+                .map(CountryZonesFile.TimeZoneMapping::getId)
                 .collect(Collectors.toList());
     }
 }

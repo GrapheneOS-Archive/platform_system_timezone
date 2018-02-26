@@ -136,7 +136,8 @@ public final class TzLookupGenerator {
             processingErrors.pushScope("country=" + isoCode);
             try {
                 // Each Country must have >= 1 time zone.
-                List<CountryZonesFile.TimeZone> timeZonesIn = countryIn.getTimeZonesList();
+                List<CountryZonesFile.TimeZoneMapping> timeZonesIn =
+                        countryIn.getTimeZoneMappingsList();
                 if (timeZonesIn.isEmpty()) {
                     processingErrors.addFatal("No time zones");
                     continue;
@@ -211,18 +212,20 @@ public final class TzLookupGenerator {
                 }
 
                 // Process each input time zone.
-                for (CountryZonesFile.TimeZone timeZoneIn : timeZonesIn) {
+                for (CountryZonesFile.TimeZoneMapping timeZoneIn : timeZonesIn) {
                     processingErrors.pushScope(
-                            "offset=" + timeZoneIn.getUtcOffset() + ", id=" + timeZoneIn.getId());
+                            "id=" + timeZoneIn.getId() + ", offset=" + timeZoneIn.getUtcOffset()
+                                    + ", shownInPicker=" + timeZoneIn.getShownInPicker());
                     try {
                         // Validate the offset information in countryzones.
                         validateNonDstOffset(offsetSampleTimeMillis, countryIn, timeZoneIn,
                                 processingErrors);
 
                         String timeZoneInId = timeZoneIn.getId();
-                        // Add the id to the output structure.
-                        TzLookupFile.TimeZoneIdentifier timeZoneIdOut =
-                                new TzLookupFile.TimeZoneIdentifier(timeZoneInId);
+                        boolean shownInPicker = timeZoneIn.getShownInPicker();
+                        // Add the id mapping and associated metadata.
+                        TzLookupFile.TimeZoneMapping timeZoneIdOut =
+                                new TzLookupFile.TimeZoneMapping(timeZoneInId, shownInPicker);
                         countryOut.addTimeZoneIdentifier(timeZoneIdOut);
                     } finally {
                         processingErrors.popScope();
@@ -304,7 +307,8 @@ public final class TzLookupGenerator {
     }
 
     private static void validateNonDstOffset(long offsetSampleTimeMillis,
-            CountryZonesFile.Country country, CountryZonesFile.TimeZone timeZoneIn, Errors errors) {
+            CountryZonesFile.Country country, CountryZonesFile.TimeZoneMapping timeZoneIn,
+            Errors errors) {
         String utcOffsetString = timeZoneIn.getUtcOffset();
         long utcOffsetMillis;
         try {

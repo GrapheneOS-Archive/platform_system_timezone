@@ -29,10 +29,11 @@ message CountryZones {
 message Country {
     required string isoCode = 1;
     optional string defaultTimeZoneId = 2;
-    repeated TimeZone timeZones = 3;
+    repeated TimeZoneMapping timeZoneMappings = 3;
 }
 
-message TimeZone {
+message TimeZoneMapping {
     required string id = 1;
     required string utcOffset = 2;
+    optional bool shownInPicker = 3 [default = true];
 }
