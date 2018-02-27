@@ -713,7 +713,7 @@
    <id>Europe/Moscow</id>
    <id>Europe/Volgograd</id>
    <id>Europe/Kirov</id>
-   <id>Europe/Simferopol</id>
+   <id picker="n">Europe/Simferopol</id>
    <id>Europe/Kaliningrad</id>
   </country>
   <country code="rw" default="Africa/Kigali" everutc="n">
