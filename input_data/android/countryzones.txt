@@ -2436,6 +2436,8 @@ countries:<
   timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Simferopol"
+    # http://b/73922616
+    shownInPicker:false
   >
 
   timeZoneMappings:<
