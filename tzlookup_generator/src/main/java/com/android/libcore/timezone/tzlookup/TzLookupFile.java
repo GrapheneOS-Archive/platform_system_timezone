@@ -38,14 +38,28 @@ import javax.xml.transform.stream.StreamSource;
  * A class that knows about the structure of the tzlookup.xml file.
  */
 final class TzLookupFile {
+
+    // <timezones ianaversion="2017b">
     private static final String TIMEZONES_ELEMENT = "timezones";
     private static final String IANA_VERSION_ATTRIBUTE = "ianaversion";
+
+    // <countryzones>
     private static final String COUNTRY_ZONES_ELEMENT = "countryzones";
+
+    // <country code="iso_code" default="olson_id" everutc="n|y">
     private static final String COUNTRY_ELEMENT = "country";
     private static final String COUNTRY_CODE_ATTRIBUTE = "code";
     private static final String DEFAULT_ATTRIBUTE = "default";
     private static final String EVER_USES_UTC_ATTRIBUTE = "everutc";
-    private static final String ID_ELEMENT = "id";
+
+    // <id [picker="n|y"]>
+    private static final String ZONE_ID_ELEMENT = "id";
+    // Default when unspecified is "y" / true.
+    private static final String ZONE_SHOW_IN_PICKER_ATTRIBUTE = "picker";
+
+    // Short encodings for boolean attributes.
+    private static final String ATTRIBUTE_FALSE = "n";
+    private static final String ATTRIBUTE_TRUE = "y";
 
     static void write(TimeZones timeZones, String outputFile)
             throws XMLStreamException, IOException {
@@ -147,7 +161,7 @@ final class TzLookupFile {
         private final String isoCode;
         private final String defaultTimeZoneId;
         private final boolean everUsesUtc;
-        private final List<TimeZoneIdentifier> timeZoneIds = new ArrayList<>();
+        private final List<TimeZoneMapping> timeZoneIds = new ArrayList<>();
 
         Country(String isoCode, String defaultTimeZoneId, boolean everUsesUtc) {
             this.defaultTimeZoneId = defaultTimeZoneId;
@@ -155,7 +169,7 @@ final class TzLookupFile {
             this.everUsesUtc = everUsesUtc;
         }
 
-        void addTimeZoneIdentifier(TimeZoneIdentifier timeZoneId) {
+        void addTimeZoneIdentifier(TimeZoneMapping timeZoneId) {
             timeZoneIds.add(timeZoneId);
         }
 
@@ -164,25 +178,35 @@ final class TzLookupFile {
             writer.writeStartElement(COUNTRY_ELEMENT);
             writer.writeAttribute(COUNTRY_CODE_ATTRIBUTE, country.isoCode);
             writer.writeAttribute(DEFAULT_ATTRIBUTE, country.defaultTimeZoneId);
-            writer.writeAttribute(EVER_USES_UTC_ATTRIBUTE, country.everUsesUtc ? "y" : "n");
-            for (TimeZoneIdentifier timeZoneId : country.timeZoneIds) {
-                TimeZoneIdentifier.writeXml(timeZoneId, writer);
+            writer.writeAttribute(EVER_USES_UTC_ATTRIBUTE, encodeBooleanAttribute(
+                    country.everUsesUtc));
+            for (TimeZoneMapping timeZoneId : country.timeZoneIds) {
+                TimeZoneMapping.writeXml(timeZoneId, writer);
             }
             writer.writeEndElement();
         }
     }
 
-    static class TimeZoneIdentifier {
+    private static String encodeBooleanAttribute(boolean value) {
+        return value ? ATTRIBUTE_TRUE : ATTRIBUTE_FALSE;
+    }
+
+    static class TimeZoneMapping {
 
         private final String olsonId;
+        private final boolean showInPicker;
 
-        TimeZoneIdentifier(String olsonId) {
+        TimeZoneMapping(String olsonId, boolean showInPicker) {
             this.olsonId = olsonId;
+            this.showInPicker = showInPicker;
         }
 
-        static void writeXml(TimeZoneIdentifier timeZoneId, XMLStreamWriter writer)
+        static void writeXml(TimeZoneMapping timeZoneId, XMLStreamWriter writer)
                 throws XMLStreamException {
-            writer.writeStartElement(ID_ELEMENT);
+            writer.writeStartElement(ZONE_ID_ELEMENT);
+            if (!timeZoneId.showInPicker) {
+                writer.writeAttribute(ZONE_SHOW_IN_PICKER_ATTRIBUTE, encodeBooleanAttribute(false));
+            }
             writer.writeCharacters(timeZoneId.olsonId);
             writer.writeEndElement();
         }
