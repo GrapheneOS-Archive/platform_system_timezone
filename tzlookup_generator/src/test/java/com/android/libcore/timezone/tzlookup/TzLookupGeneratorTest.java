@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.android.libcore.timezone.tzlookup.TestUtils.assertAbsent;
 import static com.android.libcore.timezone.tzlookup.TestUtils.assertContains;
 import static com.android.libcore.timezone.tzlookup.TestUtils.createFile;
 import static junit.framework.TestCase.assertEquals;
@@ -91,10 +92,10 @@ public class TzLookupGeneratorTest {
     }
 
     @Test
-    public void countryWithNoTimeZones() throws Exception {
+    public void countryWithNoTimeZoneMappings() throws Exception {
         // No zones found!
         CountryZonesFile.Country gbWithoutZones =
-                createValidCountryGb().toBuilder().clearTimeZones().build();
+                createValidCountryGb().toBuilder().clearTimeZoneMappings().build();
         CountryZonesFile.CountryZones countryZones = createValidCountryZones(gbWithoutZones);
         String countryZonesFile = createCountryZonesFile(countryZones);
 
@@ -111,13 +112,13 @@ public class TzLookupGeneratorTest {
     }
 
     @Test
-    public void countryWithDuplicateTimeZones() throws Exception {
+    public void countryWithDuplicateTimeZoneMappings() throws Exception {
         // Duplicate zones found!
         CountryZonesFile.Country validCountryGb = createValidCountryGb();
         CountryZonesFile.Country gbWithDuplicateZones =
                 validCountryGb.toBuilder()
-                        .setDefaultTimeZoneId(validCountryGb.getTimeZones(0).getId())
-                        .addAllTimeZones(validCountryGb.getTimeZonesList())
+                        .setDefaultTimeZoneId(validCountryGb.getTimeZoneMappings(0).getId())
+                        .addAllTimeZoneMappings(validCountryGb.getTimeZoneMappingsList())
                         .build();
         CountryZonesFile.CountryZones countryZones =
                 createValidCountryZones(gbWithDuplicateZones);
@@ -162,7 +163,7 @@ public class TzLookupGeneratorTest {
     public void explicitDefaultIdInvalid() throws Exception {
         // Set a valid default, but to one that isn't referenced by "gb".
         CountryZonesFile.Country validGb = createValidCountryGb().toBuilder()
-                .setDefaultTimeZoneId(createValidCountryFr().getTimeZones(0).getId())
+                .setDefaultTimeZoneId(createValidCountryFr().getTimeZoneMappings(0).getId())
                 .build();
         CountryZonesFile.CountryZones gbCountryZones = createValidCountryZones(validGb);
         String countryZonesFile = createCountryZonesFile(gbCountryZones);
@@ -184,9 +185,9 @@ public class TzLookupGeneratorTest {
     public void calculatedDefaultZone() throws Exception {
         // Ensure there's no explicit default for "gb" and there's one zone.
         CountryZonesFile.Country validCountryGb = createValidCountryGb();
-        assertEquals(1, validCountryGb.getTimeZonesCount());
+        assertEquals(1, validCountryGb.getTimeZoneMappingsCount());
 
-        String gbTimeZoneId = validCountryGb.getTimeZones(0).getId();
+        String gbTimeZoneId = validCountryGb.getTimeZoneMappings(0).getId();
         CountryZonesFile.Country gbWithoutDefault = validCountryGb.toBuilder()
                 .clearDefaultTimeZoneId().build();
         List<ZoneTabFile.CountryEntry> gbZoneTabEntries = createValidZoneTabEntriesGb();
@@ -201,7 +202,7 @@ public class TzLookupGeneratorTest {
     public void explicitDefaultZone() throws Exception {
         // Ensure there's an explicit default for "gb" and there's one zone.
         CountryZonesFile.Country validCountryGb = createValidCountryGb();
-        String gbTimeZoneId = validCountryGb.getTimeZones(0).getId();
+        String gbTimeZoneId = validCountryGb.getTimeZoneMappings(0).getId();
         CountryZonesFile.Country gbWithExplicitDefaultTimeZone =
                 validCountryGb.toBuilder()
                         .setDefaultTimeZoneId(gbTimeZoneId)
@@ -283,8 +284,8 @@ public class TzLookupGeneratorTest {
     public void countryZonesAndZoneTabDisagreeOnZones() throws Exception {
         CountryZonesFile.Country gbWithWrongZones =
                 createValidCountryGb().toBuilder()
-                        .clearTimeZones()
-                        .addAllTimeZones(createValidCountryFr().getTimeZonesList())
+                        .clearTimeZoneMappings()
+                        .addAllTimeZoneMappings(createValidCountryFr().getTimeZoneMappingsList())
                         .build();
         CountryZonesFile.CountryZones countryZones = createValidCountryZones(gbWithWrongZones);
         String countryZonesFile = createCountryZonesFile(countryZones);
@@ -324,7 +325,7 @@ public class TzLookupGeneratorTest {
     public void incorrectOffset() throws Exception {
         CountryZonesFile.Country validGbCountry = createValidCountryGb();
         CountryZonesFile.Country.Builder gbWithWrongOffsetBuilder = validGbCountry.toBuilder();
-        gbWithWrongOffsetBuilder.getTimeZonesBuilder(0).setUtcOffset("20:00").build();
+        gbWithWrongOffsetBuilder.getTimeZoneMappingsBuilder(0).setUtcOffset("20:00").build();
         CountryZonesFile.Country gbWithWrongOffset = gbWithWrongOffsetBuilder.build();
 
         CountryZonesFile.CountryZones countryZones = createValidCountryZones(gbWithWrongOffset);
@@ -343,11 +344,11 @@ public class TzLookupGeneratorTest {
     }
 
     @Test
-    public void badTimeZoneId() throws Exception {
+    public void badTimeZoneMappingId() throws Exception {
         CountryZonesFile.Country validGbCountry = createValidCountryGb();
         CountryZonesFile.Country.Builder gbWithBadIdBuilder = validGbCountry.toBuilder();
-        gbWithBadIdBuilder.setDefaultTimeZoneId(validGbCountry.getTimeZones(0).getId())
-                .addTimeZonesBuilder().setId(INVALID_TIME_ZONE_ID).setUtcOffset("00:00");
+        gbWithBadIdBuilder.setDefaultTimeZoneId(validGbCountry.getTimeZoneMappings(0).getId())
+                .addTimeZoneMappingsBuilder().setId(INVALID_TIME_ZONE_ID).setUtcOffset("00:00");
         CountryZonesFile.Country gbWithBadId = gbWithBadIdBuilder.build();
 
         CountryZonesFile.CountryZones countryZones = createValidCountryZones(gbWithBadId);
@@ -384,6 +385,41 @@ public class TzLookupGeneratorTest {
 
         // Check fr's entry contains everutc="n".
         assertContains(tzLookupXml, "everutc=\"n\"");
+    }
+
+    @Test
+    public void shownInPicker_false() throws Exception {
+        CountryZonesFile.Country countryPrototype = createValidCountryFr();
+
+        CountryZonesFile.TimeZoneMapping.Builder timeZoneMappingBuilder =
+                countryPrototype.getTimeZoneMappings(0).toBuilder();
+        timeZoneMappingBuilder.setShownInPicker(false);
+
+        CountryZonesFile.Country.Builder countryBuilder = countryPrototype.toBuilder();
+        countryBuilder.setTimeZoneMappings(0, timeZoneMappingBuilder);
+        CountryZonesFile.Country country = countryBuilder.build();
+
+        String tzLookupXml = generateTzLookupXml(country, createValidZoneTabEntriesFr());
+
+        assertContains(tzLookupXml, "picker=\"n\"");
+    }
+
+    @Test
+    public void shownInPicker_true() throws Exception {
+        CountryZonesFile.Country countryPrototype = createValidCountryFr();
+
+        CountryZonesFile.TimeZoneMapping.Builder timeZoneMappingBuilder =
+                countryPrototype.getTimeZoneMappings(0).toBuilder();
+        timeZoneMappingBuilder.setShownInPicker(true);
+
+        CountryZonesFile.Country.Builder countryBuilder = countryPrototype.toBuilder();
+        countryBuilder.setTimeZoneMappings(0, timeZoneMappingBuilder);
+        CountryZonesFile.Country country = countryBuilder.build();
+
+        String tzLookupXml = generateTzLookupXml(country, createValidZoneTabEntriesFr());
+
+        // We should not see anything "picker="y" is the implicit default.
+        assertAbsent(tzLookupXml, "picker=");
     }
 
     private String generateTzLookupXml(CountryZonesFile.Country country,
@@ -438,7 +474,7 @@ public class TzLookupGeneratorTest {
     private static CountryZonesFile.Country createValidCountryGb() {
         return CountryZonesFile.Country.newBuilder()
                 .setIsoCode("gb")
-                .addTimeZones(CountryZonesFile.TimeZone.newBuilder()
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
                         .setUtcOffset("00:00")
                         .setId("Europe/London"))
                 .build();
@@ -447,7 +483,7 @@ public class TzLookupGeneratorTest {
     private static CountryZonesFile.Country createValidCountryFr() {
         return CountryZonesFile.Country.newBuilder()
                 .setIsoCode("fr")
-                .addTimeZones(CountryZonesFile.TimeZone.newBuilder()
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
                         .setUtcOffset("01:00")
                         .setId("Europe/Paris"))
                 .build();
