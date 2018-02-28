@@ -45,11 +45,11 @@ ianaVersion:"2018c"
 # a country code is available. If it is not specified and the country
 # has only one obvious choice then the defaultTimeZoneId can be omitted.
 #
-# timeZones:
-# Time zones associated with the country.
+# timeZoneMappings:
+# Time zones associated with the country and associated metadata.
 #
-# The ordering of TimeZone elements is important because it influence the
-# order that time zones in a country are considered when the device
+# The ordering of TimeZoneMapping elements is important because it influence
+# the order that time zones in a country are considered when the device
 # has a known local time, offset from UTC and whether the local zone is
 # currently observing DST.
 #
@@ -59,15 +59,15 @@ ianaVersion:"2018c"
 # that the time zones with the highest likelihood of matching the user's
 # needs are first.
 #
-# For example, a sensible ordering for TimeZone entries for a country
+# For example, a sensible ordering for TimeZoneMapping entries for a country
 # would be by population of users that observe the offset/DST to maximize
 # the probability of matching the truth for an arbitrary user in that country.
 #
-# Currently the TimeZone entries are mostly primarily ordered by raw
-# (non-DST) offset and then an ill-defined "desirability". This ordering
-# is an historical artifact that is likely to change in future.
+# Currently the TimeZoneMapping entries are mostly ordered by raw (non-DST)
+# offset and then an ill-defined "desirability". This ordering is an historical
+# artifact that is likely to change in future.
 
-# TimeZone:
+# TimeZoneMapping:
 #
 # id:
 # The ID of the time zone.
@@ -76,11 +76,15 @@ ianaVersion:"2018c"
 # The expected non-DST offset for the time zone. Used as a form of
 # redundancy check. Changes to this may influence the correct ordering
 # indicate a change to time zones that may need further attention.
+#
+# shownInPicker:
+# Whether the country -> time zone mapping should be shown in a
+# user-facing time zone picker.
 
 # ANDORRA
 countries:<
   isoCode:"ad"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Andorra"
   >
@@ -89,7 +93,7 @@ countries:<
 # UNITED ARAB EMIRATES
 countries:<
   isoCode:"ae"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Asia/Dubai"
   >
@@ -98,7 +102,7 @@ countries:<
 # AFGHANISTAN
 countries:<
   isoCode:"af"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:30"
     id:"Asia/Kabul"
   >
@@ -107,7 +111,7 @@ countries:<
 # ANTIGUA AND BARBUDA
 countries:<
   isoCode:"ag"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Antigua"
   >
@@ -116,7 +120,7 @@ countries:<
 # ANGUILLA
 countries:<
   isoCode:"ai"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Anguilla"
   >
@@ -125,7 +129,7 @@ countries:<
 # ALBANIA
 countries:<
   isoCode:"al"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Tirane"
   >
@@ -134,7 +138,7 @@ countries:<
 # ARMENIA
 countries:<
   isoCode:"am"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Asia/Yerevan"
   >
@@ -143,7 +147,7 @@ countries:<
 # ANGOLA
 countries:<
   isoCode:"ao"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Luanda"
   >
@@ -153,51 +157,51 @@ countries:<
 countries:<
   isoCode:"aq"
   defaultTimeZoneId:"Antarctica/McMurdo"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Antarctica/McMurdo"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Antarctica/DumontDUrville"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Antarctica/Casey"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Antarctica/Davis"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Antarctica/Mawson"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"6:00"
     id:"Antarctica/Vostok"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Antarctica/Syowa"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Antarctica/Troll"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"Antarctica/Rothera"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"Antarctica/Palmer"
   >
@@ -207,51 +211,51 @@ countries:<
 countries:<
   isoCode:"ar"
   defaultTimeZoneId:"America/Argentina/Buenos_Aires"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Buenos_Aires"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Cordoba"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Salta"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Jujuy"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Tucuman"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Catamarca"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/La_Rioja"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/San_Juan"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Mendoza"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/San_Luis"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Rio_Gallegos"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Ushuaia"
   >
@@ -260,7 +264,7 @@ countries:<
 # AMERICAN SAMOA
 countries:<
   isoCode:"as"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-11:00"
     id:"Pacific/Pago_Pago"
   >
@@ -269,7 +273,7 @@ countries:<
 # AUSTRIA
 countries:<
   isoCode:"at"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Vienna"
   >
@@ -279,60 +283,60 @@ countries:<
 countries:<
   isoCode:"au"
   defaultTimeZoneId:"Australia/Sydney"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Sydney"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Melbourne"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Brisbane"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Hobart"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Currie"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Lindeman"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Antarctica/Macquarie"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:30"
     id:"Australia/Lord_Howe"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"9:30"
     id:"Australia/Adelaide"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"9:30"
     id:"Australia/Broken_Hill"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"9:30"
     id:"Australia/Darwin"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Australia/Perth"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:45"
     id:"Australia/Eucla"
   >
@@ -341,7 +345,7 @@ countries:<
 # ARUBA
 countries:<
   isoCode:"aw"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Aruba"
   >
@@ -350,7 +354,7 @@ countries:<
 # ALAND ISLANDS
 countries:<
   isoCode:"ax"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Mariehamn"
   >
@@ -359,7 +363,7 @@ countries:<
 # AZERBAIJAN
 countries:<
   isoCode:"az"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Asia/Baku"
   >
@@ -368,7 +372,7 @@ countries:<
 # BOSNIA AND HERZEGOVINA
 countries:<
   isoCode:"ba"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Sarajevo"
   >
@@ -377,7 +381,7 @@ countries:<
 # BARBADOS
 countries:<
   isoCode:"bb"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Barbados"
   >
@@ -386,7 +390,7 @@ countries:<
 # BANGLADESH
 countries:<
   isoCode:"bd"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"6:00"
     id:"Asia/Dhaka"
   >
@@ -395,7 +399,7 @@ countries:<
 # BELGIUM
 countries:<
   isoCode:"be"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Brussels"
   >
@@ -404,7 +408,7 @@ countries:<
 # BURKINA FASO
 countries:<
   isoCode:"bf"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Ouagadougou"
   >
@@ -413,7 +417,7 @@ countries:<
 # BULGARIA
 countries:<
   isoCode:"bg"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Sofia"
   >
@@ -422,7 +426,7 @@ countries:<
 # BAHRAIN
 countries:<
   isoCode:"bh"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Asia/Bahrain"
   >
@@ -431,7 +435,7 @@ countries:<
 # BURUNDI
 countries:<
   isoCode:"bi"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Bujumbura"
   >
@@ -440,7 +444,7 @@ countries:<
 # BENIN
 countries:<
   isoCode:"bj"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Porto-Novo"
   >
@@ -449,7 +453,7 @@ countries:<
 # Saint Barthélemy
 countries:<
   isoCode:"bl"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/St_Barthelemy"
   >
@@ -458,7 +462,7 @@ countries:<
 # BERMUDA
 countries:<
   isoCode:"bm"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"Atlantic/Bermuda"
   >
@@ -467,7 +471,7 @@ countries:<
 # BRUNEI DARUSSALAM
 countries:<
   isoCode:"bn"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Brunei"
   >
@@ -476,7 +480,7 @@ countries:<
 # BOLIVIA
 countries:<
   isoCode:"bo"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/La_Paz"
   >
@@ -485,7 +489,7 @@ countries:<
 # Caribbean Netherlands
 countries:<
   isoCode:"bq"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Kralendijk"
   >
@@ -495,70 +499,70 @@ countries:<
 countries:<
   isoCode:"br"
   defaultTimeZoneId:"America/Noronha"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-2:00"
     id:"America/Noronha"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Sao_Paulo"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Belem"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Fortaleza"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Recife"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Araguaina"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Maceio"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Bahia"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Santarem"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Manaus"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Campo_Grande"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Cuiaba"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Porto_Velho"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Boa_Vista"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Eirunepe"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Rio_Branco"
   >
@@ -567,7 +571,7 @@ countries:<
 # BAHAMAS
 countries:<
   isoCode:"bs"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Nassau"
   >
@@ -576,7 +580,7 @@ countries:<
 # BHUTAN
 countries:<
   isoCode:"bt"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"6:00"
     id:"Asia/Thimphu"
   >
@@ -585,7 +589,7 @@ countries:<
 # BOTSWANA
 countries:<
   isoCode:"bw"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Gaborone"
   >
@@ -594,7 +598,7 @@ countries:<
 # BELARUS
 countries:<
   isoCode:"by"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Minsk"
   >
@@ -603,7 +607,7 @@ countries:<
 # BELIZE
 countries:<
   isoCode:"bz"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Belize"
   >
@@ -613,120 +617,120 @@ countries:<
 countries:<
   isoCode:"ca"
   defaultTimeZoneId:"America/St_Johns"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:30"
     id:"America/St_Johns"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Halifax"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Glace_Bay"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Moncton"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Goose_Bay"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Blanc-Sablon"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Toronto"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Nipigon"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Thunder_Bay"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Iqaluit"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Pangnirtung"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Atikokan"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Winnipeg"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Regina"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Rankin_Inlet"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Rainy_River"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Swift_Current"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Resolute"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Edmonton"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Cambridge_Bay"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Yellowknife"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Inuvik"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Dawson_Creek"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Creston"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Fort_Nelson"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Vancouver"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Whitehorse"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Dawson"
   >
@@ -735,7 +739,7 @@ countries:<
 # COCOS (KEELING) ISLANDS
 countries:<
   isoCode:"cc"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"6:30"
     id:"Indian/Cocos"
   >
@@ -745,12 +749,12 @@ countries:<
 countries:<
   isoCode:"cd"
   defaultTimeZoneId:"Africa/Kinshasa"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Lubumbashi"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Kinshasa"
   >
@@ -759,7 +763,7 @@ countries:<
 # CENTRAL AFRICAN REPUBLIC
 countries:<
   isoCode:"cf"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Bangui"
   >
@@ -768,7 +772,7 @@ countries:<
 # CONGO
 countries:<
   isoCode:"cg"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Brazzaville"
   >
@@ -777,7 +781,7 @@ countries:<
 # SWITZERLAND
 countries:<
   isoCode:"ch"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Zurich"
   >
@@ -786,7 +790,7 @@ countries:<
 # COTE D'IVOIRE
 countries:<
   isoCode:"ci"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Abidjan"
   >
@@ -795,7 +799,7 @@ countries:<
 # COOK ISLANDS
 countries:<
   isoCode:"ck"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-10:00"
     id:"Pacific/Rarotonga"
   >
@@ -805,17 +809,17 @@ countries:<
 countries:<
   isoCode:"cl"
   defaultTimeZoneId:"America/Santiago"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Punta_Arenas"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Santiago"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"Pacific/Easter"
   >
@@ -824,7 +828,7 @@ countries:<
 # CAMEROON
 countries:<
   isoCode:"cm"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Douala"
   >
@@ -834,12 +838,12 @@ countries:<
 countries:<
   isoCode:"cn"
   defaultTimeZoneId:"Asia/Shanghai"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Shanghai"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"6:00"
     id:"Asia/Urumqi"
   >
@@ -848,7 +852,7 @@ countries:<
 # COLOMBIA
 countries:<
   isoCode:"co"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Bogota"
   >
@@ -857,7 +861,7 @@ countries:<
 # COSTA RICA
 countries:<
   isoCode:"cr"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Costa_Rica"
   >
@@ -866,7 +870,7 @@ countries:<
 # CUBA
 countries:<
   isoCode:"cu"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Havana"
   >
@@ -875,7 +879,7 @@ countries:<
 # CAPE VERDE
 countries:<
   isoCode:"cv"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-1:00"
     id:"Atlantic/Cape_Verde"
   >
@@ -884,7 +888,7 @@ countries:<
 # Curaçao
 countries:<
   isoCode:"cw"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Curacao"
   >
@@ -893,7 +897,7 @@ countries:<
 # CHRISTMAS ISLAND
 countries:<
   isoCode:"cx"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Indian/Christmas"
   >
@@ -903,11 +907,11 @@ countries:<
 countries:<
   isoCode:"cy"
   defaultTimeZoneId:"Asia/Nicosia"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Nicosia"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Famagusta"
   >
@@ -916,7 +920,7 @@ countries:<
 # CZECH REPUBLIC
 countries:<
   isoCode:"cz"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Prague"
   >
@@ -926,11 +930,11 @@ countries:<
 countries:<
   isoCode:"de"
   defaultTimeZoneId:"Europe/Berlin"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Berlin"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Busingen"
   >
@@ -939,7 +943,7 @@ countries:<
 # DJIBOUTI
 countries:<
   isoCode:"dj"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Africa/Djibouti"
   >
@@ -948,7 +952,7 @@ countries:<
 # DENMARK
 countries:<
   isoCode:"dk"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Copenhagen"
   >
@@ -957,7 +961,7 @@ countries:<
 # DOMINICA
 countries:<
   isoCode:"dm"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Dominica"
   >
@@ -966,7 +970,7 @@ countries:<
 # DOMINICAN REPUBLIC
 countries:<
   isoCode:"do"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Santo_Domingo"
   >
@@ -975,7 +979,7 @@ countries:<
 # ALGERIA
 countries:<
   isoCode:"dz"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Algiers"
   >
@@ -985,12 +989,12 @@ countries:<
 countries:<
   isoCode:"ec"
   defaultTimeZoneId:"America/Guayaquil"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Guayaquil"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"Pacific/Galapagos"
   >
@@ -999,7 +1003,7 @@ countries:<
 # ESTONIA
 countries:<
   isoCode:"ee"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Tallinn"
   >
@@ -1008,7 +1012,7 @@ countries:<
 # EGYPT
 countries:<
   isoCode:"eg"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Cairo"
   >
@@ -1017,7 +1021,7 @@ countries:<
 # WESTERN SAHARA
 countries:<
   isoCode:"eh"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/El_Aaiun"
   >
@@ -1026,7 +1030,7 @@ countries:<
 # ERITREA
 countries:<
   isoCode:"er"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Africa/Asmara"
   >
@@ -1036,16 +1040,16 @@ countries:<
 countries:<
   isoCode:"es"
   defaultTimeZoneId:"Europe/Madrid"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Madrid"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Ceuta"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Atlantic/Canary"
   >
@@ -1054,7 +1058,7 @@ countries:<
 # ETHIOPIA
 countries:<
   isoCode:"et"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Africa/Addis_Ababa"
   >
@@ -1063,7 +1067,7 @@ countries:<
 # FINLAND
 countries:<
   isoCode:"fi"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Helsinki"
   >
@@ -1072,7 +1076,7 @@ countries:<
 # FIJI
 countries:<
   isoCode:"fj"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Fiji"
   >
@@ -1081,7 +1085,7 @@ countries:<
 # FALKLAND ISLANDS (MALVINAS)
 countries:<
   isoCode:"fk"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"Atlantic/Stanley"
   >
@@ -1091,16 +1095,16 @@ countries:<
 countries:<
   isoCode:"fm"
   defaultTimeZoneId:"Pacific/Pohnpei"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Pacific/Pohnpei"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Pacific/Kosrae"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Pacific/Chuuk"
   >
@@ -1109,7 +1113,7 @@ countries:<
 # FAROE ISLANDS
 countries:<
   isoCode:"fo"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Atlantic/Faroe"
   >
@@ -1118,7 +1122,7 @@ countries:<
 # FRANCE
 countries:<
   isoCode:"fr"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Paris"
   >
@@ -1127,7 +1131,7 @@ countries:<
 # GABON
 countries:<
   isoCode:"ga"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Libreville"
   >
@@ -1136,7 +1140,7 @@ countries:<
 # UNITED KINGDOM
 countries:<
   isoCode:"gb"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Europe/London"
   >
@@ -1145,7 +1149,7 @@ countries:<
 # GRENADA
 countries:<
   isoCode:"gd"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Grenada"
   >
@@ -1154,7 +1158,7 @@ countries:<
 # GEORGIA
 countries:<
   isoCode:"ge"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Asia/Tbilisi"
   >
@@ -1163,7 +1167,7 @@ countries:<
 # FRENCH GUIANA
 countries:<
   isoCode:"gf"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Cayenne"
   >
@@ -1172,7 +1176,7 @@ countries:<
 # GUERNSEY
 countries:<
   isoCode:"gg"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Europe/Guernsey"
   >
@@ -1181,7 +1185,7 @@ countries:<
 # GHANA
 countries:<
   isoCode:"gh"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Accra"
   >
@@ -1190,7 +1194,7 @@ countries:<
 # GIBRALTAR
 countries:<
   isoCode:"gi"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Gibraltar"
   >
@@ -1200,22 +1204,22 @@ countries:<
 countries:<
   isoCode:"gl"
   defaultTimeZoneId:"America/Godthab"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"America/Danmarkshavn"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-1:00"
     id:"America/Scoresbysund"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Godthab"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Thule"
   >
@@ -1224,7 +1228,7 @@ countries:<
 # GAMBIA
 countries:<
   isoCode:"gm"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Banjul"
   >
@@ -1233,7 +1237,7 @@ countries:<
 # GUINEA
 countries:<
   isoCode:"gn"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Conakry"
   >
@@ -1242,7 +1246,7 @@ countries:<
 # GUADELOUPE
 countries:<
   isoCode:"gp"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Guadeloupe"
   >
@@ -1251,7 +1255,7 @@ countries:<
 # EQUATORIAL GUINEA
 countries:<
   isoCode:"gq"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Malabo"
   >
@@ -1260,7 +1264,7 @@ countries:<
 # GREECE
 countries:<
   isoCode:"gr"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Athens"
   >
@@ -1269,7 +1273,7 @@ countries:<
 # SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS
 countries:<
   isoCode:"gs"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-2:00"
     id:"Atlantic/South_Georgia"
   >
@@ -1278,7 +1282,7 @@ countries:<
 # GUATEMALA
 countries:<
   isoCode:"gt"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Guatemala"
   >
@@ -1287,7 +1291,7 @@ countries:<
 # GUAM
 countries:<
   isoCode:"gu"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Pacific/Guam"
   >
@@ -1296,7 +1300,7 @@ countries:<
 # GUINEA-BISSAU
 countries:<
   isoCode:"gw"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Bissau"
   >
@@ -1305,7 +1309,7 @@ countries:<
 # GUYANA
 countries:<
   isoCode:"gy"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Guyana"
   >
@@ -1314,7 +1318,7 @@ countries:<
 # HONG KONG
 countries:<
   isoCode:"hk"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Hong_Kong"
   >
@@ -1323,7 +1327,7 @@ countries:<
 # HONDURAS
 countries:<
   isoCode:"hn"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Tegucigalpa"
   >
@@ -1332,7 +1336,7 @@ countries:<
 # CROATIA
 countries:<
   isoCode:"hr"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Zagreb"
   >
@@ -1341,7 +1345,7 @@ countries:<
 # HAITI
 countries:<
   isoCode:"ht"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Port-au-Prince"
   >
@@ -1350,7 +1354,7 @@ countries:<
 # HUNGARY
 countries:<
   isoCode:"hu"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Budapest"
   >
@@ -1360,21 +1364,21 @@ countries:<
 countries:<
   isoCode:"id"
   defaultTimeZoneId:"Asia/Jakarta"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Jayapura"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Makassar"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Jakarta"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Pontianak"
   >
@@ -1383,7 +1387,7 @@ countries:<
 # IRELAND
 countries:<
   isoCode:"ie"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Europe/Dublin"
   >
@@ -1392,7 +1396,7 @@ countries:<
 # ISRAEL
 countries:<
   isoCode:"il"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Jerusalem"
   >
@@ -1401,7 +1405,7 @@ countries:<
 # ISLE OF MAN
 countries:<
   isoCode:"im"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Europe/Isle_of_Man"
   >
@@ -1410,7 +1414,7 @@ countries:<
 # INDIA
 countries:<
   isoCode:"in"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:30"
     id:"Asia/Kolkata"
   >
@@ -1419,7 +1423,7 @@ countries:<
 # BRITISH INDIAN OCEAN TERRITORY
 countries:<
   isoCode:"io"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"6:00"
     id:"Indian/Chagos"
   >
@@ -1428,7 +1432,7 @@ countries:<
 # IRAQ
 countries:<
   isoCode:"iq"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Asia/Baghdad"
   >
@@ -1437,7 +1441,7 @@ countries:<
 # IRAN, ISLAMIC REPUBLIC OF
 countries:<
   isoCode:"ir"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:30"
     id:"Asia/Tehran"
   >
@@ -1446,7 +1450,7 @@ countries:<
 # ICELAND
 countries:<
   isoCode:"is"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Atlantic/Reykjavik"
   >
@@ -1455,7 +1459,7 @@ countries:<
 # ITALY
 countries:<
   isoCode:"it"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Rome"
   >
@@ -1464,7 +1468,7 @@ countries:<
 # JERSEY
 countries:<
   isoCode:"je"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Europe/Jersey"
   >
@@ -1473,7 +1477,7 @@ countries:<
 # JAMAICA
 countries:<
   isoCode:"jm"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Jamaica"
   >
@@ -1482,7 +1486,7 @@ countries:<
 # JORDAN
 countries:<
   isoCode:"jo"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Amman"
   >
@@ -1491,7 +1495,7 @@ countries:<
 # JAPAN
 countries:<
   isoCode:"jp"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Tokyo"
   >
@@ -1500,7 +1504,7 @@ countries:<
 # KENYA
 countries:<
   isoCode:"ke"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Africa/Nairobi"
   >
@@ -1509,7 +1513,7 @@ countries:<
 # KYRGYZSTAN
 countries:<
   isoCode:"kg"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"6:00"
     id:"Asia/Bishkek"
   >
@@ -1518,7 +1522,7 @@ countries:<
 # CAMBODIA
 countries:<
   isoCode:"kh"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Phnom_Penh"
   >
@@ -1528,17 +1532,17 @@ countries:<
 countries:<
   isoCode:"ki"
   defaultTimeZoneId:"Pacific/Tarawa"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"14:00"
     id:"Pacific/Kiritimati"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"13:00"
     id:"Pacific/Enderbury"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Tarawa"
   >
@@ -1547,7 +1551,7 @@ countries:<
 # COMOROS
 countries:<
   isoCode:"km"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Indian/Comoro"
   >
@@ -1556,7 +1560,7 @@ countries:<
 # SAINT KITTS AND NEVIS
 countries:<
   isoCode:"kn"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/St_Kitts"
   >
@@ -1565,7 +1569,7 @@ countries:<
 # KOREA, DEMOCRATIC PEOPLE'S REPUBLIC OF
 countries:<
   isoCode:"kp"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:30"
     id:"Asia/Pyongyang"
   >
@@ -1574,7 +1578,7 @@ countries:<
 # KOREA, REPUBLIC OF
 countries:<
   isoCode:"kr"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Seoul"
   >
@@ -1583,7 +1587,7 @@ countries:<
 # KUWAIT
 countries:<
   isoCode:"kw"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Asia/Kuwait"
   >
@@ -1592,7 +1596,7 @@ countries:<
 # CAYMAN ISLANDS
 countries:<
   isoCode:"ky"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Cayman"
   >
@@ -1602,28 +1606,28 @@ countries:<
 countries:<
   isoCode:"kz"
   defaultTimeZoneId:"Asia/Almaty"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"6:00"
     id:"Asia/Almaty"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"6:00"
     id:"Asia/Qyzylorda"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Aqtau"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Oral"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Aqtobe"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Atyrau"
   >
@@ -1632,7 +1636,7 @@ countries:<
 # LAO PEOPLE'S DEMOCRATIC REPUBLIC
 countries:<
   isoCode:"la"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Vientiane"
   >
@@ -1641,7 +1645,7 @@ countries:<
 # LEBANON
 countries:<
   isoCode:"lb"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Beirut"
   >
@@ -1650,7 +1654,7 @@ countries:<
 # SAINT LUCIA
 countries:<
   isoCode:"lc"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/St_Lucia"
   >
@@ -1659,7 +1663,7 @@ countries:<
 # LIECHTENSTEIN
 countries:<
   isoCode:"li"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Vaduz"
   >
@@ -1668,7 +1672,7 @@ countries:<
 # SRI LANKA
 countries:<
   isoCode:"lk"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:30"
     id:"Asia/Colombo"
   >
@@ -1677,7 +1681,7 @@ countries:<
 # LIBERIA
 countries:<
   isoCode:"lr"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Monrovia"
   >
@@ -1686,7 +1690,7 @@ countries:<
 # LESOTHO
 countries:<
   isoCode:"ls"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Maseru"
   >
@@ -1695,7 +1699,7 @@ countries:<
 # LITHUANIA
 countries:<
   isoCode:"lt"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Vilnius"
   >
@@ -1704,7 +1708,7 @@ countries:<
 # LUXEMBOURG
 countries:<
   isoCode:"lu"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Luxembourg"
   >
@@ -1713,7 +1717,7 @@ countries:<
 # LATVIA
 countries:<
   isoCode:"lv"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Riga"
   >
@@ -1722,7 +1726,7 @@ countries:<
 # LIBYAN ARAB JAMAHIRIYA
 countries:<
   isoCode:"ly"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Tripoli"
   >
@@ -1731,7 +1735,7 @@ countries:<
 # MOROCCO
 countries:<
   isoCode:"ma"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Casablanca"
   >
@@ -1740,7 +1744,7 @@ countries:<
 # MONACO
 countries:<
   isoCode:"mc"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Monaco"
   >
@@ -1749,7 +1753,7 @@ countries:<
 # MOLDOVA
 countries:<
   isoCode:"md"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Chisinau"
   >
@@ -1758,7 +1762,7 @@ countries:<
 # MONTENEGRO
 countries:<
   isoCode:"me"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Podgorica"
   >
@@ -1767,7 +1771,7 @@ countries:<
 # Collectivity of Saint Martin
 countries:<
   isoCode:"mf"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Marigot"
   >
@@ -1776,7 +1780,7 @@ countries:<
 # MADAGASCAR
 countries:<
   isoCode:"mg"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Indian/Antananarivo"
   >
@@ -1786,11 +1790,11 @@ countries:<
 countries:<
   isoCode:"mh"
   defaultTimeZoneId:"Pacific/Majuro"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Majuro"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Kwajalein"
   >
@@ -1799,7 +1803,7 @@ countries:<
 # MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF
 countries:<
   isoCode:"mk"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Skopje"
   >
@@ -1808,7 +1812,7 @@ countries:<
 # MALI
 countries:<
   isoCode:"ml"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Bamako"
   >
@@ -1817,7 +1821,7 @@ countries:<
 # MYANMAR
 countries:<
   isoCode:"mm"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"6:30"
     id:"Asia/Yangon"
   >
@@ -1827,16 +1831,16 @@ countries:<
 countries:<
   isoCode:"mn"
   defaultTimeZoneId:"Asia/Ulaanbaatar"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Choibalsan"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Ulaanbaatar"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Hovd"
   >
@@ -1845,7 +1849,7 @@ countries:<
 # MACAO
 countries:<
   isoCode:"mo"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Macau"
   >
@@ -1854,7 +1858,7 @@ countries:<
 # NORTHERN MARIANA ISLANDS
 countries:<
   isoCode:"mp"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Pacific/Saipan"
   >
@@ -1863,7 +1867,7 @@ countries:<
 # MARTINIQUE
 countries:<
   isoCode:"mq"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Martinique"
   >
@@ -1872,7 +1876,7 @@ countries:<
 # MAURITANIA
 countries:<
   isoCode:"mr"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Nouakchott"
   >
@@ -1881,7 +1885,7 @@ countries:<
 # MONTSERRAT
 countries:<
   isoCode:"ms"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Montserrat"
   >
@@ -1890,7 +1894,7 @@ countries:<
 # MALTA
 countries:<
   isoCode:"mt"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Malta"
   >
@@ -1899,7 +1903,7 @@ countries:<
 # MAURITIUS
 countries:<
   isoCode:"mu"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Indian/Mauritius"
   >
@@ -1908,7 +1912,7 @@ countries:<
 # MALDIVES
 countries:<
   isoCode:"mv"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Indian/Maldives"
   >
@@ -1917,7 +1921,7 @@ countries:<
 # MALAWI
 countries:<
   isoCode:"mw"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Blantyre"
   >
@@ -1927,50 +1931,50 @@ countries:<
 countries:<
   isoCode:"mx"
   defaultTimeZoneId:"America/Mexico_City"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Mexico_City"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Merida"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Monterrey"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Matamoros"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Bahia_Banderas"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Cancun"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Chihuahua"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Hermosillo"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Mazatlan"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Ojinaga"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Tijuana"
   >
@@ -1980,11 +1984,11 @@ countries:<
 countries:<
   isoCode:"my"
   defaultTimeZoneId:"Asia/Kuala_Lumpur"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Kuala_Lumpur"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Kuching"
   >
@@ -1993,7 +1997,7 @@ countries:<
 # MOZAMBIQUE
 countries:<
   isoCode:"mz"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Maputo"
   >
@@ -2002,7 +2006,7 @@ countries:<
 # NAMIBIA
 countries:<
   isoCode:"na"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Windhoek"
   >
@@ -2011,7 +2015,7 @@ countries:<
 # NEW CALEDONIA
 countries:<
   isoCode:"nc"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Pacific/Noumea"
   >
@@ -2020,7 +2024,7 @@ countries:<
 # NIGER
 countries:<
   isoCode:"ne"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Niamey"
   >
@@ -2029,7 +2033,7 @@ countries:<
 # NORFOLK ISLAND
 countries:<
   isoCode:"nf"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Pacific/Norfolk"
   >
@@ -2038,7 +2042,7 @@ countries:<
 # NIGERIA
 countries:<
   isoCode:"ng"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Lagos"
   >
@@ -2047,7 +2051,7 @@ countries:<
 # NICARAGUA
 countries:<
   isoCode:"ni"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Managua"
   >
@@ -2056,7 +2060,7 @@ countries:<
 # NETHERLANDS
 countries:<
   isoCode:"nl"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Amsterdam"
   >
@@ -2065,7 +2069,7 @@ countries:<
 # NORWAY
 countries:<
   isoCode:"no"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Oslo"
   >
@@ -2074,7 +2078,7 @@ countries:<
 # NEPAL
 countries:<
   isoCode:"np"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:45"
     id:"Asia/Kathmandu"
   >
@@ -2083,7 +2087,7 @@ countries:<
 # NAURU
 countries:<
   isoCode:"nr"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Nauru"
   >
@@ -2092,7 +2096,7 @@ countries:<
 # NIUE
 countries:<
   isoCode:"nu"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-11:00"
     id:"Pacific/Niue"
   >
@@ -2102,12 +2106,12 @@ countries:<
 countries:<
   isoCode:"nz"
   defaultTimeZoneId:"Pacific/Auckland"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Auckland"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:45"
     id:"Pacific/Chatham"
   >
@@ -2116,7 +2120,7 @@ countries:<
 # OMAN
 countries:<
   isoCode:"om"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Asia/Muscat"
   >
@@ -2125,7 +2129,7 @@ countries:<
 # PANAMA
 countries:<
   isoCode:"pa"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Panama"
   >
@@ -2134,7 +2138,7 @@ countries:<
 # PERU
 countries:<
   isoCode:"pe"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Lima"
   >
@@ -2144,17 +2148,17 @@ countries:<
 countries:<
   isoCode:"pf"
   defaultTimeZoneId:"Pacific/Tahiti"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-9:00"
     id:"Pacific/Gambier"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-9:30"
     id:"Pacific/Marquesas"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-10:00"
     id:"Pacific/Tahiti"
   >
@@ -2164,12 +2168,12 @@ countries:<
 countries:<
   isoCode:"pg"
   defaultTimeZoneId:"Pacific/Port_Moresby"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Pacific/Port_Moresby"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Pacific/Bougainville"
   >
@@ -2178,7 +2182,7 @@ countries:<
 # PHILIPPINES
 countries:<
   isoCode:"ph"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Manila"
   >
@@ -2187,7 +2191,7 @@ countries:<
 # PAKISTAN
 countries:<
   isoCode:"pk"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Karachi"
   >
@@ -2196,7 +2200,7 @@ countries:<
 # POLAND
 countries:<
   isoCode:"pl"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Warsaw"
   >
@@ -2205,7 +2209,7 @@ countries:<
 # SAINT PIERRE AND MIQUELON
 countries:<
   isoCode:"pm"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Miquelon"
   >
@@ -2214,7 +2218,7 @@ countries:<
 # PITCAIRN
 countries:<
   isoCode:"pn"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-8:00"
     id:"Pacific/Pitcairn"
   >
@@ -2223,7 +2227,7 @@ countries:<
 # PUERTO RICO
 countries:<
   isoCode:"pr"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Puerto_Rico"
   >
@@ -2233,11 +2237,11 @@ countries:<
 countries:<
   isoCode:"ps"
   defaultTimeZoneId:"Asia/Gaza"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Gaza"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Hebron"
   >
@@ -2247,16 +2251,16 @@ countries:<
 countries:<
   isoCode:"pt"
   defaultTimeZoneId:"Europe/Lisbon"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Europe/Lisbon"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Atlantic/Madeira"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-1:00"
     id:"Atlantic/Azores"
   >
@@ -2265,7 +2269,7 @@ countries:<
 # PALAU
 countries:<
   isoCode:"pw"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"9:00"
     id:"Pacific/Palau"
   >
@@ -2274,7 +2278,7 @@ countries:<
 # PARAGUAY
 countries:<
   isoCode:"py"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Asuncion"
   >
@@ -2283,7 +2287,7 @@ countries:<
 # QATAR
 countries:<
   isoCode:"qa"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Asia/Qatar"
   >
@@ -2292,7 +2296,7 @@ countries:<
 # REUNION
 countries:<
   isoCode:"re"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Indian/Reunion"
   >
@@ -2301,7 +2305,7 @@ countries:<
 # ROMANIA
 countries:<
   isoCode:"ro"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Bucharest"
   >
@@ -2310,7 +2314,7 @@ countries:<
 # SERBIA
 countries:<
   isoCode:"rs"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Belgrade"
   >
@@ -2320,121 +2324,123 @@ countries:<
 countries:<
   isoCode:"ru"
   defaultTimeZoneId:"Europe/Moscow"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Asia/Kamchatka"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Asia/Anadyr"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Asia/Magadan"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Asia/Sakhalin"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Asia/Srednekolymsk"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Asia/Vladivostok"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"10:00"
     id:"Asia/Ust-Nera"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Yakutsk"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Chita"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Khandyga"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Irkutsk"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Krasnoyarsk"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Novosibirsk"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Barnaul"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Novokuznetsk"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Tomsk"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"6:00"
     id:"Asia/Omsk"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Yekaterinburg"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Europe/Samara"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Europe/Astrakhan"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Europe/Ulyanovsk"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Europe/Saratov"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Moscow"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Volgograd"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Kirov"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Simferopol"
+    # http://b/73922616
+    shownInPicker:false
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Kaliningrad"
   >
@@ -2443,7 +2449,7 @@ countries:<
 # RWANDA
 countries:<
   isoCode:"rw"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Kigali"
   >
@@ -2452,7 +2458,7 @@ countries:<
 # SAUDI ARABIA
 countries:<
   isoCode:"sa"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Asia/Riyadh"
   >
@@ -2461,7 +2467,7 @@ countries:<
 # SOLOMON ISLANDS
 countries:<
   isoCode:"sb"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Pacific/Guadalcanal"
   >
@@ -2470,7 +2476,7 @@ countries:<
 # SEYCHELLES
 countries:<
   isoCode:"sc"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"4:00"
     id:"Indian/Mahe"
   >
@@ -2479,7 +2485,7 @@ countries:<
 # SUDAN
 countries:<
   isoCode:"sd"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Khartoum"
   >
@@ -2488,7 +2494,7 @@ countries:<
 # SWEDEN
 countries:<
   isoCode:"se"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Stockholm"
   >
@@ -2497,7 +2503,7 @@ countries:<
 # SINGAPORE
 countries:<
   isoCode:"sg"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Singapore"
   >
@@ -2506,7 +2512,7 @@ countries:<
 # SAINT HELENA
 countries:<
   isoCode:"sh"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Atlantic/St_Helena"
   >
@@ -2515,7 +2521,7 @@ countries:<
 # SLOVENIA
 countries:<
   isoCode:"si"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Ljubljana"
   >
@@ -2524,7 +2530,7 @@ countries:<
 # SVALBARD AND JAN MAYEN
 countries:<
   isoCode:"sj"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Arctic/Longyearbyen"
   >
@@ -2533,7 +2539,7 @@ countries:<
 # SLOVAKIA
 countries:<
   isoCode:"sk"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Bratislava"
   >
@@ -2542,7 +2548,7 @@ countries:<
 # SIERRA LEONE
 countries:<
   isoCode:"sl"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Freetown"
   >
@@ -2551,7 +2557,7 @@ countries:<
 # SAN MARINO
 countries:<
   isoCode:"sm"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/San_Marino"
   >
@@ -2560,7 +2566,7 @@ countries:<
 # SENEGAL
 countries:<
   isoCode:"sn"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Dakar"
   >
@@ -2569,7 +2575,7 @@ countries:<
 # SOMALIA
 countries:<
   isoCode:"so"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Africa/Mogadishu"
   >
@@ -2578,7 +2584,7 @@ countries:<
 # SURINAME
 countries:<
   isoCode:"sr"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Paramaribo"
   >
@@ -2587,7 +2593,7 @@ countries:<
 # South Sudan
 countries:<
   isoCode:"ss"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Africa/Juba"
   >
@@ -2596,7 +2602,7 @@ countries:<
 # SAO TOME AND PRINCIPE
 countries:<
   isoCode:"st"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Sao_Tome"
   >
@@ -2605,7 +2611,7 @@ countries:<
 # EL SALVADOR
 countries:<
   isoCode:"sv"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/El_Salvador"
   >
@@ -2614,7 +2620,7 @@ countries:<
 # Sint Maarten
 countries:<
   isoCode:"sx"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Lower_Princes"
   >
@@ -2623,7 +2629,7 @@ countries:<
 # SYRIAN ARAB REPUBLIC
 countries:<
   isoCode:"sy"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Damascus"
   >
@@ -2632,7 +2638,7 @@ countries:<
 # SWAZILAND
 countries:<
   isoCode:"sz"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Mbabane"
   >
@@ -2641,7 +2647,7 @@ countries:<
 # TURKS AND CAICOS ISLANDS
 countries:<
   isoCode:"tc"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Grand_Turk"
   >
@@ -2650,7 +2656,7 @@ countries:<
 # CHAD
 countries:<
   isoCode:"td"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Ndjamena"
   >
@@ -2659,7 +2665,7 @@ countries:<
 # FRENCH SOUTHERN TERRITORIES
 countries:<
   isoCode:"tf"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Indian/Kerguelen"
   >
@@ -2668,7 +2674,7 @@ countries:<
 # TOGO
 countries:<
   isoCode:"tg"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Lome"
   >
@@ -2677,7 +2683,7 @@ countries:<
 # THAILAND
 countries:<
   isoCode:"th"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Bangkok"
   >
@@ -2686,7 +2692,7 @@ countries:<
 # TAJIKISTAN
 countries:<
   isoCode:"tj"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Dushanbe"
   >
@@ -2695,7 +2701,7 @@ countries:<
 # TOKELAU
 countries:<
   isoCode:"tk"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"13:00"
     id:"Pacific/Fakaofo"
   >
@@ -2704,7 +2710,7 @@ countries:<
 # TIMOR-LESTE
 countries:<
   isoCode:"tl"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Dili"
   >
@@ -2713,7 +2719,7 @@ countries:<
 # TURKMENISTAN
 countries:<
   isoCode:"tm"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Ashgabat"
   >
@@ -2722,7 +2728,7 @@ countries:<
 # TUNISIA
 countries:<
   isoCode:"tn"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Tunis"
   >
@@ -2731,7 +2737,7 @@ countries:<
 # TONGA
 countries:<
   isoCode:"to"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"13:00"
     id:"Pacific/Tongatapu"
   >
@@ -2740,7 +2746,7 @@ countries:<
 # TURKEY
 countries:<
   isoCode:"tr"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Istanbul"
   >
@@ -2749,7 +2755,7 @@ countries:<
 # TRINIDAD AND TOBAGO
 countries:<
   isoCode:"tt"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Port_of_Spain"
   >
@@ -2758,7 +2764,7 @@ countries:<
 # TUVALU
 countries:<
   isoCode:"tv"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Funafuti"
   >
@@ -2767,7 +2773,7 @@ countries:<
 # TAIWAN, PROVINCE OF CHINA
 countries:<
   isoCode:"tw"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Taipei"
   >
@@ -2776,7 +2782,7 @@ countries:<
 # TANZANIA, UNITED REPUBLIC OF
 countries:<
   isoCode:"tz"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Africa/Dar_es_Salaam"
   >
@@ -2786,15 +2792,15 @@ countries:<
 countries:<
   isoCode:"ua"
   defaultTimeZoneId:"Europe/Kiev"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Kiev"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Uzhgorod"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Zaporozhye"
   >
@@ -2803,7 +2809,7 @@ countries:<
 # UGANDA
 countries:<
   isoCode:"ug"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Africa/Kampala"
   >
@@ -2813,12 +2819,12 @@ countries:<
 countries:<
   isoCode:"um"
   defaultTimeZoneId:"Pacific/Wake"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Wake"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-11:00"
     id:"Pacific/Midway"
   >
@@ -2828,124 +2834,124 @@ countries:<
 countries:<
   isoCode:"us"
   defaultTimeZoneId:"America/New_York"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/New_York"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Detroit"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Kentucky/Louisville"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Kentucky/Monticello"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Indianapolis"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Vincennes"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Winamac"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Marengo"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Petersburg"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Vevay"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Chicago"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Indiana/Knox"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Menominee"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/North_Dakota/Center"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/North_Dakota/New_Salem"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Indiana/Tell_City"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/North_Dakota/Beulah"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Denver"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Boise"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Phoenix"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Los_Angeles"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Anchorage"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Juneau"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Yakutat"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Nome"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Metlakatla"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Sitka"
   >
 
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-10:00"
     id:"Pacific/Honolulu"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-10:00"
     id:"America/Adak"
   >
@@ -2954,7 +2960,7 @@ countries:<
 # URUGUAY
 countries:<
   isoCode:"uy"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Montevideo"
   >
@@ -2964,11 +2970,11 @@ countries:<
 countries:<
   isoCode:"uz"
   defaultTimeZoneId:"Asia/Tashkent"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Tashkent"
   >
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Samarkand"
   >
@@ -2977,7 +2983,7 @@ countries:<
 # HOLY SEE (VATICAN CITY STATE)
 countries:<
   isoCode:"va"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Vatican"
   >
@@ -2986,7 +2992,7 @@ countries:<
 # SAINT VINCENT AND THE GRENADINES
 countries:<
   isoCode:"vc"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/St_Vincent"
   >
@@ -2995,7 +3001,7 @@ countries:<
 # VENEZUELA
 countries:<
   isoCode:"ve"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Caracas"
   >
@@ -3004,7 +3010,7 @@ countries:<
 # VIRGIN ISLANDS, BRITISH
 countries:<
   isoCode:"vg"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Tortola"
   >
@@ -3013,7 +3019,7 @@ countries:<
 # VIRGIN ISLANDS, U.S.
 countries:<
   isoCode:"vi"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/St_Thomas"
   >
@@ -3022,7 +3028,7 @@ countries:<
 # VIET NAM
 countries:<
   isoCode:"vn"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Ho_Chi_Minh"
   >
@@ -3031,7 +3037,7 @@ countries:<
 # VANUATU
 countries:<
   isoCode:"vu"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"11:00"
     id:"Pacific/Efate"
   >
@@ -3040,7 +3046,7 @@ countries:<
 # WALLIS AND FUTUNA
 countries:<
   isoCode:"wf"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Wallis"
   >
@@ -3049,7 +3055,7 @@ countries:<
 # SAMOA
 countries:<
   isoCode:"ws"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"13:00"
     id:"Pacific/Apia"
   >
@@ -3058,7 +3064,7 @@ countries:<
 # YEMEN
 countries:<
   isoCode:"ye"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Asia/Aden"
   >
@@ -3067,7 +3073,7 @@ countries:<
 # MAYOTTE
 countries:<
   isoCode:"yt"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"3:00"
     id:"Indian/Mayotte"
   >
@@ -3076,7 +3082,7 @@ countries:<
 # SOUTH AFRICA
 countries:<
   isoCode:"za"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Johannesburg"
   >
@@ -3085,7 +3091,7 @@ countries:<
 # ZAMBIA
 countries:<
   isoCode:"zm"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Lusaka"
   >
@@ -3094,7 +3100,7 @@ countries:<
 # ZIMBABWE
 countries:<
   isoCode:"zw"
-  timeZones:<
+  timeZoneMappings:<
     utcOffset:"2:00"
     id:"Africa/Harare"
   >
