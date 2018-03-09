@@ -422,6 +422,47 @@ public class TzLookupGeneratorTest {
         assertAbsent(tzLookupXml, "picker=");
     }
 
+    @Test
+    public void notAfter() throws Exception {
+        CountryZonesFile.Country country = createValidCountryUs();
+        List<ZoneTabFile.CountryEntry> zoneTabEntries = createValidZoneTabEntriesUs();
+        String tzLookupXml = generateTzLookupXml(country, zoneTabEntries);
+        String[] expectedLines = {
+                "<id>America/New_York</id>",
+                "<id notafter=\"183535200000\">America/Detroit</id>",
+                "<id notafter=\"162370800000\">America/Kentucky/Louisville</id>",
+                "<id notafter=\"986108400000\">America/Kentucky/Monticello</id>",
+                "<id notafter=\"1143961200000\">America/Indiana/Indianapolis</id>",
+                "<id notafter=\"1205046000000\">America/Indiana/Vincennes</id>",
+                "<id notafter=\"1194156000000\">America/Indiana/Winamac</id>",
+                "<id notafter=\"1143961200000\">America/Indiana/Marengo</id>",
+                "<id notafter=\"1143961200000\">America/Indiana/Petersburg</id>",
+                "<id notafter=\"1143961200000\">America/Indiana/Vevay</id>",
+                "<id>America/Chicago</id>",
+                "<id notafter=\"1143961200000\">America/Indiana/Knox</id>",
+                "<id notafter=\"120639600000\">America/Menominee</id>",
+                "<id notafter=\"733910400000\">America/North_Dakota/Center</id>",
+                "<id notafter=\"1081065600000\">America/North_Dakota/New_Salem</id>",
+                "<id notafter=\"1162105200000\">America/Indiana/Tell_City</id>",
+                "<id notafter=\"1300003200000\">America/North_Dakota/Beulah</id>",
+                "<id>America/Denver</id>",
+                "<id notafter=\"152092800000\">America/Boise</id>",
+                "<id>America/Phoenix</id>",
+                "<id>America/Los_Angeles</id>",
+                "<id>America/Anchorage</id>",
+                "<id notafter=\"452084400000\">America/Juneau</id>",
+                "<id notafter=\"452084400000\">America/Yakutat</id>",
+                "<id notafter=\"452084400000\">America/Nome</id>",
+                "<id notafter=\"1446372000000\">America/Metlakatla</id>",
+                "<id notafter=\"357127200000\">America/Sitka</id>",
+                "<id>Pacific/Honolulu</id>",
+                "<id>America/Adak</id>",
+        };
+        for (String expectedLine : expectedLines) {
+            assertContains(tzLookupXml, expectedLine);
+        }
+    }
+
     private String generateTzLookupXml(CountryZonesFile.Country country,
             List<ZoneTabFile.CountryEntry> zoneTabEntries) throws Exception {
 
@@ -480,6 +521,107 @@ public class TzLookupGeneratorTest {
                 .build();
     }
 
+    private static CountryZonesFile.Country createValidCountryUs() {
+        return CountryZonesFile.Country.newBuilder()
+                .setIsoCode("us")
+                .setDefaultTimeZoneId("America/New_York")
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-5:00")
+                        .setId("America/New_York")
+                        .setPriority(10))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-5:00")
+                        .setId("America/Detroit"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-5:00")
+                        .setId("America/Kentucky/Louisville"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-5:00")
+                        .setId("America/Kentucky/Monticello"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-5:00")
+                        .setId("America/Indiana/Indianapolis"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-5:00")
+                        .setId("America/Indiana/Vincennes")
+                        .setPriority(9))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-5:00")
+                        .setId("America/Indiana/Winamac"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-5:00")
+                        .setId("America/Indiana/Marengo"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-5:00")
+                        .setId("America/Indiana/Petersburg"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-5:00")
+                        .setId("America/Indiana/Vevay"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-6:00")
+                        .setId("America/Chicago")
+                        .setPriority(10))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-6:00")
+                        .setId("America/Indiana/Knox"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-6:00")
+                        .setId("America/Menominee"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-6:00")
+                        .setId("America/North_Dakota/Center"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-6:00")
+                        .setId("America/North_Dakota/New_Salem"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-6:00")
+                        .setId("America/Indiana/Tell_City")
+                        .setPriority(9))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-6:00")
+                        .setId("America/North_Dakota/Beulah"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-7:00")
+                        .setId("America/Denver")
+                        .setPriority(10))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-7:00")
+                        .setId("America/Boise"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-7:00")
+                        .setId("America/Phoenix"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-8:00")
+                        .setId("America/Los_Angeles"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-9:00")
+                        .setId("America/Anchorage")
+                        .setPriority(10))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-9:00")
+                        .setId("America/Juneau")
+                        .setPriority(9))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-9:00")
+                        .setId("America/Yakutat"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-9:00")
+                        .setId("America/Nome"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-9:00")
+                        .setId("America/Metlakatla"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-9:00")
+                        .setId("America/Sitka"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-10:00")
+                        .setId("Pacific/Honolulu"))
+                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
+                        .setUtcOffset("-10:00")
+                        .setId("America/Adak"))
+                .build();
+    }
+
     private static CountryZonesFile.Country createValidCountryFr() {
         return CountryZonesFile.Country.newBuilder()
                 .setIsoCode("fr")
@@ -496,7 +638,34 @@ public class TzLookupGeneratorTest {
     private static List<ZoneTabFile.CountryEntry> createValidZoneTabEntriesUs() {
         return Arrays.asList(
                 new ZoneTabFile.CountryEntry("US", "America/New_York"),
-                new ZoneTabFile.CountryEntry("US", "America/Los_Angeles"));
+                new ZoneTabFile.CountryEntry("US", "America/Detroit"),
+                new ZoneTabFile.CountryEntry("US", "America/Kentucky/Louisville"),
+                new ZoneTabFile.CountryEntry("US", "America/Kentucky/Monticello"),
+                new ZoneTabFile.CountryEntry("US", "America/Indiana/Indianapolis"),
+                new ZoneTabFile.CountryEntry("US", "America/Indiana/Vincennes"),
+                new ZoneTabFile.CountryEntry("US", "America/Indiana/Winamac"),
+                new ZoneTabFile.CountryEntry("US", "America/Indiana/Marengo"),
+                new ZoneTabFile.CountryEntry("US", "America/Indiana/Petersburg"),
+                new ZoneTabFile.CountryEntry("US", "America/Indiana/Vevay"),
+                new ZoneTabFile.CountryEntry("US", "America/Chicago"),
+                new ZoneTabFile.CountryEntry("US", "America/Indiana/Tell_City"),
+                new ZoneTabFile.CountryEntry("US", "America/Indiana/Knox"),
+                new ZoneTabFile.CountryEntry("US", "America/Menominee"),
+                new ZoneTabFile.CountryEntry("US", "America/North_Dakota/Center"),
+                new ZoneTabFile.CountryEntry("US", "America/North_Dakota/New_Salem"),
+                new ZoneTabFile.CountryEntry("US", "America/North_Dakota/Beulah"),
+                new ZoneTabFile.CountryEntry("US", "America/Denver"),
+                new ZoneTabFile.CountryEntry("US", "America/Boise"),
+                new ZoneTabFile.CountryEntry("US", "America/Phoenix"),
+                new ZoneTabFile.CountryEntry("US", "America/Los_Angeles"),
+                new ZoneTabFile.CountryEntry("US", "America/Anchorage"),
+                new ZoneTabFile.CountryEntry("US", "America/Juneau"),
+                new ZoneTabFile.CountryEntry("US", "America/Sitka"),
+                new ZoneTabFile.CountryEntry("US", "America/Metlakatla"),
+                new ZoneTabFile.CountryEntry("US", "America/Yakutat"),
+                new ZoneTabFile.CountryEntry("US", "America/Nome"),
+                new ZoneTabFile.CountryEntry("US", "America/Adak"),
+                new ZoneTabFile.CountryEntry("US", "Pacific/Honolulu"));
     }
 
     private static List<ZoneTabFile.CountryEntry> createValidZoneTabEntriesFr() {
