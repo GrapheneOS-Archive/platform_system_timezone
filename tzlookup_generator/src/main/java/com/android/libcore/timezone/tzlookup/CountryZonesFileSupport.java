@@ -28,11 +28,11 @@ import java.util.stream.Collectors;
 /**
  * A class containing utility methods for details with CountryZonesFile proto objects.
  */
-final class CountryZonesFileSupport {
+public final class CountryZonesFileSupport {
 
     private CountryZonesFileSupport() {}
 
-    static CountryZonesFile.CountryZones parseCountryZonesTextFile(String file)
+    public static CountryZonesFile.CountryZones parseCountryZonesTextFile(String file)
             throws IOException, ParseException {
         try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
             CountryZonesFile.CountryZones.Builder builder =

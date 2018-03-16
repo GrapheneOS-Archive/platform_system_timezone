@@ -25,7 +25,12 @@ import java.util.List;
  */
 final class Errors {
 
-    private boolean isFatal;
+    private final static int LEVEL_WARNING = 1;
+    private final static int LEVEL_ERROR = 2;
+    private final static int LEVEL_FATAL = 3;
+
+    private int level = 0;
+
     private final LinkedList<String> scopes = new LinkedList<>();
     private final List<String> messages = new ArrayList<>();
 
@@ -45,11 +50,23 @@ final class Errors {
     }
 
     void addFatal(String msg) {
-        isFatal = true;
+        if (level < LEVEL_FATAL) {
+            level = LEVEL_FATAL;
+        }
+        add(msg);
+    }
+
+    void addError(String msg) {
+        if (level < LEVEL_ERROR) {
+            level = LEVEL_ERROR;
+        }
         add(msg);
     }
 
     void addWarning(String msg) {
+        if (level < LEVEL_WARNING) {
+            level = LEVEL_WARNING;
+        }
         add(msg);
     }
 
@@ -62,8 +79,12 @@ final class Errors {
         return sb.toString();
     }
 
-    boolean isFatal() {
-        return isFatal;
+    boolean hasError() {
+        return level >= LEVEL_ERROR;
+    }
+
+    boolean hasFatal() {
+        return level >= LEVEL_FATAL;
     }
 
     private void add(String msg) {
