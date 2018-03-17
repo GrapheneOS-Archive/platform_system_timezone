@@ -27,11 +27,28 @@ public class ErrorsTest {
     public void warnings() {
         Errors errors = new Errors();
         assertTrue(errors.isEmpty());
-        assertFalse(errors.isFatal());
+        assertFalse(errors.hasError());
+        assertFalse(errors.hasFatal());
 
         errors.addWarning("Hello");
         assertFalse(errors.isEmpty());
-        assertFalse(errors.isFatal());
+        assertFalse(errors.hasError());
+        assertFalse(errors.hasFatal());
+
+        TestUtils.assertContains(errors.asString(), "Hello");
+    }
+
+    @Test
+    public void error() {
+        Errors errors = new Errors();
+        assertTrue(errors.isEmpty());
+        assertFalse(errors.hasError());
+        assertFalse(errors.hasFatal());
+
+        errors.addError("Hello");
+        assertFalse(errors.isEmpty());
+        assertTrue(errors.hasError());
+        assertFalse(errors.hasFatal());
 
         TestUtils.assertContains(errors.asString(), "Hello");
     }
@@ -40,11 +57,13 @@ public class ErrorsTest {
     public void fatal() {
         Errors errors = new Errors();
         assertTrue(errors.isEmpty());
-        assertFalse(errors.isFatal());
+        assertFalse(errors.hasError());
+        assertFalse(errors.hasFatal());
 
         errors.addFatal("Hello");
         assertFalse(errors.isEmpty());
-        assertTrue(errors.isFatal());
+        assertTrue(errors.hasError());
+        assertTrue(errors.hasFatal());
 
         TestUtils.assertContains(errors.asString(), "Hello");
     }
@@ -53,16 +72,16 @@ public class ErrorsTest {
     public void scope() {
         Errors errors = new Errors();
 
-        errors.addFatal("Hello");
+        errors.addWarning("Hello");
 
         errors.pushScope("Monty Python");
-        errors.addFatal("John Cleese");
+        errors.addError("John Cleese");
 
         errors.pushScope("Holy grail");
         errors.addFatal("Silly place");
         errors.popScope();
 
-        errors.addFatal("Michael Palin");
+        errors.addError("Michael Palin");
 
         errors.pushScope("Parrot sketch");
         errors.addFatal("Fjords");
