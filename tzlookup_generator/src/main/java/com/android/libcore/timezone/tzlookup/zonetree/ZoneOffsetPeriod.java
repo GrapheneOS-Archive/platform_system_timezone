@@ -18,13 +18,14 @@ package com.android.libcore.timezone.tzlookup.zonetree;
 import com.ibm.icu.text.TimeZoneNames;
 import com.ibm.icu.util.BasicTimeZone;
 import com.ibm.icu.util.TimeZone;
+import com.ibm.icu.util.TimeZoneTransition;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * A period of time when all time-zone related properties remained the same.
+ * A period of time when all time-zone related properties are expected to remain the same.
  */
 final class ZoneOffsetPeriod {
     /** The start of the period (inclusive) */
@@ -48,18 +49,39 @@ final class ZoneOffsetPeriod {
     }
 
     /**
-     * Constructs an instance using information using ICU data.
+     * Constructs an instance using ICU data.
      */
-    public static ZoneOffsetPeriod create(TimeZoneNames timeZoneNames, TimeZone timeZone,
-            Instant start, Instant end) {
+    public static ZoneOffsetPeriod create(TimeZoneNames timeZoneNames, BasicTimeZone timeZone,
+            Instant minTime, Instant maxTime) {
+
+        long startMillis = minTime.toEpochMilli();
+        TimeZoneTransition transition =
+                timeZone.getNextTransition(startMillis, true /* inclusive */);
+        Instant end;
+        if (transition == null) {
+            // The zone has no transitions from start, so we create a ZoneOffsetPeriod
+            // from minTime to maxTime.
+            end = maxTime;
+        } else {
+            TimeZoneTransition nextTransition =
+                    timeZone.getNextTransition(startMillis, false /* inclusive */);
+            if (nextTransition != null) {
+                long endTimeMillis = Math.min(nextTransition.getTime(), maxTime.toEpochMilli());
+                end = Instant.ofEpochMilli(endTimeMillis);
+            } else {
+                // The zone has no next transition after minTime, so we create a ZoneOffsetPeriod
+                // from minTime to maxTime.
+                end = maxTime;
+            }
+        }
+
         int[] offsets = new int[2];
-        long startMillis = start.toEpochMilli();
         timeZone.getOffset(startMillis, false /* local */, offsets);
         String canonicalID = TimeZone.getCanonicalID(timeZone.getID());
         TimeZoneNames.NameType longNameType = offsets[1] == 0
                 ? TimeZoneNames.NameType.LONG_STANDARD : TimeZoneNames.NameType.LONG_DAYLIGHT;
         String longName = timeZoneNames.getDisplayName(canonicalID, longNameType, startMillis);
-        return new ZoneOffsetPeriod(start, end, offsets[0], offsets[1], longName);
+        return new ZoneOffsetPeriod(minTime, end, offsets[0], offsets[1], longName);
     }
 
     public Instant getStartInstant() {
@@ -76,6 +98,18 @@ final class ZoneOffsetPeriod {
 
     public long getEndMillis() {
         return end.toEpochMilli();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getRawOffsetMillis() {
+        return rawOffsetMillis;
+    }
+
+    public int getDstOffsetMillis() {
+        return dstOffsetMillis;
     }
 
     @Override
