@@ -22,6 +22,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.stream.XMLOutputFactory;
@@ -56,6 +57,9 @@ final class TzLookupFile {
     private static final String ZONE_ID_ELEMENT = "id";
     // Default when unspecified is "y" / true.
     private static final String ZONE_SHOW_IN_PICKER_ATTRIBUTE = "picker";
+    // The time when the zone stops being distinct from another of the country's zones (inclusive).
+    private static final String ZONE_NOT_USED_AFTER_ATTRIBUTE = "notafter";
+
 
     // Short encodings for boolean attributes.
     private static final String ATTRIBUTE_FALSE = "n";
@@ -69,10 +73,10 @@ final class TzLookupFile {
          *   <countryzones>
          *     <country code="us" default="America/New_York" everutc="n">
          *       <!-- -5:00 -->
-         *       <id>America/New_York"</id>
+         *       <id notafter="1234">America/New_York"</id>
          *       ...
          *       <!-- -8:00 -->
-         *       <id>America/Los_Angeles</id>
+         *       <id picker="n">America/Los_Angeles</id>
          *       ...
          *     </country>
          *     <country code="gb" default="Europe/London" everutc="y">
@@ -191,14 +195,20 @@ final class TzLookupFile {
         return value ? ATTRIBUTE_TRUE : ATTRIBUTE_FALSE;
     }
 
+    private static String encodeLongAttribute(long epochMillis) {
+        return Long.toString(epochMillis);
+    }
+
     static class TimeZoneMapping {
 
         private final String olsonId;
         private final boolean showInPicker;
+        private final Instant notUsedAfterInclusive;
 
-        TimeZoneMapping(String olsonId, boolean showInPicker) {
+        TimeZoneMapping(String olsonId, boolean showInPicker, Instant notUsedAfterInclusive) {
             this.olsonId = olsonId;
             this.showInPicker = showInPicker;
+            this.notUsedAfterInclusive = notUsedAfterInclusive;
         }
 
         static void writeXml(TimeZoneMapping timeZoneId, XMLStreamWriter writer)
@@ -206,6 +216,10 @@ final class TzLookupFile {
             writer.writeStartElement(ZONE_ID_ELEMENT);
             if (!timeZoneId.showInPicker) {
                 writer.writeAttribute(ZONE_SHOW_IN_PICKER_ATTRIBUTE, encodeBooleanAttribute(false));
+            }
+            if (timeZoneId.notUsedAfterInclusive != null) {
+                writer.writeAttribute(ZONE_NOT_USED_AFTER_ATTRIBUTE,
+                        encodeLongAttribute(timeZoneId.notUsedAfterInclusive.toEpochMilli()));
             }
             writer.writeCharacters(timeZoneId.olsonId);
             writer.writeEndElement();

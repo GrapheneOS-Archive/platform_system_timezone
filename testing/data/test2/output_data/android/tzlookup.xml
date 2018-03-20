@@ -42,17 +42,17 @@
   </country>
   <country code="ar" default="America/Argentina/Buenos_Aires" everutc="n">
    <id>America/Argentina/Buenos_Aires</id>
-   <id>America/Argentina/Cordoba</id>
-   <id>America/Argentina/Salta</id>
-   <id>America/Argentina/Jujuy</id>
-   <id>America/Argentina/Tucuman</id>
-   <id>America/Argentina/Catamarca</id>
-   <id>America/Argentina/La_Rioja</id>
-   <id>America/Argentina/San_Juan</id>
+   <id notafter="699415200000">America/Argentina/Cordoba</id>
+   <id notafter="1198983600000">America/Argentina/Salta</id>
+   <id notafter="699415200000">America/Argentina/Jujuy</id>
+   <id notafter="1198983600000">America/Argentina/Tucuman</id>
+   <id notafter="1198983600000">America/Argentina/Catamarca</id>
+   <id notafter="699415200000">America/Argentina/La_Rioja</id>
+   <id notafter="1198983600000">America/Argentina/San_Juan</id>
    <id>America/Argentina/Mendoza</id>
    <id>America/Argentina/San_Luis</id>
-   <id>America/Argentina/Rio_Gallegos</id>
-   <id>America/Argentina/Ushuaia</id>
+   <id notafter="687927600000">America/Argentina/Rio_Gallegos</id>
+   <id notafter="1087704000000">America/Argentina/Ushuaia</id>
   </country>
   <country code="as" default="Pacific/Pago_Pago" everutc="n">
    <id>Pacific/Pago_Pago</id>
@@ -62,15 +62,15 @@
   </country>
   <country code="au" default="Australia/Sydney" everutc="n">
    <id>Australia/Sydney</id>
-   <id>Australia/Melbourne</id>
+   <id notafter="814896000000">Australia/Melbourne</id>
    <id>Australia/Brisbane</id>
-   <id>Australia/Hobart</id>
-   <id>Australia/Currie</id>
+   <id notafter="1207411200000">Australia/Hobart</id>
+   <id notafter="67968000000">Australia/Currie</id>
    <id>Australia/Lindeman</id>
    <id>Antarctica/Macquarie</id>
    <id>Australia/Lord_Howe</id>
    <id>Australia/Adelaide</id>
-   <id>Australia/Broken_Hill</id>
+   <id notafter="814897800000">Australia/Broken_Hill</id>
    <id>Australia/Darwin</id>
    <id>Australia/Perth</id>
    <id>Australia/Eucla</id>
@@ -131,17 +131,17 @@
    <id>America/Sao_Paulo</id>
    <id>America/Belem</id>
    <id>America/Fortaleza</id>
-   <id>America/Recife</id>
+   <id notafter="1003028400000">America/Recife</id>
    <id>America/Araguaina</id>
-   <id>America/Maceio</id>
+   <id notafter="938919600000">America/Maceio</id>
    <id>America/Bahia</id>
    <id>America/Santarem</id>
    <id>America/Manaus</id>
    <id>America/Campo_Grande</id>
-   <id>America/Cuiaba</id>
+   <id notafter="1099368000000">America/Cuiaba</id>
    <id>America/Porto_Velho</id>
    <id>America/Boa_Vista</id>
-   <id>America/Eirunepe</id>
+   <id notafter="1214283600000">America/Eirunepe</id>
    <id>America/Rio_Branco</id>
   </country>
   <country code="bs" default="America/Nassau" everutc="n">
@@ -162,32 +162,32 @@
   <country code="ca" default="America/St_Johns" everutc="n">
    <id>America/St_Johns</id>
    <id>America/Halifax</id>
-   <id>America/Glace_Bay</id>
-   <id>America/Moncton</id>
-   <id>America/Goose_Bay</id>
+   <id notafter="89182800000">America/Glace_Bay</id>
+   <id notafter="1173592800000">America/Moncton</id>
+   <id notafter="1320555600000">America/Goose_Bay</id>
    <id>America/Blanc-Sablon</id>
    <id>America/Toronto</id>
-   <id>America/Nipigon</id>
-   <id>America/Thunder_Bay</id>
-   <id>America/Iqaluit</id>
-   <id>America/Pangnirtung</id>
+   <id notafter="152085600000">America/Nipigon</id>
+   <id notafter="136364400000">America/Thunder_Bay</id>
+   <id notafter="986108400000">America/Iqaluit</id>
+   <id notafter="814946400000">America/Pangnirtung</id>
    <id>America/Atikokan</id>
    <id>America/Winnipeg</id>
    <id>America/Regina</id>
-   <id>America/Rankin_Inlet</id>
-   <id>America/Rainy_River</id>
+   <id notafter="1143964800000">America/Rankin_Inlet</id>
+   <id notafter="986112000000">America/Rainy_River</id>
    <id>America/Swift_Current</id>
-   <id>America/Resolute</id>
+   <id notafter="1173600000000">America/Resolute</id>
    <id>America/Edmonton</id>
-   <id>America/Cambridge_Bay</id>
-   <id>America/Yellowknife</id>
-   <id>America/Inuvik</id>
+   <id notafter="986115600000">America/Cambridge_Bay</id>
+   <id notafter="341395200000">America/Yellowknife</id>
+   <id notafter="325674000000">America/Inuvik</id>
    <id>America/Dawson_Creek</id>
    <id>America/Creston</id>
    <id>America/Fort_Nelson</id>
    <id>America/Vancouver</id>
-   <id>America/Whitehorse</id>
-   <id>America/Dawson</id>
+   <id notafter="341398800000">America/Whitehorse</id>
+   <id notafter="325677600000">America/Dawson</id>
   </country>
   <country code="cc" default="Indian/Cocos" everutc="n">
    <id>Indian/Cocos</id>
@@ -250,7 +250,7 @@
   </country>
   <country code="de" default="Europe/Berlin" everutc="n">
    <id>Europe/Berlin</id>
-   <id>Europe/Busingen</id>
+   <id notafter="370400400000">Europe/Busingen</id>
   </country>
   <country code="dj" default="Africa/Djibouti" everutc="n">
    <id>Africa/Djibouti</id>
@@ -285,7 +285,7 @@
   </country>
   <country code="es" default="Europe/Madrid" everutc="y">
    <id>Europe/Madrid</id>
-   <id>Africa/Ceuta</id>
+   <id notafter="512528400000">Africa/Ceuta</id>
    <id>Atlantic/Canary</id>
   </country>
   <country code="et" default="Africa/Addis_Ababa" everutc="n">
@@ -466,10 +466,10 @@
   <country code="kz" default="Asia/Almaty" everutc="n">
    <id>Asia/Almaty</id>
    <id>Asia/Qyzylorda</id>
-   <id>Asia/Aqtau</id>
+   <id notafter="1099173600000">Asia/Aqtau</id>
    <id>Asia/Oral</id>
    <id>Asia/Aqtobe</id>
-   <id>Asia/Atyrau</id>
+   <id notafter="941320800000">Asia/Atyrau</id>
   </country>
   <country code="la" default="Asia/Vientiane" everutc="n">
    <id>Asia/Vientiane</id>
@@ -569,14 +569,14 @@
   </country>
   <country code="mx" default="America/Mexico_City" everutc="n">
    <id>America/Mexico_City</id>
-   <id>America/Merida</id>
-   <id>America/Monterrey</id>
+   <id notafter="828864000000">America/Merida</id>
+   <id notafter="846399600000">America/Monterrey</id>
    <id>America/Matamoros</id>
-   <id>America/Bahia_Banderas</id>
+   <id notafter="1288508400000">America/Bahia_Banderas</id>
    <id>America/Cancun</id>
    <id>America/Chihuahua</id>
    <id>America/Hermosillo</id>
-   <id>America/Mazatlan</id>
+   <id notafter="891766800000">America/Mazatlan</id>
    <id>America/Ojinaga</id>
    <id>America/Tijuana</id>
   </country>
@@ -661,12 +661,12 @@
    <id>America/Puerto_Rico</id>
   </country>
   <country code="ps" default="Asia/Gaza" everutc="n">
-   <id>Asia/Gaza</id>
+   <id notafter="1333058400000">Asia/Gaza</id>
    <id>Asia/Hebron</id>
   </country>
   <country code="pt" default="Europe/Lisbon" everutc="y">
    <id>Europe/Lisbon</id>
-   <id>Atlantic/Madeira</id>
+   <id notafter="828234000000">Atlantic/Madeira</id>
    <id>Atlantic/Azores</id>
   </country>
   <country code="pw" default="Pacific/Palau" everutc="n">
@@ -694,10 +694,10 @@
    <id>Asia/Sakhalin</id>
    <id>Asia/Srednekolymsk</id>
    <id>Asia/Vladivostok</id>
-   <id>Asia/Ust-Nera</id>
+   <id notafter="1414249200000">Asia/Ust-Nera</id>
    <id>Asia/Yakutsk</id>
    <id>Asia/Chita</id>
-   <id>Asia/Khandyga</id>
+   <id notafter="1414252800000">Asia/Khandyga</id>
    <id>Asia/Irkutsk</id>
    <id>Asia/Krasnoyarsk</id>
    <id>Asia/Novosibirsk</id>
@@ -707,13 +707,13 @@
    <id>Asia/Omsk</id>
    <id>Asia/Yekaterinburg</id>
    <id>Europe/Samara</id>
-   <id>Europe/Astrakhan</id>
+   <id notafter="717548400000">Europe/Astrakhan</id>
    <id>Europe/Ulyanovsk</id>
    <id>Europe/Saratov</id>
    <id>Europe/Moscow</id>
-   <id>Europe/Volgograd</id>
+   <id notafter="717548400000">Europe/Volgograd</id>
    <id>Europe/Kirov</id>
-   <id picker="n">Europe/Simferopol</id>
+   <id picker="n" notafter="1414274400000">Europe/Simferopol</id>
    <id>Europe/Kaliningrad</id>
   </country>
   <country code="rw" default="Africa/Kigali" everutc="n">
@@ -832,8 +832,8 @@
   </country>
   <country code="ua" default="Europe/Kiev" everutc="n">
    <id>Europe/Kiev</id>
-   <id>Europe/Uzhgorod</id>
-   <id>Europe/Zaporozhye</id>
+   <id notafter="701820000000">Europe/Uzhgorod</id>
+   <id notafter="701820000000">Europe/Zaporozhye</id>
   </country>
   <country code="ug" default="Africa/Kampala" everutc="n">
    <id>Africa/Kampala</id>
@@ -844,32 +844,32 @@
   </country>
   <country code="us" default="America/New_York" everutc="n">
    <id>America/New_York</id>
-   <id>America/Detroit</id>
-   <id>America/Kentucky/Louisville</id>
-   <id>America/Kentucky/Monticello</id>
-   <id>America/Indiana/Indianapolis</id>
-   <id>America/Indiana/Vincennes</id>
-   <id>America/Indiana/Winamac</id>
-   <id>America/Indiana/Marengo</id>
-   <id>America/Indiana/Petersburg</id>
-   <id>America/Indiana/Vevay</id>
+   <id notafter="183535200000">America/Detroit</id>
+   <id notafter="162370800000">America/Kentucky/Louisville</id>
+   <id notafter="986108400000">America/Kentucky/Monticello</id>
+   <id notafter="1143961200000">America/Indiana/Indianapolis</id>
+   <id notafter="1205046000000">America/Indiana/Vincennes</id>
+   <id notafter="1194156000000">America/Indiana/Winamac</id>
+   <id notafter="1143961200000">America/Indiana/Marengo</id>
+   <id notafter="1143961200000">America/Indiana/Petersburg</id>
+   <id notafter="1143961200000">America/Indiana/Vevay</id>
    <id>America/Chicago</id>
-   <id>America/Indiana/Knox</id>
-   <id>America/Menominee</id>
-   <id>America/North_Dakota/Center</id>
-   <id>America/North_Dakota/New_Salem</id>
-   <id>America/Indiana/Tell_City</id>
-   <id>America/North_Dakota/Beulah</id>
+   <id notafter="1143961200000">America/Indiana/Knox</id>
+   <id notafter="120639600000">America/Menominee</id>
+   <id notafter="733910400000">America/North_Dakota/Center</id>
+   <id notafter="1081065600000">America/North_Dakota/New_Salem</id>
+   <id notafter="1162105200000">America/Indiana/Tell_City</id>
+   <id notafter="1300003200000">America/North_Dakota/Beulah</id>
    <id>America/Denver</id>
-   <id>America/Boise</id>
+   <id notafter="152092800000">America/Boise</id>
    <id>America/Phoenix</id>
    <id>America/Los_Angeles</id>
    <id>America/Anchorage</id>
-   <id>America/Juneau</id>
-   <id>America/Yakutat</id>
-   <id>America/Nome</id>
-   <id>America/Metlakatla</id>
-   <id>America/Sitka</id>
+   <id notafter="452084400000">America/Juneau</id>
+   <id notafter="452084400000">America/Yakutat</id>
+   <id notafter="452084400000">America/Nome</id>
+   <id notafter="1446372000000">America/Metlakatla</id>
+   <id notafter="357127200000">America/Sitka</id>
    <id>Pacific/Honolulu</id>
    <id>America/Adak</id>
   </country>
@@ -878,7 +878,7 @@
   </country>
   <country code="uz" default="Asia/Tashkent" everutc="n">
    <id>Asia/Tashkent</id>
-   <id>Asia/Samarkand</id>
+   <id notafter="686091600000">Asia/Samarkand</id>
   </country>
   <country code="va" default="Europe/Vatican" everutc="n">
    <id>Europe/Vatican</id>
