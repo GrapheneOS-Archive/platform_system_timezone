@@ -16,6 +16,8 @@
 package com.android.libcore.timezone.tzlookup;
 
 import com.android.libcore.timezone.tzlookup.proto.CountryZonesFile;
+import com.android.libcore.timezone.tzlookup.zonetree.CountryZoneTree;
+import com.android.libcore.timezone.tzlookup.zonetree.CountryZoneUsage;
 import com.ibm.icu.util.BasicTimeZone;
 import com.ibm.icu.util.Calendar;
 import com.ibm.icu.util.GregorianCalendar;
@@ -24,6 +26,7 @@ import com.ibm.icu.util.TimeZoneRule;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +40,20 @@ import javax.xml.stream.XMLStreamException;
  * See {@link #main(String[])} for commandline information.
  */
 public final class TzLookupGenerator {
+
+    /**
+     * The start time (inclusive) for looking at country zone usage. 19700101 00:00:00 UTC. Chosen
+     * because this is the point in time for which the tzdb zone.tab data is supposed to be correct.
+     */
+    public static final Instant ZONE_USAGE_CALCS_START = Instant.EPOCH;
+
+    /**
+     * The end time (exclusive) for looking at country zone usage. 20380119 03:14:07 UTC. Chosen
+     * because this is a "nice round number" and has historical significance for people that deal
+     * with computer time. There is no particular reason to choose this over another time; any
+     * future time after the last time we expect the code to reasonably encounter will do.
+     */
+    public static final Instant ZONE_USAGE_CALCS_END = Instant.ofEpochSecond(Integer.MAX_VALUE);
 
     private final String countryZonesFile;
     private final String zoneTabFile;
@@ -262,6 +279,14 @@ public final class TzLookupGenerator {
                 processingErrors.popScope();
             }
 
+            // Calculate countryZoneUsage.
+            CountryZoneUsage countryZoneUsage =
+                    calculateCountryZoneUsage(countryIn, processingErrors);
+            if (processingErrors.hasError()) {
+                // No point in continuing.
+                return null;
+            }
+
             // Add the country to the output structure.
             TzLookupFile.Country countryOut =
                     new TzLookupFile.Country(isoCode, defaultTimeZoneId, everUsesUtc);
@@ -278,10 +303,23 @@ public final class TzLookupGenerator {
 
                     String timeZoneInId = timeZoneIn.getId();
                     boolean shownInPicker = timeZoneIn.getShownInPicker();
+                    if (!countryZoneUsage.hasEntry(timeZoneInId)) {
+                        // This implies a programming error.
+                        processingErrors.addFatal(
+                                "No entry in CountryZoneUsage for " + timeZoneInId);
+                        return null;
+                    }
+                    Instant notUsedAfterInstant =
+                            countryZoneUsage.getNotUsedAfterInstant(timeZoneInId);
+                    if (notUsedAfterInstant.equals(ZONE_USAGE_CALCS_END)) {
+                        // We don't explicitly state the end time - we just say it is always used.
+                        notUsedAfterInstant = null;
+                    }
 
                     // Add the id mapping and associated metadata.
                     TzLookupFile.TimeZoneMapping timeZoneIdOut =
-                            new TzLookupFile.TimeZoneMapping(timeZoneInId, shownInPicker);
+                            new TzLookupFile.TimeZoneMapping(
+                                    timeZoneInId, shownInPicker, notUsedAfterInstant);
                     countryOut.addTimeZoneIdentifier(timeZoneIdOut);
                 } finally {
                     processingErrors.popScope();
@@ -409,6 +447,25 @@ public final class TzLookupGenerator {
                     + timeZoneIdIn + " is " + Utils.toUtcOffsetString(actualOffsetMillis)
                     + " and not " + Utils.toUtcOffsetString(utcOffsetMillis)
                     + " at " + Utils.formatUtc(offsetSampleTimeMillis));
+        }
+    }
+
+    private static CountryZoneUsage calculateCountryZoneUsage(
+            CountryZonesFile.Country countryIn, Errors processingErrors) {
+        processingErrors.pushScope("Building zone tree");
+        try {
+            CountryZoneTree countryZoneTree = CountryZoneTree.create(
+                    countryIn, ZONE_USAGE_CALCS_START, ZONE_USAGE_CALCS_END);
+            List<String> countryIssues = countryZoneTree.validateNoPriorityClashes();
+            if (!countryIssues.isEmpty()) {
+                processingErrors
+                        .addError("Issues validating country zone trees. Adjust priorities:");
+                countryIssues.forEach(processingErrors::addError);
+                return null;
+            }
+            return countryZoneTree.calculateCountryZoneUsage();
+        } finally {
+            processingErrors.popScope();
         }
     }
 

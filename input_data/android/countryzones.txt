@@ -80,6 +80,17 @@ ianaVersion:"2018c"
 # shownInPicker:
 # Whether the country -> time zone mapping should be shown in a
 # user-facing time zone picker.
+#
+# priority:
+# Used to pick an exemplar zone when two or more zones are equivalent
+# (i.e. have the same transitions, offsets, DST, name according to ICU
+# for a given time range). Zones that are identical but lower priority
+# need not be considered as all local times are representable with
+# with the higher priority zone for that period. The priority is in the
+# range 1-10 (inclusive), the default is 1. Whether a priority needs to be
+# assigned explicitly below depends on a country's transition rules data.
+# When needed, priorities are chosen by looking at population data, usually
+# for the city named in the ID. See comments below for details.
 
 # ANDORRA
 countries:<
@@ -208,12 +219,16 @@ countries:<
 >
 
 # ARGENTINA
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_cities_in_Argentina_by_population
 countries:<
   isoCode:"ar"
   defaultTimeZoneId:"America/Argentina/Buenos_Aires"
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Buenos_Aires"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
@@ -222,6 +237,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Salta"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
@@ -234,10 +250,12 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Catamarca"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/La_Rioja"
+    priority:8
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
@@ -246,6 +264,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Mendoza"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
@@ -280,12 +299,16 @@ countries:<
 >
 
 # AUSTRALIA
+#
+# Priorities assigned on 20180309 as needed using:
+# https://en.wikipedia.org/wiki/List_of_cities_in_Australia_by_population
 countries:<
   isoCode:"au"
   defaultTimeZoneId:"Australia/Sydney"
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Sydney"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"10:00"
@@ -298,6 +321,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Hobart"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"10:00"
@@ -321,6 +345,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"9:30"
     id:"Australia/Adelaide"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"9:30"
@@ -496,6 +521,9 @@ countries:<
 >
 
 # BRAZIL
+#
+# Priorities assigned on 20180309 as needed using:
+# https://en.wikipedia.org/wiki/List_of_largest_cities_in_Brazil
 countries:<
   isoCode:"br"
   defaultTimeZoneId:"America/Noronha"
@@ -515,6 +543,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Fortaleza"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
@@ -544,6 +573,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Campo_Grande"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-4:00"
@@ -565,6 +595,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Rio_Branco"
+    priority:10
   >
 >
 
@@ -614,6 +645,15 @@ countries:<
 >
 
 # CANADA
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_the_100_largest_population_centres_in_Canada
+# https://en.wikipedia.org/wiki/Rankin_Inlet
+# https://en.wikipedia.org/wiki/Rainy_River,_Ontario
+# https://en.wikipedia.org/wiki/Iqaluit
+# https://en.wikipedia.org/wiki/Pangnirtung
+# https://en.wikipedia.org/wiki/Creston,_British_Columbia
+# https://en.wikipedia.org/wiki/Swift_Current
 countries:<
   isoCode:"ca"
   defaultTimeZoneId:"America/St_Johns"
@@ -625,6 +665,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Halifax"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-4:00"
@@ -646,6 +687,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Toronto"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
@@ -658,6 +700,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Iqaluit"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
@@ -671,6 +714,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Winnipeg"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -679,6 +723,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Rankin_Inlet"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -687,6 +732,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Swift_Current"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -696,6 +742,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Edmonton"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
@@ -725,6 +772,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Vancouver"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-8:00"
@@ -927,12 +975,16 @@ countries:<
 >
 
 # GERMANY
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_cities_in_Germany_by_population
 countries:<
   isoCode:"de"
   defaultTimeZoneId:"Europe/Berlin"
   timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Berlin"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"1:00"
@@ -1037,12 +1089,16 @@ countries:<
 >
 
 # SPAIN
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_metropolitan_areas_in_Spain
 countries:<
   isoCode:"es"
   defaultTimeZoneId:"Europe/Madrid"
   timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Madrid"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"1:00"
@@ -1361,6 +1417,9 @@ countries:<
 >
 
 # INDONESIA
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_Indonesian_cities_by_population
 countries:<
   isoCode:"id"
   defaultTimeZoneId:"Asia/Jakarta"
@@ -1372,6 +1431,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Makassar"
+    priority:10
   >
 
   timeZoneMappings:<
@@ -1603,6 +1663,9 @@ countries:<
 >
 
 # KAZAKHSTAN
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_cities_in_Kazakhstan
 countries:<
   isoCode:"kz"
   defaultTimeZoneId:"Asia/Almaty"
@@ -1622,6 +1685,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Oral"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"5:00"
@@ -1928,12 +1992,16 @@ countries:<
 >
 
 # MEXICO
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_cities_in_Mexico
 countries:<
   isoCode:"mx"
   defaultTimeZoneId:"America/Mexico_City"
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Mexico_City"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -1942,6 +2010,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Monterrey"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -1960,6 +2029,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Chihuahua"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
@@ -2165,12 +2235,16 @@ countries:<
 >
 
 # PAPUA NEW GUINEA
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_cities_and_towns_in_Papua_New_Guinea_by_population
 countries:<
   isoCode:"pg"
   defaultTimeZoneId:"Pacific/Port_Moresby"
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Pacific/Port_Moresby"
+    priority:10
   >
 
   timeZoneMappings:<
@@ -2234,6 +2308,11 @@ countries:<
 >
 
 # PALESTINE
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_cities_administered_by_the_Palestinian_Authority
+# https://en.wikipedia.org/wiki/Gaza_Strip
+# https://en.wikipedia.org/wiki/West_Bank
 countries:<
   isoCode:"ps"
   defaultTimeZoneId:"Asia/Gaza"
@@ -2244,16 +2323,21 @@ countries:<
   timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Hebron"
+    priority:10
   >
 >
 
 # PORTUGAL
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_cities_in_Portugal
 countries:<
   isoCode:"pt"
   defaultTimeZoneId:"Europe/Lisbon"
   timeZoneMappings:<
     utcOffset:"0:00"
     id:"Europe/Lisbon"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"0:00"
@@ -2321,6 +2405,11 @@ countries:<
 >
 
 # RUSSIAN FEDERATION
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_cities_and_towns_in_Russia_by_population
+# https://en.wikipedia.org/wiki/Khandyga
+# https://en.wikipedia.org/wiki/Ust-Nera
 countries:<
   isoCode:"ru"
   defaultTimeZoneId:"Europe/Moscow"
@@ -2349,6 +2438,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Asia/Vladivostok"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"10:00"
@@ -2358,6 +2448,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Yakutsk"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"9:00"
@@ -2415,6 +2506,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"4:00"
     id:"Europe/Ulyanovsk"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"4:00"
@@ -2424,6 +2516,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Moscow"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"3:00"
@@ -2789,12 +2882,16 @@ countries:<
 >
 
 # UKRAINE
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_cities_in_Ukraine
 countries:<
   isoCode:"ua"
   defaultTimeZoneId:"Europe/Kiev"
   timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Kiev"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"2:00"
@@ -2831,12 +2928,25 @@ countries:<
 >
 
 # UNITED STATES
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/List_of_United_States_cities_by_population
+# https://en.wikipedia.org/wiki/Knox,_Indiana
+# https://en.wikipedia.org/wiki/Tell_City,_Indiana
+# https://en.wikipedia.org/wiki/Petersburg,_Indiana
+# https://en.wikipedia.org/wiki/Vincennes,_Indiana
+# https://en.wikipedia.org/wiki/Juneau,_Alaska
+# https://en.wikipedia.org/wiki/Yakutat,_Alaska
+# https://en.wikipedia.org/wiki/Nome,_Alaska
+# https://en.wikipedia.org/wiki/Metlakatla,_Alaska
+# https://en.wikipedia.org/wiki/Sitka,_Alaska
 countries:<
   isoCode:"us"
   defaultTimeZoneId:"America/New_York"
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/New_York"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
@@ -2857,6 +2967,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Vincennes"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
@@ -2878,6 +2989,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Chicago"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -2898,6 +3010,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Indiana/Tell_City"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -2907,6 +3020,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Denver"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
@@ -2925,10 +3039,12 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Anchorage"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Juneau"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-9:00"
@@ -2967,12 +3083,17 @@ countries:<
 >
 
 # UZBEKISTAN
+#
+# Priorities assigned on 20180309 using:
+# https://en.wikipedia.org/wiki/Tashkent
+# https://en.wikipedia.org/wiki/Samarkand
 countries:<
   isoCode:"uz"
   defaultTimeZoneId:"Asia/Tashkent"
   timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Tashkent"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"5:00"
