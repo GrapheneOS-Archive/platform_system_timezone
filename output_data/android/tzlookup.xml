@@ -65,7 +65,7 @@
    <id notafter="814896000000">Australia/Melbourne</id>
    <id>Australia/Brisbane</id>
    <id notafter="1207411200000">Australia/Hobart</id>
-   <id notafter="67968000000">Australia/Currie</id>
+   <id notafter="57686400000">Australia/Currie</id>
    <id>Australia/Lindeman</id>
    <id>Antarctica/Macquarie</id>
    <id>Australia/Lord_Howe</id>
@@ -162,12 +162,12 @@
   <country code="ca" default="America/St_Johns" everutc="n">
    <id>America/St_Johns</id>
    <id>America/Halifax</id>
-   <id notafter="89182800000">America/Glace_Bay</id>
+   <id notafter="73461600000">America/Glace_Bay</id>
    <id notafter="1173592800000">America/Moncton</id>
    <id notafter="1320555600000">America/Goose_Bay</id>
    <id>America/Blanc-Sablon</id>
    <id>America/Toronto</id>
-   <id notafter="152085600000">America/Nipigon</id>
+   <id notafter="136364400000">America/Nipigon</id>
    <id notafter="136364400000">America/Thunder_Bay</id>
    <id notafter="986108400000">America/Iqaluit</id>
    <id notafter="814946400000">America/Pangnirtung</id>
@@ -180,13 +180,13 @@
    <id notafter="1173600000000">America/Resolute</id>
    <id>America/Edmonton</id>
    <id notafter="986115600000">America/Cambridge_Bay</id>
-   <id notafter="341395200000">America/Yellowknife</id>
+   <id notafter="325674000000">America/Yellowknife</id>
    <id notafter="325674000000">America/Inuvik</id>
    <id>America/Dawson_Creek</id>
    <id>America/Creston</id>
    <id>America/Fort_Nelson</id>
    <id>America/Vancouver</id>
-   <id notafter="341398800000">America/Whitehorse</id>
+   <id notafter="325677600000">America/Whitehorse</id>
    <id notafter="325677600000">America/Dawson</id>
   </country>
   <country code="cc" default="Indian/Cocos" everutc="n">
@@ -250,7 +250,7 @@
   </country>
   <country code="de" default="Europe/Berlin" everutc="n">
    <id>Europe/Berlin</id>
-   <id notafter="370400400000">Europe/Busingen</id>
+   <id notafter="354675600000">Europe/Busingen</id>
   </country>
   <country code="dj" default="Africa/Djibouti" everutc="n">
    <id>Africa/Djibouti</id>
@@ -570,7 +570,7 @@
   <country code="mx" default="America/Mexico_City" everutc="n">
    <id>America/Mexico_City</id>
    <id notafter="828864000000">America/Merida</id>
-   <id notafter="846399600000">America/Monterrey</id>
+   <id notafter="828864000000">America/Monterrey</id>
    <id>America/Matamoros</id>
    <id notafter="1288508400000">America/Bahia_Banderas</id>
    <id>America/Cancun</id>
