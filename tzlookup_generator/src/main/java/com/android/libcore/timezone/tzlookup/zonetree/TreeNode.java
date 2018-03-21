@@ -47,20 +47,24 @@ abstract class TreeNode<V extends TreeNode<V>> {
         return parent;
     }
 
+    /** For use by {@link #addChild(TreeNode)} and {@link #removeChild(TreeNode)} only. */
     protected final void setParent(V newParent) {
         parent = newParent;
     }
 
     /**
-     * Adds the child and sets the parent of the child.
+     * Adds the child and sets the parent of the child. The child must not already have a parent.
      */
-    public void addChild(V e) {
+    public final void addChild(V e) {
+        if (e.getParent() != null) {
+            throw new IllegalStateException("Node already attached");
+        }
         children.add(e);
         e.setParent(getThis());
     }
 
-    public final Iterable<V> getChildren() {
-        return children;
+    public final List<V> getChildren() {
+        return new ArrayList<>(children);
     }
 
     public final int getChildrenCount() {

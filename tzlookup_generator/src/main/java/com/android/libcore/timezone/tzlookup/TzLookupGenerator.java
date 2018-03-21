@@ -309,12 +309,11 @@ public final class TzLookupGenerator {
                                 "No entry in CountryZoneUsage for " + timeZoneInId);
                         return null;
                     }
+
+                    // The notUsedAfterInstant can be null if the zone is used until at least
+                    // ZONE_CALCS_END_INSTANT. That's what we want.
                     Instant notUsedAfterInstant =
                             countryZoneUsage.getNotUsedAfterInstant(timeZoneInId);
-                    if (notUsedAfterInstant.equals(ZONE_USAGE_CALCS_END)) {
-                        // We don't explicitly state the end time - we just say it is always used.
-                        notUsedAfterInstant = null;
-                    }
 
                     // Add the id mapping and associated metadata.
                     TzLookupFile.TimeZoneMapping timeZoneIdOut =
