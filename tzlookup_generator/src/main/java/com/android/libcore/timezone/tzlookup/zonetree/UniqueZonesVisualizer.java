@@ -33,7 +33,7 @@ import static java.util.stream.Collectors.toSet;
 /**
  * A tool for building and visualizing one or more {@link CountryZoneTree} instances.
  */
-public class UniqueZonesVisualizer {
+public final class UniqueZonesVisualizer {
 
     public static void main(String[] args) throws Exception {
         if (args.length != 3) {

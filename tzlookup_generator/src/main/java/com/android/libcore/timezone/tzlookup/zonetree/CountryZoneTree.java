@@ -223,7 +223,7 @@ public final class CountryZoneTree {
                 // as we know all periods after this point have to agree (otherwise they wouldn't
                 // have been lumped together in a single node).
                 ZonePeriodsKey zoneKey =
-                        zoneInfo.createZoneOffsetKey(periodStartIndex, periodStartIndex + 1);
+                        zoneInfo.createZonePeriodsKey(periodStartIndex, periodStartIndex + 1);
                 List<ZoneInfo> identicalTimeZones =
                         newSetsMap.computeIfAbsent(zoneKey, k -> new ArrayList<>());
                 identicalTimeZones.add(zoneInfo);
@@ -268,24 +268,29 @@ public final class CountryZoneTree {
                     // Ignore the root.
                     return;
                 }
+
+                // If there's one child then we can compress it into node.
                 if (node.getChildrenCount() == 1) {
-                    // The node only has a single child. Replace the node with its child.
-                    ZoneNode child = node.getChildren().iterator().next();
+                    ZoneNode child = node.getChildren().get(0);
 
                     // Remove the child from node.
                     node.removeChild(child);
 
+                    // The child may also have descendants with a single child, so handle those too.
                     int periodCountAdjustment = child.getPeriodCount();
                     ZoneNode descendant = child;
                     while (descendant.getChildrenCount() == 1) {
-                        descendant = descendant.getChildren().iterator().next();
+                        descendant = descendant.getChildren().get(0);
                         periodCountAdjustment += descendant.getPeriodCount();
                     }
 
-                    // Add new children to this node.
+                    // Remove the children from descendant and add them to node.
                     for (ZoneNode newChild : descendant.getChildren()) {
+                        descendant.removeChild(newChild);
                         node.addChild(newChild);
                     }
+
+                    // Add the removed descendant's period count to node.
                     node.adjustPeriodCount(periodCountAdjustment);
                 }
             }
@@ -293,7 +298,7 @@ public final class CountryZoneTree {
         root.visitSelfThenChildrenRecursive(new CompressionVisitor());
     }
 
-    /** Validates the tree has no nodes with priority clashes. */
+    /** Validates the tree has no nodes with priority clashes, returns a list of issues. */
     public List<String> validateNoPriorityClashes() {
         class ValidationVisitor implements ZoneNodeVisitor {
             private final List<String> issues = new ArrayList<>();
@@ -342,18 +347,11 @@ public final class CountryZoneTree {
                 }
 
                 Instant endInstant = node.getEndInstant();
-                if (node.getParent().isRoot()) {
-                    // If the parent is the root node, we can say that the end instant is actually
-                    // the point in time we stopped generating the periods, not when the last period
-                    // for that zone is. This matters for zones with DST.
-                    endInstant = CountryZoneTree.this.endExclusive;
-                }
-
                 if (!node.isLeaf()) {
                     ZoneInfo primaryZone = node.getPrimaryZoneInfo();
                     addZoneEntryIfMissing(endInstant, primaryZone);
                 } else {
-                    // In some rare cases (e.g. Canada: Swift_Current and Crestor) zones have agreed
+                    // In some rare cases (e.g. Canada: Swift_Current and Creston) zones have agreed
                     // completely since 1970 so some leaves may have multiple zones. So, attempt to
                     // add all zones for leaves, not just the primary.
                     for (ZoneInfo zoneInfo : node.getZoneInfos()) {
@@ -364,12 +362,16 @@ public final class CountryZoneTree {
 
             private void addZoneEntryIfMissing(Instant endInstant, ZoneInfo zoneInfo) {
                 String zoneId = zoneInfo.getZoneId();
+                if (!CountryZoneTree.this.endExclusive.isAfter(endInstant)) {
+                    // CountryZoneTree.this.endExclusive <= endInstant
+                    endInstant = null;
+                }
                 if (!zoneUsage.hasEntry(zoneId)) {
                     zoneUsage.addEntry(zoneId, endInstant);
                 }
             }
 
-            CountryZoneUsage getCountryZoneUsage() {
+            private CountryZoneUsage getCountryZoneUsage() {
                 return zoneUsage;
             }
         }
