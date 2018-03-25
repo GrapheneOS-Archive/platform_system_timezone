@@ -62,29 +62,10 @@ final class ZoneInfo {
         // Start off the zone key with an artificial entry at startInclusive.
         Instant start = startInclusive;
         do {
-            TimeZoneTransition transition =
-                    timeZone.getNextTransition(start.toEpochMilli(), true /* inclusive */);
-
-            Instant end;
-            if (transition == null) {
-                // The zone has no transitions from start, so we create a ZoneOffsetPeriod
-                // from start to endExclusive.
-                end = endExclusive;
-            } else {
-                TimeZoneTransition nextTransition =
-                        timeZone.getNextTransition(transition.getTime(), false /* inclusive */);
-                if (nextTransition != null) {
-                    end = Instant.ofEpochMilli(nextTransition.getTime());
-                } else {
-                    // The zone has no next transition from start, so we create a ZoneOffsetPeriod
-                    // from start to endExclusive.
-                    end = endExclusive;
-                }
-            }
             ZoneOffsetPeriod zoneOffsetPeriod =
-                    ZoneOffsetPeriod.create(timeZoneNames, timeZone, start, end);
+                    ZoneOffsetPeriod.create(timeZoneNames, timeZone, start, endExclusive);
             zoneOffsetPeriods.add(zoneOffsetPeriod);
-            start = end;
+            start = zoneOffsetPeriod.getEndInstant();
         } while (start.isBefore(endExclusive));
 
         return new ZoneInfo(timeZone.getID(), priority, zoneOffsetPeriods);
@@ -113,7 +94,7 @@ final class ZoneInfo {
      * @param zonePeriodStartIndex the start index (inclusive)
      * @param zonePeriodEndIndex the end index (exclusive)
      */
-    public ZoneOffsetPeriod.ZonePeriodsKey createZoneOffsetKey(
+    public ZoneOffsetPeriod.ZonePeriodsKey createZonePeriodsKey(
             int zonePeriodStartIndex, int zonePeriodEndIndex) {
         List<ZoneOffsetPeriod> periodsSubList =
                 zoneOffsetPeriods.subList(zonePeriodStartIndex, zonePeriodEndIndex);

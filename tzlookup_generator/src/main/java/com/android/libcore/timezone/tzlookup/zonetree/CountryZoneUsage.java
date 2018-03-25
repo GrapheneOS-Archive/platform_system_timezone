@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * A record for a country of when zones stopped being (effectively) used.
  */
-public class CountryZoneUsage {
+public final class CountryZoneUsage {
     private final String isoCode;
     private final Map<String, Entry> zoneIdEntryMap = new HashMap<>();
 
@@ -34,8 +34,12 @@ public class CountryZoneUsage {
         return isoCode;
     }
 
-    public void addEntry(String zoneId, Instant endInstantExclusive) {
-        zoneIdEntryMap.put(zoneId, new Entry(zoneId, endInstantExclusive));
+    void addEntry(String zoneId, Instant notUsedAfterInstant) {
+        if (zoneIdEntryMap.containsKey(zoneId)) {
+            throw new IllegalArgumentException(
+                    "Entry exists for " + zoneId + " for isoCode=" + isoCode);
+        }
+        zoneIdEntryMap.put(zoneId, new Entry(zoneId, notUsedAfterInstant));
     }
 
     public boolean hasEntry(String zoneId) {
@@ -45,18 +49,19 @@ public class CountryZoneUsage {
     public Instant getNotUsedAfterInstant(String zoneId) {
         Entry entry = zoneIdEntryMap.get(zoneId);
         if (entry == null) {
-            throw new IllegalArgumentException("No entry for " + zoneId + " for " + isoCode);
+            throw new IllegalArgumentException(
+                    "No entry for " + zoneId+ " for isoCode=" + isoCode);
         }
-        return entry.endInstant;
+        return entry.notUsedAfter;
     }
 
     private static class Entry {
         final String zoneId;
-        final Instant endInstant;
+        final Instant notUsedAfter;
 
-        Entry(String zoneId, Instant endInstant) {
+        Entry(String zoneId, Instant notUsedAfter) {
             this.zoneId = zoneId;
-            this.endInstant = endInstant;
+            this.notUsedAfter = notUsedAfter;
         }
     }
 }
