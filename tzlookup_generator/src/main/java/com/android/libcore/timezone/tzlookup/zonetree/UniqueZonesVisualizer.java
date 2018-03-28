@@ -36,16 +36,17 @@ import static java.util.stream.Collectors.toSet;
 public final class UniqueZonesVisualizer {
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 3) {
+        if (args.length < 3) {
             System.err.println("Usage:");
             System.err.println(UniqueZonesVisualizer.class
-                    + " <countryzones.txt file> [country code|_] <output dir>");
+                    + " <countryzones.txt file> [country code|_] <output dir> [nocompress]");
             System.err.println("_ means \"all countries\"");
             System.exit(1);
         }
         String countryZonesTextFile = args[0];
         String countryCodeArg = args[1];
         String outputDir = args[2];
+        boolean compressTree = args.length == 3 || !"nocompress".equals(args[3]);
 
         CountryZones countryZones =
                 CountryZonesFileSupport.parseCountryZonesTextFile(countryZonesTextFile);
@@ -64,7 +65,7 @@ public final class UniqueZonesVisualizer {
         Instant endExclusive = TzLookupGenerator.ZONE_USAGE_CALCS_END;
         for (String countryCode : countryCodes) {
             zonesCalculator.createGraphvizFile(countryCode, startInclusive,
-                    endExclusive, outputDir + "/" + countryCode + ".gv");
+                    endExclusive, compressTree, outputDir + "/" + countryCode + ".gv");
         }
     }
 
@@ -76,9 +77,10 @@ public final class UniqueZonesVisualizer {
     }
 
     private void createGraphvizFile(String countryIso, Instant startInclusive, Instant endExclusive,
-            String outputFile) throws IOException {
+            boolean compress, String outputFile) throws IOException {
         Country country = countryMap.get(countryIso);
-        CountryZoneTree tree = CountryZoneTree.create(country, startInclusive, endExclusive);
+        CountryZoneTree tree =
+                CountryZoneTree.create(country, startInclusive, endExclusive, compress);
         tree.createGraphvizFile(outputFile);
     }
 }

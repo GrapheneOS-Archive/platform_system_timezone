@@ -24,9 +24,11 @@ import com.ibm.icu.util.ULocale;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
 public class ZoneInfoTest{
 
@@ -94,5 +96,60 @@ public class ZoneInfoTest{
         denverPeriodsKey = denverZoneInfo.createZonePeriodsKey(10, 20);
         boisePeriodsKey = boiseZoneInfo.createZonePeriodsKey(10, 20);
         assertEquals(denverPeriodsKey, boisePeriodsKey);
+    }
+
+    @Test
+    public void testSplit() {
+        TimeZoneNames timeZoneNames = TimeZoneNames.getInstance(ULocale.ENGLISH);
+        BasicTimeZone denverTz = (BasicTimeZone) TimeZone.getTimeZone("America/Denver");
+
+        ZoneInfo denverZoneInfo1 =
+                ZoneInfo.create(timeZoneNames, denverTz, 5, START_INSTANT, END_INSTANT);
+        ZoneInfo denverZoneInfo2 =
+                ZoneInfo.create(timeZoneNames, denverTz, 5, START_INSTANT, END_INSTANT);
+        // Both zone infos start out identical.
+        assertEquals(denverZoneInfo1.getZoneOffsetPeriodCount(),
+                denverZoneInfo2.getZoneOffsetPeriodCount());
+
+        // Assert that a split instant must be inside the period.
+        ZoneOffsetPeriod toSplit = denverZoneInfo2.getZoneOffsetPeriod(5);
+        try {
+            Instant invalidSplitInstant = toSplit.getStartInstant().minus(1, ChronoUnit.DAYS);
+            ZoneInfo.splitZoneOffsetPeriodAtTime(
+                    timeZoneNames, denverZoneInfo1, 5, invalidSplitInstant);
+            fail();
+        } catch (IllegalArgumentException expected) {
+        }
+
+        // Try a valid split.
+        Instant splitInstant = toSplit.getStartInstant().plus(5, ChronoUnit.DAYS);
+        ZoneInfo.splitZoneOffsetPeriodAtTime(timeZoneNames, denverZoneInfo2, 5, splitInstant);
+
+        // The ZoneInfo where the split was made should now have one more ZoneOffsetPeriod.
+        assertEquals(denverZoneInfo1.getZoneOffsetPeriodCount() + 1,
+                denverZoneInfo2.getZoneOffsetPeriodCount());
+
+        // Extract the two new periods.
+        ZoneOffsetPeriod lowerPeriod = denverZoneInfo2.getZoneOffsetPeriod(5);
+        ZoneOffsetPeriod upperPeriod = denverZoneInfo2.getZoneOffsetPeriod(6);
+
+        // Confirm the properties of the periods are what we expect.
+
+        // One period was split in two, so check the period instants.
+        assertEquals(toSplit.getStartInstant(), lowerPeriod.getStartInstant());
+        assertEquals(toSplit.getEndInstant(), upperPeriod.getEndInstant());
+        assertEquals(splitInstant, lowerPeriod.getEndInstant());
+        assertEquals(splitInstant, upperPeriod.getStartInstant());
+
+        // These properties should just be copied.
+        assertEquals(toSplit.getDstOffsetMillis(), lowerPeriod.getDstOffsetMillis());
+        assertEquals(toSplit.getDstOffsetMillis(), upperPeriod.getDstOffsetMillis());
+        assertEquals(toSplit.getRawOffsetMillis(), lowerPeriod.getRawOffsetMillis());
+        assertEquals(toSplit.getRawOffsetMillis(), upperPeriod.getRawOffsetMillis());
+        assertEquals(toSplit.getName(), lowerPeriod.getName());
+
+        // This may not be true because the name is recalculated using the start of the upper
+        // period, but it happens to be the same for the period being tested.
+        assertEquals(toSplit.getName(), upperPeriod.getName());
     }
 }
