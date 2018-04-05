@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
 import static com.android.libcore.timezone.tzlookup.TestUtils.assertAbsent;
 import static com.android.libcore.timezone.tzlookup.TestUtils.assertContains;
 import static com.android.libcore.timezone.tzlookup.TestUtils.createFile;
+import static com.android.libcore.timezone.tzlookup.proto.CountryZonesFile.Country;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -427,37 +428,37 @@ public class TzLookupGeneratorTest {
         CountryZonesFile.Country country = createValidCountryUs();
         List<ZoneTabFile.CountryEntry> zoneTabEntries = createValidZoneTabEntriesUs();
         String tzLookupXml = generateTzLookupXml(country, zoneTabEntries);
-        String[] expectedLines = {
-                "<id>America/New_York</id>",
-                "<id notafter=\"183535200000\">America/Detroit</id>",
-                "<id notafter=\"162370800000\">America/Kentucky/Louisville</id>",
-                "<id notafter=\"986108400000\">America/Kentucky/Monticello</id>",
-                "<id notafter=\"1143961200000\">America/Indiana/Indianapolis</id>",
-                "<id notafter=\"1205046000000\">America/Indiana/Vincennes</id>",
-                "<id notafter=\"1194156000000\">America/Indiana/Winamac</id>",
-                "<id notafter=\"1143961200000\">America/Indiana/Marengo</id>",
-                "<id notafter=\"1143961200000\">America/Indiana/Petersburg</id>",
-                "<id notafter=\"1143961200000\">America/Indiana/Vevay</id>",
-                "<id>America/Chicago</id>",
-                "<id notafter=\"1143961200000\">America/Indiana/Knox</id>",
-                "<id notafter=\"120639600000\">America/Menominee</id>",
-                "<id notafter=\"733910400000\">America/North_Dakota/Center</id>",
-                "<id notafter=\"1081065600000\">America/North_Dakota/New_Salem</id>",
-                "<id notafter=\"1162105200000\">America/Indiana/Tell_City</id>",
-                "<id notafter=\"1300003200000\">America/North_Dakota/Beulah</id>",
-                "<id>America/Denver</id>",
-                "<id notafter=\"152092800000\">America/Boise</id>",
-                "<id>America/Phoenix</id>",
-                "<id>America/Los_Angeles</id>",
-                "<id>America/Anchorage</id>",
-                "<id notafter=\"452084400000\">America/Juneau</id>",
-                "<id notafter=\"452084400000\">America/Yakutat</id>",
-                "<id notafter=\"452084400000\">America/Nome</id>",
-                "<id notafter=\"1446372000000\">America/Metlakatla</id>",
-                "<id notafter=\"357127200000\">America/Sitka</id>",
-                "<id>Pacific/Honolulu</id>",
-                "<id>America/Adak</id>",
-        };
+        String expectedOutput =
+                "<id>America/New_York</id>\n"
+                + "<id notafter=\"167814000000\">America/Detroit</id>\n"
+                + "<id notafter=\"152089200000\">America/Kentucky/Louisville</id>\n"
+                + "<id notafter=\"972802800000\">America/Kentucky/Monticello</id>\n"
+                + "<id notafter=\"1130652000000\">America/Indiana/Indianapolis</id>\n"
+                + "<id notafter=\"1194159600000\">America/Indiana/Vincennes</id>\n"
+                + "<id notafter=\"1173600000000\">America/Indiana/Winamac</id>\n"
+                + "<id notafter=\"183535200000\">America/Indiana/Marengo</id>\n"
+                + "<id notafter=\"247042800000\">America/Indiana/Petersburg</id>\n"
+                + "<id notafter=\"89186400000\">America/Indiana/Vevay</id>\n"
+                + "<id>America/Chicago</id>\n"
+                + "<id notafter=\"688546800000\">America/Indiana/Knox</id>\n"
+                + "<id notafter=\"104918400000\">America/Menominee</id>\n"
+                + "<id notafter=\"720000000000\">America/North_Dakota/Center</id>\n"
+                + "<id notafter=\"1067155200000\">America/North_Dakota/New_Salem</id>\n"
+                + "<id notafter=\"1143964800000\">America/Indiana/Tell_City</id>\n"
+                + "<id notafter=\"1289116800000\">America/North_Dakota/Beulah</id>\n"
+                + "<id>America/Denver</id>\n"
+                + "<id notafter=\"129114000000\">America/Boise</id>\n"
+                + "<id>America/Phoenix</id>\n"
+                + "<id>America/Los_Angeles</id>\n"
+                + "<id>America/Anchorage</id>\n"
+                + "<id notafter=\"436359600000\">America/Juneau</id>\n"
+                + "<id notafter=\"436356000000\">America/Yakutat</id>\n"
+                + "<id notafter=\"436363200000\">America/Nome</id>\n"
+                + "<id notafter=\"1446372000000\">America/Metlakatla</id>\n"
+                + "<id notafter=\"341402400000\">America/Sitka</id>\n"
+                + "<id>Pacific/Honolulu</id>\n"
+                + "<id>America/Adak</id>\n";
+        String[] expectedLines = expectedOutput.split("\\n");
         for (String expectedLine : expectedLines) {
             assertContains(tzLookupXml, expectedLine);
         }
@@ -521,105 +522,139 @@ public class TzLookupGeneratorTest {
                 .build();
     }
 
-    private static CountryZonesFile.Country createValidCountryUs() {
-        return CountryZonesFile.Country.newBuilder()
-                .setIsoCode("us")
-                .setDefaultTimeZoneId("America/New_York")
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-5:00")
-                        .setId("America/New_York")
-                        .setPriority(10))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-5:00")
-                        .setId("America/Detroit"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-5:00")
-                        .setId("America/Kentucky/Louisville"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-5:00")
-                        .setId("America/Kentucky/Monticello"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-5:00")
-                        .setId("America/Indiana/Indianapolis"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-5:00")
-                        .setId("America/Indiana/Vincennes")
-                        .setPriority(9))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-5:00")
-                        .setId("America/Indiana/Winamac"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-5:00")
-                        .setId("America/Indiana/Marengo"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-5:00")
-                        .setId("America/Indiana/Petersburg"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-5:00")
-                        .setId("America/Indiana/Vevay"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-6:00")
-                        .setId("America/Chicago")
-                        .setPriority(10))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-6:00")
-                        .setId("America/Indiana/Knox"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-6:00")
-                        .setId("America/Menominee"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-6:00")
-                        .setId("America/North_Dakota/Center"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-6:00")
-                        .setId("America/North_Dakota/New_Salem"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-6:00")
-                        .setId("America/Indiana/Tell_City")
-                        .setPriority(9))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-6:00")
-                        .setId("America/North_Dakota/Beulah"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-7:00")
-                        .setId("America/Denver")
-                        .setPriority(10))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-7:00")
-                        .setId("America/Boise"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-7:00")
-                        .setId("America/Phoenix"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-8:00")
-                        .setId("America/Los_Angeles"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-9:00")
-                        .setId("America/Anchorage")
-                        .setPriority(10))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-9:00")
-                        .setId("America/Juneau")
-                        .setPriority(9))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-9:00")
-                        .setId("America/Yakutat"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-9:00")
-                        .setId("America/Nome"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-9:00")
-                        .setId("America/Metlakatla"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-9:00")
-                        .setId("America/Sitka"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-10:00")
-                        .setId("Pacific/Honolulu"))
-                .addTimeZoneMappings(CountryZonesFile.TimeZoneMapping.newBuilder()
-                        .setUtcOffset("-10:00")
-                        .setId("America/Adak"))
-                .build();
+    private static CountryZonesFile.Country createValidCountryUs() throws Exception {
+        // This country demonstrates most interesting algorithm behavior. This is copied verbatim
+        // from countryzones.txt.
+        String usText =
+                "  isoCode:\"us\"\n"
+                + "  defaultTimeZoneId:\"America/New_York\"\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-5:00\"\n"
+                + "    id:\"America/New_York\"\n"
+                + "    priority:10\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-5:00\"\n"
+                + "    id:\"America/Detroit\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-5:00\"\n"
+                + "    id:\"America/Kentucky/Louisville\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-5:00\"\n"
+                + "    id:\"America/Kentucky/Monticello\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-5:00\"\n"
+                + "    id:\"America/Indiana/Indianapolis\"\n"
+                + "    priority:9\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-5:00\"\n"
+                + "    id:\"America/Indiana/Vincennes\"\n"
+                + "    priority:9\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-5:00\"\n"
+                + "    id:\"America/Indiana/Winamac\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-5:00\"\n"
+                + "    id:\"America/Indiana/Marengo\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-5:00\"\n"
+                + "    id:\"America/Indiana/Petersburg\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-5:00\"\n"
+                + "    id:\"America/Indiana/Vevay\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-6:00\"\n"
+                + "    id:\"America/Chicago\"\n"
+                + "    priority:10\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-6:00\"\n"
+                + "    id:\"America/Indiana/Knox\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-6:00\"\n"
+                + "    id:\"America/Menominee\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-6:00\"\n"
+                + "    id:\"America/North_Dakota/Center\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-6:00\"\n"
+                + "    id:\"America/North_Dakota/New_Salem\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-6:00\"\n"
+                + "    id:\"America/Indiana/Tell_City\"\n"
+                + "    priority:9\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-6:00\"\n"
+                + "    id:\"America/North_Dakota/Beulah\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-7:00\"\n"
+                + "    id:\"America/Denver\"\n"
+                + "    priority:9\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-7:00\"\n"
+                + "    id:\"America/Boise\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-7:00\"\n"
+                + "    id:\"America/Phoenix\"\n"
+                + "    priority:10\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-8:00\"\n"
+                + "    id:\"America/Los_Angeles\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-9:00\"\n"
+                + "    id:\"America/Anchorage\"\n"
+                + "    priority:10\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-9:00\"\n"
+                + "    id:\"America/Juneau\"\n"
+                + "    priority:9\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-9:00\"\n"
+                + "    id:\"America/Yakutat\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-9:00\"\n"
+                + "    id:\"America/Nome\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-9:00\"\n"
+                + "    id:\"America/Metlakatla\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-9:00\"\n"
+                + "    id:\"America/Sitka\"\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-10:00\"\n"
+                + "    id:\"Pacific/Honolulu\"\n"
+                + "    priority:10\n"
+                + "  >\n"
+                + "  timeZoneMappings:<\n"
+                + "    utcOffset:\"-10:00\"\n"
+                + "    id:\"America/Adak\"\n"
+                + "  >\n";
+        return parseCountry(usText);
     }
 
     private static CountryZonesFile.Country createValidCountryFr() {
@@ -672,4 +707,11 @@ public class TzLookupGeneratorTest {
         return Arrays.asList(
                 new ZoneTabFile.CountryEntry("FR", "Europe/Paris"));
     }
+
+    private static Country parseCountry(String text) throws Exception {
+        Country.Builder builder = Country.newBuilder();
+        TextFormat.getParser().merge(text, builder);
+        return builder.build();
+    }
+
 }

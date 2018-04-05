@@ -131,8 +131,8 @@ public final class CountryZoneTree {
     private final Instant startInclusive;
     private final Instant endExclusive;
 
-    private CountryZoneTree(String countryIso, ZoneNode root,
-            Instant startInclusive, Instant endExclusive) {
+    private CountryZoneTree(
+            String countryIso, ZoneNode root, Instant startInclusive, Instant endExclusive) {
         this.countryIso = countryIso;
         this.root = root;
         this.startInclusive = startInclusive;
@@ -144,6 +144,15 @@ public final class CountryZoneTree {
      */
     public static CountryZoneTree create(
             Country country, Instant startInclusive, Instant endExclusive) {
+        return create(country, startInclusive, endExclusive, true /* compress */);
+    }
+
+    /**
+     * Creates a tree for the time zones for a country which can optionally be compressed to remove
+     * uninteresting nodes (which makes it easier for visualization).
+     */
+    public static CountryZoneTree create(
+            Country country, Instant startInclusive, Instant endExclusive, boolean compress) {
 
         // We use the US English names for detecting time zone name clashes.
         TimeZoneNames timeZoneNames = TimeZoneNames.getInstance(ULocale.US);
@@ -154,32 +163,185 @@ public final class CountryZoneTree {
         List<ZoneInfo> zoneInfos = new ArrayList<>();
         for (CountryZonesFile.TimeZoneMapping timeZoneMapping : timeZoneMappings) {
             int priority = timeZoneMapping.getPriority();
-            TimeZone timeZone = TimeZone.getTimeZone(timeZoneMapping.getId());
-            if (isInvalidZone(timeZone)) {
-                throw new IllegalArgumentException(
-                        "Unknown or unexpected type for zone id: " + timeZone.getID());
-            }
-            BasicTimeZone basicTimeZone = (BasicTimeZone) timeZone;
+            BasicTimeZone basicTimeZone = getBasicTimeZone(timeZoneMapping.getId());
             ZoneInfo zoneInfo = ZoneInfo.create(
                     timeZoneNames, basicTimeZone, priority, startInclusive, endExclusive);
             zoneInfos.add(zoneInfo);
         }
 
+        // Add additional periods to the zone infos to help merging.
+        addExtraPeriodSplits(timeZoneNames, zoneInfos);
+
         // The algorithm constructs a tree. The root of the tree contains all ZoneInfos, and at each
         // node the ZoneInfos can be split into subsets.
-        return create(country.getIsoCode(), zoneInfos, startInclusive, endExclusive);
+        return create(country.getIsoCode(), zoneInfos, startInclusive, endExclusive, compress);
+    }
+
+    /**
+     * Inserts artificial periods to the supplied {@link ZoneInfo}s to enable them to be merged
+     * more easily. The artificial periods are created by splitting existing periods into multiple
+     * sub-periods.
+     *
+     * <p>For example, some time zones do not use DST but will have changed offset or decided to
+     * stop observing DST at different points in time. To find them we introduce artificial periods
+     * as needed to make it easy to align and merge those zones.
+     *
+     * <ul>
+     *     <li>Zone A moved to X hours offset from UTC in 1985 and has stayed there</li>
+     *     <li>Zone B moved to X hours offset from UTC in 1984 and has stayed there</li>
+     * </ul>
+     *
+     * <p>The simple period matching algorithm will not detect that they can be merged after 1985
+     * because their respective periods using X hours offset from UTC have different start times.
+     * The solution is to split Zone A into two periods: 1984 -> 1985, and 1985+. Then the
+     * algorithm will find the match because both Zone A and Zone B have a period from 1985+ with
+     * the same zone properties.
+     */
+    private static void addExtraPeriodSplits(
+            TimeZoneNames timeZoneNames, List<ZoneInfo> zoneInfos) {
+
+        // This algorithm works backwards through all the zone info periods by incrementing an
+        // "offset from the end". It looks for periods that "match". In this case "match" means
+        // "have the same zone properties, or *could* have the same zone properties if it were not
+        // for different start times". If two or more matching zone offset periods are found with
+        // different start times it splits the longer ones in two so that periods then exist with
+        // the same offset with the same start and end times. It keeps going backwards through the
+        // periods for all the zoneinfos until no two periods with the same offset match.
+
+        // True if any of the zones have the matching properties. When false this is the stopping
+        // condition for the loop that steps backwards through the zone offset periods.
+        boolean anyZonesMatch;
+
+        // The offset into the zone offset periods. Since we work in reverse (from the end of time),
+        // offset = 1 means "the last period" offset = 2 means "the last but one period", etc.
+        // We initialize at 0; it is incremented at the start of the do-while loop.
+        int offsetFromEnd = 0;
+
+        // The offsetFromEnd loop: increments offsetFromEnd and processes zone offset periods found
+        // at that offset.
+        do {
+            offsetFromEnd += 1;
+
+            // Reset our stopping condition. The offsetFromEnd loop will stop if this stays false.
+            anyZonesMatch = false;
+
+            // Keep track of which zoneinfos have been processed for the current offsetFromEnd so
+            // we don't process them again.
+            boolean[] processed = new boolean[zoneInfos.size()];
+
+            // The splitting loop: processes groups of zoneinfos with matching periods at offset and
+            // splits the matching periods as needed.
+            for (int i = 0; i < zoneInfos.size(); i++) {
+                if (processed[i]) {
+                    // zoneinfo[i] has already been processed by a prior round of the splitting
+                    // loop. Skip.
+                    continue;
+                }
+                processed[i] = true;
+
+                // Get zoneinfo[i] so we can use its zone properties to find all matching periods.
+                ZoneInfo iZoneInfo = zoneInfos.get(i);
+                ZoneOffsetPeriod iPeriod =
+                        getOffsetPeriodAtOffsetFromEndOrNull(iZoneInfo, offsetFromEnd);
+                if (iPeriod == null) {
+                    // We've run out of periods for this zoneinfo. Skip.
+                    continue;
+                }
+
+                // Pass 1: Find all zoneinfos that have a period at offsetFromEnd that matches the
+                // same period at offsetFromEnd from zoneinfo[i]. Also work out the instant that
+                // they would need to be split at.
+                boolean[] matchAtOffsetFromEnd = new boolean[zoneInfos.size()];
+                // zoneinfo[i] matches itself.
+                matchAtOffsetFromEnd[i] = true;
+
+                Instant toSplitInstant = iPeriod.getStartInstant();
+                for (int j = i + 1; j < zoneInfos.size(); j++) {
+                    if (processed[j]) {
+                        // Don't bother to look any other zoneinfos that have previously been
+                        // processed.
+                        continue;
+                    }
+
+                    ZoneInfo jZoneInfo = zoneInfos.get(j);
+                    ZoneOffsetPeriod jPeriod =
+                            getOffsetPeriodAtOffsetFromEndOrNull(jZoneInfo, offsetFromEnd);
+                    if (jPeriod == null) {
+                        // We've run out of periods for this zoneinfo. Skip and make sure we don't
+                        // look at it again.
+                        processed[j] = true;
+                        continue;
+                    }
+                    if (isMatch(iPeriod, jPeriod)) {
+                        // At least one pair of zones have similar properties so we get to loop
+                        // around the outer loop at least once more.
+                        anyZonesMatch = true;
+
+                        // Mark zoneinfo[j] as being a match for zoneinfo[i] at offset.
+                        matchAtOffsetFromEnd[j] = true;
+                        if (jPeriod.getStartInstant().isAfter(toSplitInstant)) {
+                            // Keep track of the max start instant for pass 2.
+                            toSplitInstant = jPeriod.getStartInstant();
+                        }
+                    }
+                }
+
+                // Pass 2: Split all the periods for the matching zonesinfos at toSplitInstant
+                // (if needed).
+                for (int j = i; j < zoneInfos.size(); j++) {
+                    if (!matchAtOffsetFromEnd[j]) {
+                        continue;
+                    }
+                    ZoneInfo jZoneInfo = zoneInfos.get(j);
+                    int jIndex = jZoneInfo.getZoneOffsetPeriodCount() - offsetFromEnd;
+                    ZoneOffsetPeriod jPeriod = jZoneInfo.getZoneOffsetPeriod(jIndex);
+                    if (!jPeriod.getStartInstant().equals(toSplitInstant)) {
+                        ZoneInfo.splitZoneOffsetPeriodAtTime(
+                                timeZoneNames, jZoneInfo, jIndex, toSplitInstant);
+                    }
+                    processed[j] = true;
+                }
+            }
+        } while (anyZonesMatch);
+    }
+
+    /**
+     * Returns the {@link ZoneOffsetPeriod} with the specified offset from the end, or null if there
+     * isn't one.
+     */
+    private static ZoneOffsetPeriod getOffsetPeriodAtOffsetFromEndOrNull(
+            ZoneInfo zoneInfo, int offsetFromEnd) {
+        int index = zoneInfo.getZoneOffsetPeriodCount() - offsetFromEnd;
+        if (index < 0) {
+            return null;
+        }
+        return zoneInfo.getZoneOffsetPeriod(index);
+    }
+
+    /**
+     * Returns true if the one of the two {@link ZoneOffsetPeriod}s could be split and may be
+     * identical to the other. The name is ignored since to know the name requires a time. If we
+     * split and the name turns out not to be the same then it's ok: the different name will ensure
+     * the periods will not actually be merged.
+     */
+    private static boolean isMatch(ZoneOffsetPeriod a, ZoneOffsetPeriod b) {
+        return a.getEndInstant().equals(b.getEndInstant())
+                && a.getDstOffsetMillis() == b.getDstOffsetMillis()
+                && a.getRawOffsetMillis() == b.getRawOffsetMillis();
     }
 
     private static CountryZoneTree create(String countryIso, List<ZoneInfo> zoneInfos,
-            Instant startInclusive, Instant endExclusive) {
+            Instant startInclusive, Instant endExclusive, boolean compress) {
         // Create a root node with all the information needed to grow the whole tree.
         ZoneNode root = new ZoneNode("0", zoneInfos, 0, 0);
 
         // We call growTree() to build all the branches and leaves from the root.
         growTree(root);
 
-        // Now we compress the tree to remove unnecessary nodes.
-        compressTree(root);
+        // Now we compress the tree to remove unnecessary nodes if we have been asked to do so.
+        if (compress) {
+            compressTree(root);
+        }
 
         // Wrap the root and return.
         return new CountryZoneTree(countryIso, root, startInclusive, endExclusive);
@@ -330,7 +492,7 @@ public final class CountryZoneTree {
     /**
      * Creates a {@link CountryZoneUsage} object from the tree.
      */
-    public CountryZoneUsage calculateCountryZoneUsage() {
+    public CountryZoneUsage calculateCountryZoneUsage(Instant notAfterCutOff) {
         class CountryZoneVisibilityVisitor implements ZoneNodeVisitor {
             private final CountryZoneUsage zoneUsage = new CountryZoneUsage(countryIso);
 
@@ -362,8 +524,8 @@ public final class CountryZoneTree {
 
             private void addZoneEntryIfMissing(Instant endInstant, ZoneInfo zoneInfo) {
                 String zoneId = zoneInfo.getZoneId();
-                if (!CountryZoneTree.this.endExclusive.isAfter(endInstant)) {
-                    // CountryZoneTree.this.endExclusive <= endInstant
+                if (!notAfterCutOff.isAfter(endInstant)) {
+                    // notAfterCutOff <= endInstant
                     endInstant = null;
                 }
                 if (!zoneUsage.hasEntry(zoneId)) {
@@ -440,6 +602,19 @@ public final class CountryZoneTree {
     private static void writeLine(Appendable appendable, String s) throws IOException {
         appendable.append(s);
         appendable.append('\n');
+    }
+
+    /**
+     * Returns an ICU {@link BasicTimeZone} with the specified ID or throws an exception if there
+     * isn't one.
+     */
+    private static BasicTimeZone getBasicTimeZone(String zoneId) {
+        TimeZone timeZone = TimeZone.getTimeZone(zoneId);
+        if (isInvalidZone(timeZone)) {
+            throw new IllegalArgumentException(
+                    "Unknown or unexpected type for zone id: " + timeZone.getID());
+        }
+        return (BasicTimeZone) timeZone;
     }
 
     private static boolean isInvalidZone(TimeZone timeZone) {
