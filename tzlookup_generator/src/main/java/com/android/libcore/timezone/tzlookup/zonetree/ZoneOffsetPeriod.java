@@ -75,13 +75,34 @@ final class ZoneOffsetPeriod {
             }
         }
 
+        String longName = getNameAtTime(timeZoneNames, timeZone, startMillis);
         int[] offsets = new int[2];
         timeZone.getOffset(startMillis, false /* local */, offsets);
-        String canonicalID = TimeZone.getCanonicalID(timeZone.getID());
-        TimeZoneNames.NameType longNameType = offsets[1] == 0
-                ? TimeZoneNames.NameType.LONG_STANDARD : TimeZoneNames.NameType.LONG_DAYLIGHT;
-        String longName = timeZoneNames.getDisplayName(canonicalID, longNameType, startMillis);
         return new ZoneOffsetPeriod(minTime, end, offsets[0], offsets[1], longName);
+    }
+
+
+    /** Splits a period in two at the specified instant, returning the generated periods. */
+    public static ZoneOffsetPeriod[] splitAtTime(
+            ZoneOffsetPeriod toSplit, TimeZoneNames timeZoneNames, BasicTimeZone timeZone,
+            Instant partitionInstant) {
+        if (!partitionInstant.isAfter(toSplit.start)
+                || !partitionInstant.isBefore(toSplit.end)) {
+            throw new IllegalArgumentException(partitionInstant + " is not between "
+                    + toSplit.start + " and " + toSplit.end);
+        }
+        // Work out the name at the split so the name is always the name at the beginning of the
+        // zone offset period.
+        String nameAtSplit =
+                getNameAtTime(timeZoneNames, timeZone, partitionInstant.toEpochMilli());
+        int rawOffsetMillis = toSplit.rawOffsetMillis;
+        int dstOffsetMillis = toSplit.dstOffsetMillis;
+        return new ZoneOffsetPeriod[] {
+                new ZoneOffsetPeriod(toSplit.start, partitionInstant, rawOffsetMillis,
+                        dstOffsetMillis, toSplit.name),
+                new ZoneOffsetPeriod(partitionInstant, toSplit.end, rawOffsetMillis,
+                        dstOffsetMillis, nameAtSplit)
+        };
     }
 
     public Instant getStartInstant() {
@@ -178,5 +199,15 @@ final class ZoneOffsetPeriod {
                     "periods=" + periods +
                     '}';
         }
+    }
+
+    private static String getNameAtTime(
+            TimeZoneNames timeZoneNames, BasicTimeZone timeZone, long startMillis) {
+        int[] offsets = new int[2];
+        timeZone.getOffset(startMillis, false /* local */, offsets);
+        String canonicalID = TimeZone.getCanonicalID(timeZone.getID());
+        TimeZoneNames.NameType longNameType = offsets[1] == 0
+                ? TimeZoneNames.NameType.LONG_STANDARD : TimeZoneNames.NameType.LONG_DAYLIGHT;
+        return timeZoneNames.getDisplayName(canonicalID, longNameType, startMillis);
     }
 }
