@@ -29,7 +29,6 @@ import java.util.List;
 final class ZoneInfo {
 
     private static final int MIN_PRIORITY = 1;
-    private static final int MAX_PRIORITY = 10;
 
     /**
      * Priority can be used to establish dominance of one zone over another if they are otherwise
@@ -44,9 +43,8 @@ final class ZoneInfo {
     private final String zoneId;
 
     private ZoneInfo(String zoneId, int priority, List<ZoneOffsetPeriod> zoneOffsetPeriods) {
-        if (priority < MIN_PRIORITY || priority > MAX_PRIORITY) {
-            throw new IllegalArgumentException(
-                    "priority must be >=" + MIN_PRIORITY + " and <= " + MAX_PRIORITY);
+        if (priority < MIN_PRIORITY) {
+            throw new IllegalArgumentException("priority must be >=" + MIN_PRIORITY);
         }
         this.zoneOffsetPeriods = zoneOffsetPeriods;
         this.priority = priority;
