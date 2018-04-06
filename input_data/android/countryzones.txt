@@ -25,7 +25,7 @@
 # a time zone for an Android device.
 
 # ianaVersion: The version of the IANA rules this file matches.
-ianaVersion:"2018c"
+ianaVersion:"2018d"
 
 # countries:
 #
@@ -179,7 +179,7 @@ countries:<
   >
 
   timeZoneMappings:<
-    utcOffset:"11:00"
+    utcOffset:"08:00"
     id:"Antarctica/Casey"
   >
 
