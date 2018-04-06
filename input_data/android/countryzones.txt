@@ -222,12 +222,22 @@ countries:<
 #
 # Priorities assigned on 20180309 using:
 # https://en.wikipedia.org/wiki/List_of_cities_in_Argentina_by_population
+# https://en.wikipedia.org/wiki/Buenos_Aires_Province
+# https://en.wikipedia.org/wiki/Jujuy_Province
+# https://en.wikipedia.org/wiki/Salta_Province
+# https://en.wikipedia.org/wiki/Catamarca_Province
+# https://en.wikipedia.org/wiki/La_Rioja_Province,_Argentina
+# https://en.wikipedia.org/wiki/San_Juan_Province,_Argentina
+# https://en.wikipedia.org/wiki/Mendoza_Province
+# https://en.wikipedia.org/wiki/Santa_Cruz_Province,_Argentina
+# https://en.wikipedia.org/wiki/Tierra_del_Fuego_Province,_Argentina
 countries:<
   isoCode:"ar"
   defaultTimeZoneId:"America/Argentina/Buenos_Aires"
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Buenos_Aires"
+    # 15.6M
     priority:10
   >
   timeZoneMappings:<
@@ -237,11 +247,14 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Salta"
-    priority:9
+    # 1.21M
+    priority:8
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Jujuy"
+    # 673K
+    priority: 1
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
@@ -250,21 +263,26 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Catamarca"
-    priority:9
+    # 368K
+    priority:7
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/La_Rioja"
-    priority:8
+    # 334K
+    priority:6
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/San_Juan"
+    # 681K
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Mendoza"
-    priority:10
+    # 1.74M
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
@@ -273,10 +291,14 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Rio_Gallegos"
+    # 247K (Santa Cruz Province)
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Ushuaia"
+    # 127K (Tierra del Fuego)
+    priority:1
   >
 >
 
@@ -317,6 +339,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Brisbane"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"10:00"
@@ -539,36 +562,50 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Belem"
+    # 1.44M
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Fortaleza"
-    priority:10
+    # City: 2.61M, State: 8.61M
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Recife"
+    # City: 1.63M, State: 8.93M
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Araguaina"
+    # 173K
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Maceio"
+    # 1.02M
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Bahia"
+    # City (Salvador): 2.94M, State: 15.2M
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Santarem"
+    # 294K
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Manaus"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-4:00"
@@ -654,6 +691,14 @@ countries:<
 # https://en.wikipedia.org/wiki/Pangnirtung
 # https://en.wikipedia.org/wiki/Creston,_British_Columbia
 # https://en.wikipedia.org/wiki/Swift_Current
+# https://en.wikipedia.org/wiki/Dawson_Creek
+# https://en.wikipedia.org/wiki/Fort_Nelson,_British_Columbia
+# https://en.wikipedia.org/wiki/Dawson_City
+# https://en.wikipedia.org/wiki/Whitehorse,_Yukon
+# https://en.wikipedia.org/wiki/Yellowknife
+# https://en.wikipedia.org/wiki/Inuvik
+# https://en.wikipedia.org/wiki/Nipigon
+# https://en.wikipedia.org/wiki/Thunder_Bay
 countries:<
   isoCode:"ca"
   defaultTimeZoneId:"America/St_Johns"
@@ -696,6 +741,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Thunder_Bay"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
@@ -719,6 +765,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Regina"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -732,7 +779,6 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Swift_Current"
-    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -751,6 +797,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Yellowknife"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
@@ -759,6 +806,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Dawson_Creek"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
@@ -777,6 +825,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Whitehorse"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-8:00"
@@ -1431,12 +1480,12 @@ countries:<
   timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Makassar"
-    priority:10
   >
 
   timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Jakarta"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"7:00"
@@ -1672,6 +1721,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"6:00"
     id:"Asia/Almaty"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"6:00"
@@ -1851,12 +1901,15 @@ countries:<
 >
 
 # MARSHALL ISLANDS
+# Priorities assigned on 20180328 using:
+# https://en.wikipedia.org/wiki/List_of_islands_of_the_Marshall_Islands
 countries:<
   isoCode:"mh"
   defaultTimeZoneId:"Pacific/Majuro"
   timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Majuro"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"12:00"
@@ -2010,7 +2063,6 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Monterrey"
-    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -2051,12 +2103,15 @@ countries:<
 >
 
 # MALAYSIA
+# Priorities assigned on 20180329 using:
+# https://en.wikipedia.org/wiki/List_of_cities_and_towns_in_Malaysia_by_population
 countries:<
   isoCode:"my"
   defaultTimeZoneId:"Asia/Kuala_Lumpur"
   timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Kuala_Lumpur"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"8:00"
@@ -2244,7 +2299,6 @@ countries:<
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Pacific/Port_Moresby"
-    priority:10
   >
 
   timeZoneMappings:<
@@ -2448,11 +2502,12 @@ countries:<
   timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Yakutsk"
-    priority:10
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Chita"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"9:00"
@@ -2467,6 +2522,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Krasnoyarsk"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"7:00"
@@ -2475,6 +2531,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Barnaul"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"7:00"
@@ -2506,11 +2563,12 @@ countries:<
   timeZoneMappings:<
     utcOffset:"4:00"
     id:"Europe/Ulyanovsk"
-    priority:10
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"4:00"
     id:"Europe/Saratov"
+    priority:10
   >
 
   timeZoneMappings:<
@@ -2900,6 +2958,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Zaporozhye"
+    priority:9
   >
 >
 
@@ -2963,6 +3022,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Indianapolis"
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
@@ -3020,7 +3080,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Denver"
-    priority:10
+    priority:9
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
@@ -3029,6 +3089,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Phoenix"
+    priority:10
   >
 
   timeZoneMappings:<
@@ -3066,6 +3127,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-10:00"
     id:"Pacific/Honolulu"
+    priority:10
   >
   timeZoneMappings:<
     utcOffset:"-10:00"

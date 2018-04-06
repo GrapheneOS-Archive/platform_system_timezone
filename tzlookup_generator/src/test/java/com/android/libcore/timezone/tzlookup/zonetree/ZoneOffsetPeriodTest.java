@@ -27,7 +27,6 @@ import java.time.Instant;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 
 public class ZoneOffsetPeriodTest {
 
@@ -136,5 +135,45 @@ public class ZoneOffsetPeriodTest {
         assertEquals(phoenixName, phoenixPeriod.getName());
 
         assertFalse(honoluluPeriod.equals(phoenixPeriod));
+    }
+
+    @Test
+    public void testSplitAtTime() {
+        TimeZoneNames timeZoneNames = TimeZoneNames.getInstance(ULocale.ENGLISH);
+
+        // This zone does not observe DST.
+        BasicTimeZone honoluluTz = (BasicTimeZone) TimeZone.getTimeZone("Pacific/Honolulu");
+        int honoluluRawOffset = -36000000;
+        int honoluluDstOffset = 0;
+        // ICU doesn't have a display name for the zone in 1970....
+        String honoluluOldName = null;
+        // ... but it does in 1990.
+        String honoluluNewName = "Hawaii-Aleutian Standard Time";
+
+        Instant startInstant = Instant.EPOCH; /* 1970-01-01T00:00:00Z */
+        // endInstant is an arbitrary "ceiling" time value for a period if there are no transitions.
+        // Since there are no transitions for the zone this will be the end of the period.
+        Instant endInstant = Instant.ofEpochSecond(631152000L); /* 1990-01-01T00:00:00Z */
+
+        ZoneOffsetPeriod honoluluPeriod =
+                ZoneOffsetPeriod.create(timeZoneNames, honoluluTz, startInstant, endInstant);
+
+        // Split at an arbitrary point.
+        Instant partitionInstant = Instant.ofEpochSecond(500000000L);
+        ZoneOffsetPeriod[] shards = ZoneOffsetPeriod.splitAtTime(
+                honoluluPeriod, timeZoneNames, honoluluTz, partitionInstant);
+
+        // Check the properties.
+        assertEquals(startInstant, shards[0].getStartInstant());
+        assertEquals(partitionInstant, shards[0].getEndInstant());
+        assertEquals(honoluluRawOffset, shards[0].getRawOffsetMillis());
+        assertEquals(honoluluDstOffset, shards[0].getDstOffsetMillis());
+        assertEquals(honoluluOldName, shards[0].getName());
+
+        assertEquals(partitionInstant, shards[1].getStartInstant());
+        assertEquals(endInstant, shards[1].getEndInstant());
+        assertEquals(honoluluRawOffset, shards[1].getRawOffsetMillis());
+        assertEquals(honoluluDstOffset, shards[1].getDstOffsetMillis());
+        assertEquals(honoluluNewName, shards[1].getName());
     }
 }
