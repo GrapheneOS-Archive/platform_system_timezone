@@ -27,6 +27,7 @@ import com.ibm.icu.util.TimeZoneRule;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -42,18 +43,29 @@ import javax.xml.stream.XMLStreamException;
 public final class TzLookupGenerator {
 
     /**
-     * The start time (inclusive) for looking at country zone usage. 19700101 00:00:00 UTC. Chosen
+     * The start time (inclusive) for calculating country zone rules. 19700101 00:00:00 UTC. Chosen
      * because this is the point in time for which the tzdb zone.tab data is supposed to be correct.
      */
     public static final Instant ZONE_USAGE_CALCS_START = Instant.EPOCH;
 
     /**
-     * The end time (exclusive) for looking at country zone usage. 20380119 03:14:07 UTC. Chosen
+     * The end time (exclusive) for generating country zone usage. 20380119 03:14:07 UTC. Any times
+     * after this will be considered "infinity" for the "notAfter" value and not included. Chosen
      * because this is a "nice round number" and has historical significance for people that deal
      * with computer time. There is no particular reason to choose this over another time; any
      * future time after the last time we expect the code to reasonably encounter will do.
      */
-    public static final Instant ZONE_USAGE_CALCS_END = Instant.ofEpochSecond(Integer.MAX_VALUE);
+    public static final Instant ZONE_USAGE_NOT_AFTER_CUT_OFF =
+            Instant.ofEpochSecond(Integer.MAX_VALUE);
+
+    /**
+     * The end time (exclusive) for calculating country zone usage. The time zone periods are
+     * calculated to this point. The main requirement is that it's after
+     * {@link #ZONE_USAGE_NOT_AFTER_CUT_OFF} by an amount larger than the usual daylight savings
+     * period; here we use 2 years.
+     */
+    public static final Instant ZONE_USAGE_CALCS_END =
+            ZONE_USAGE_NOT_AFTER_CUT_OFF.plus(2 * 365, ChronoUnit.DAYS);
 
     private final String countryZonesFile;
     private final String zoneTabFile;
@@ -462,7 +474,7 @@ public final class TzLookupGenerator {
                 countryIssues.forEach(processingErrors::addError);
                 return null;
             }
-            return countryZoneTree.calculateCountryZoneUsage();
+            return countryZoneTree.calculateCountryZoneUsage(ZONE_USAGE_NOT_AFTER_CUT_OFF);
         } finally {
             processingErrors.popScope();
         }
