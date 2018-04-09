@@ -16,15 +16,12 @@
 
 package com.android.libcore.timezone.tzlookup.zonetree;
 
-import com.android.libcore.timezone.tzlookup.proto.CountryZonesFile;
 import com.google.protobuf.TextFormat;
 
 import org.junit.Test;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
 
 import static com.android.libcore.timezone.tzlookup.proto.CountryZonesFile.Country;
 import static org.junit.Assert.assertEquals;

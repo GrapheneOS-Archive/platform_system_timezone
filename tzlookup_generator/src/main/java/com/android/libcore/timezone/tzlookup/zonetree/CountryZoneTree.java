@@ -25,6 +25,7 @@ import com.ibm.icu.util.ULocale;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -570,13 +571,26 @@ public final class CountryZoneTree {
                 String label = node.getZoneInfosString()
                         + "\nFrom=" + fromTimestamp + " to " + toTimestamp
                         + "\nPeriod count=" + node.getPeriodCount();
-
-                writeLine(nodeName + "[label=\"" + label + "\"" + optionalColor + "];");
+                if (node.getPeriodCount() == 1) {
+                    ZoneInfo primaryZoneInfo = node.getPrimaryZoneInfo();
+                    int periodIndex =
+                            primaryZoneInfo.getZoneOffsetPeriodCount() - node.getPeriodOffset();
+                    ZoneOffsetPeriod zoneOffsetPeriod =
+                            primaryZoneInfo.getZoneOffsetPeriod(periodIndex);
+                    label += "\nrawOffset=" + durationString(zoneOffsetPeriod.getRawOffsetMillis());
+                    label += "\ndstOffset=" + durationString(zoneOffsetPeriod.getDstOffsetMillis());
+                    label += "\nname=" + zoneOffsetPeriod.getName();
+                }
+                writeLine(nodeName + "[label=" + enquote(label) + optionalColor + "];");
 
                 // Link the node to its children.
                 for (ZoneNode child : node.getChildren()) {
                     writeLine(nodeName + " -> " + enquote(child.getId()) + ";");
                 }
+            }
+
+            private String durationString(int durationMillis) {
+                return Duration.ofMillis(durationMillis).toString();
             }
 
             private String enquote(String toQuote) {
