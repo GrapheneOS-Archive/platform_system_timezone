@@ -25,7 +25,7 @@
 # a time zone for an Android device.
 
 # ianaVersion: The version of the IANA rules this file matches.
-ianaVersion:"2018c"
+ianaVersion:"2018d"
 
 # countries:
 #
@@ -87,10 +87,14 @@ ianaVersion:"2018c"
 # for a given time range). Zones that are identical but lower priority
 # need not be considered as all local times are representable with
 # with the higher priority zone for that period. The priority is in the
-# range 1-10 (inclusive), the default is 1. Whether a priority needs to be
+# range >=1, the default is 1. Whether a priority needs to be
 # assigned explicitly below depends on a country's transition rules data.
-# When needed, priorities are chosen by looking at population data, usually
-# for the city named in the ID. See comments below for details.
+# When needed, priorities are usually chosen by looking at population data,
+# usually for the city named in the ID but occasionally by other metrics
+# where it makes sense. Different criteria can be used for different
+# countries but within a country it should be consistent.
+# Often the exact priority assigned doesn't matter and zone priorities are
+# only used when there is otherwise a tie. See comments below for details.
 
 # ANDORRA
 countries:<
@@ -179,7 +183,7 @@ countries:<
   >
 
   timeZoneMappings:<
-    utcOffset:"11:00"
+    utcOffset:"08:00"
     id:"Antarctica/Casey"
   >
 
@@ -220,17 +224,11 @@ countries:<
 
 # ARGENTINA
 #
-# Priorities assigned on 20180309 using:
+# Priorities assigned on 20180406 using:
 # https://en.wikipedia.org/wiki/List_of_cities_in_Argentina_by_population
 # https://en.wikipedia.org/wiki/Buenos_Aires_Province
-# https://en.wikipedia.org/wiki/Jujuy_Province
-# https://en.wikipedia.org/wiki/Salta_Province
-# https://en.wikipedia.org/wiki/Catamarca_Province
-# https://en.wikipedia.org/wiki/La_Rioja_Province,_Argentina
-# https://en.wikipedia.org/wiki/San_Juan_Province,_Argentina
-# https://en.wikipedia.org/wiki/Mendoza_Province
-# https://en.wikipedia.org/wiki/Santa_Cruz_Province,_Argentina
-# https://en.wikipedia.org/wiki/Tierra_del_Fuego_Province,_Argentina
+# ... etc.
+# Priority is related to the population of the province.
 countries:<
   isoCode:"ar"
   defaultTimeZoneId:"America/Argentina/Buenos_Aires"
@@ -238,67 +236,73 @@ countries:<
     utcOffset:"-3:00"
     id:"America/Argentina/Buenos_Aires"
     # 15.6M
-    priority:10
+    priority:15600
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Cordoba"
+    # 3.31M
+    priority:3310
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Salta"
     # 1.21M
-    priority:8
+    priority:1210
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Jujuy"
     # 673K
-    priority: 1
+    priority:673
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Tucuman"
+    # 1.45M
+    priority:1450
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Catamarca"
     # 368K
-    priority:7
+    priority:368
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/La_Rioja"
     # 334K
-    priority:6
+    priority:334
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/San_Juan"
     # 681K
-    priority:1
+    priority:681
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Mendoza"
     # 1.74M
-    priority:9
+    priority:1740
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/San_Luis"
+    # 432K
+    priority:432
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Rio_Gallegos"
     # 247K (Santa Cruz Province)
-    priority:1
+    priority:247
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Ushuaia"
     # 127K (Tierra del Fuego)
-    priority:1
+    priority:127
   >
 >
 
@@ -322,71 +326,94 @@ countries:<
 
 # AUSTRALIA
 #
-# Priorities assigned on 20180309 as needed using:
+# Priorities assigned on 20180406 as needed using:
 # https://en.wikipedia.org/wiki/List_of_cities_in_Australia_by_population
+# Priority is related to the city/town population.
 countries:<
   isoCode:"au"
   defaultTimeZoneId:"Australia/Sydney"
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Sydney"
-    priority:10
+    # 5.03M
+    priority:5030
   >
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Melbourne"
+    # 4.73M
+    priority:4730
   >
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Brisbane"
-    priority:10
+    # 2.36M
+    priority:2360
   >
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Hobart"
-    priority:9
+    # 224K
+    priority:224
   >
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Currie"
+    # < 1K
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Australia/Lindeman"
+    # Unknown
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"11:00"
     id:"Antarctica/Macquarie"
+    # Unknown
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"10:30"
     id:"Australia/Lord_Howe"
+    # < 1K
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"9:30"
     id:"Australia/Adelaide"
-    priority:10
+    # 1.32M
+    priority:1320
   >
   timeZoneMappings:<
     utcOffset:"9:30"
     id:"Australia/Broken_Hill"
+    # 17.8K
+    priority:18
   >
   timeZoneMappings:<
     utcOffset:"9:30"
     id:"Australia/Darwin"
+    # 146K
+    priority:146
   >
 
   timeZoneMappings:<
     utcOffset:"8:00"
     id:"Australia/Perth"
+    # 2.02M
+    priority:2020
   >
 
   timeZoneMappings:<
     utcOffset:"8:45"
     id:"Australia/Eucla"
+    # < 1K
+    priority:1
   >
 >
 
@@ -545,94 +572,112 @@ countries:<
 
 # BRAZIL
 #
-# Priorities assigned on 20180309 as needed using:
+# Priorities assigned on 20180406 as needed using:
 # https://en.wikipedia.org/wiki/List_of_largest_cities_in_Brazil
+# Score is (mostly) related to the state population.
 countries:<
   isoCode:"br"
   defaultTimeZoneId:"America/Noronha"
   timeZoneMappings:<
     utcOffset:"-2:00"
     id:"America/Noronha"
+    # State: 2.93K
+    priority:3
   >
 
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Sao_Paulo"
+    # City: 12.0M, State: 45.3M
+    priority:45300
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Belem"
-    # 1.44M
-    priority:1
+    # City: 1.44M, State: 7.78M
+    priority:7780
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Fortaleza"
     # City: 2.61M, State: 8.61M
-    priority:9
+    priority:8610
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Recife"
     # City: 1.63M, State: 8.93M
-    priority:1
+    priority:8930
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Araguaina"
-    # 173K
-    priority:1
+    # City: 173K, State: 1.50M
+    priority:1500
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Maceio"
-    # 1.02M
-    priority:1
+    # City: 1.02M, State:3.17M
+    priority:3170
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Bahia"
     # City (Salvador): 2.94M, State: 15.2M
-    priority:10
+    priority:15200
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Santarem"
-    # 294K
-    priority:1
+    # City: 294K, State:7.79M (Same state as Belem)
+    priority:7789
   >
 
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Manaus"
-    priority:10
+    # City: 2.13M, State: 4.00M
+    priority:4000
   >
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Campo_Grande"
-    priority:10
+    # City: 854K, State: 2.51M
+    priority:2510
   >
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Cuiaba"
+    # City: 585K, State: 3.34M
+    priority:3340
   >
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Porto_Velho"
+    # City: 511K, State: 1.59M
+    priority:1590
   >
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Boa_Vista"
+    # City: 326K, State: 450K
+    priority: 450
   >
 
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Eirunepe"
+    # City: 30.9K, State: 4.00M
+    # This is the same state as Manaus, most of which uses a different zone, so the
+    # priority is set to let Rio_Branco "win".
+    priority:758
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Rio_Branco"
-    priority:10
+    # City: 320K, State: 759K
+    priority:759
   >
 >
 
@@ -683,153 +728,185 @@ countries:<
 
 # CANADA
 #
-# Priorities assigned on 20180309 using:
+# Priorities assigned on 20180406 using:
 # https://en.wikipedia.org/wiki/List_of_the_100_largest_population_centres_in_Canada
-# https://en.wikipedia.org/wiki/Rankin_Inlet
-# https://en.wikipedia.org/wiki/Rainy_River,_Ontario
-# https://en.wikipedia.org/wiki/Iqaluit
-# https://en.wikipedia.org/wiki/Pangnirtung
-# https://en.wikipedia.org/wiki/Creston,_British_Columbia
-# https://en.wikipedia.org/wiki/Swift_Current
-# https://en.wikipedia.org/wiki/Dawson_Creek
-# https://en.wikipedia.org/wiki/Fort_Nelson,_British_Columbia
-# https://en.wikipedia.org/wiki/Dawson_City
-# https://en.wikipedia.org/wiki/Whitehorse,_Yukon
-# https://en.wikipedia.org/wiki/Yellowknife
-# https://en.wikipedia.org/wiki/Inuvik
-# https://en.wikipedia.org/wiki/Nipigon
-# https://en.wikipedia.org/wiki/Thunder_Bay
+# ... etc.
+# Priority is related to the city population.
 countries:<
   isoCode:"ca"
   defaultTimeZoneId:"America/St_Johns"
   timeZoneMappings:<
     utcOffset:"-3:30"
     id:"America/St_Johns"
+    # 109K
+    priority:109
   >
 
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Halifax"
-    priority:10
+    # 316K
+    priority:316
   >
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Glace_Bay"
+    # 19.0K
+    priority:19
   >
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Moncton"
+    # 71.9K
+    priority:72
   >
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Goose_Bay"
+    # 8.12K
+    priority:8
   >
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Blanc-Sablon"
+    # 1.12K
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Toronto"
-    priority:10
+    # 5.43M
+    priority:5430
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Nipigon"
+    # 1.63K
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Thunder_Bay"
-    priority:9
+    # 108K
+    priority:108
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Iqaluit"
-    priority:9
+    # 7.74K
+    priority:8
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Pangnirtung"
+    # 1.48K
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Atikokan"
+    # 2.75K
+    priority:3
   >
 
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Winnipeg"
-    priority:10
+    # 712K
+    priority:712
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Regina"
-    priority:9
+    # 215K
+    priority:215
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Rankin_Inlet"
-    priority:9
+    # 2.84K
+    priority:3
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Rainy_River"
+    # 0.84K
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Swift_Current"
+    # 16.6K
+    priority:16
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Resolute"
+    # 0.20K
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Edmonton"
-    priority:10
+    # 1.06M
+    priority:1060
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Cambridge_Bay"
+    # 1.77K
+    priority:2
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Yellowknife"
-    priority:9
+    # 19.6K
+    priority:20
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Inuvik"
+    # 3.24K
+    priority:3
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Dawson_Creek"
-    priority:9
+    # 13.0K
+    priority:13
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Creston"
+    # 5.31K
+    priority:5
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Fort_Nelson"
+    # 3.90K
+    priority:4
   >
 
   timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Vancouver"
-    priority:10
+    # 2.26M
+    priority:2260
   >
   timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Whitehorse"
-    priority:9
+    # 25.1K
+    priority:251
   >
   timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Dawson"
+    # 1.38K
+    priority:1
   >
 >
 
@@ -1027,17 +1104,19 @@ countries:<
 #
 # Priorities assigned on 20180309 using:
 # https://en.wikipedia.org/wiki/List_of_cities_in_Germany_by_population
+# Priority is just an abstract score.
 countries:<
   isoCode:"de"
   defaultTimeZoneId:"Europe/Berlin"
   timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Berlin"
-    priority:10
+    priority:2
   >
   timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Busingen"
+    priority:1
   >
 >
 
@@ -1141,22 +1220,25 @@ countries:<
 #
 # Priorities assigned on 20180309 using:
 # https://en.wikipedia.org/wiki/List_of_metropolitan_areas_in_Spain
+# Priority is just an abstract score.
 countries:<
   isoCode:"es"
   defaultTimeZoneId:"Europe/Madrid"
   timeZoneMappings:<
     utcOffset:"1:00"
     id:"Europe/Madrid"
-    priority:10
+    priority:2
   >
   timeZoneMappings:<
     utcOffset:"1:00"
     id:"Africa/Ceuta"
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"0:00"
     id:"Atlantic/Canary"
+    priority:1
   >
 >
 
@@ -1469,27 +1551,31 @@ countries:<
 #
 # Priorities assigned on 20180309 using:
 # https://en.wikipedia.org/wiki/List_of_Indonesian_cities_by_population
+# Priority is just an abstract score.
 countries:<
   isoCode:"id"
   defaultTimeZoneId:"Asia/Jakarta"
   timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Jayapura"
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Makassar"
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Jakarta"
-    priority:10
+    priority:2
   >
   timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Pontianak"
+    priority:1
   >
 >
 
@@ -1715,17 +1801,19 @@ countries:<
 #
 # Priorities assigned on 20180309 using:
 # https://en.wikipedia.org/wiki/List_of_cities_in_Kazakhstan
+# Priority is just an abstract score.
 countries:<
   isoCode:"kz"
   defaultTimeZoneId:"Asia/Almaty"
   timeZoneMappings:<
     utcOffset:"6:00"
     id:"Asia/Almaty"
-    priority:10
+    priority:2
   >
   timeZoneMappings:<
     utcOffset:"6:00"
     id:"Asia/Qyzylorda"
+    priority:1
   >
 
   timeZoneMappings:<
@@ -1735,15 +1823,17 @@ countries:<
   timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Oral"
-    priority:10
+    priority:2
   >
   timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Aqtobe"
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Atyrau"
+    priority:1
   >
 >
 
@@ -1903,17 +1993,19 @@ countries:<
 # MARSHALL ISLANDS
 # Priorities assigned on 20180328 using:
 # https://en.wikipedia.org/wiki/List_of_islands_of_the_Marshall_Islands
+# Priority is just an abstract score.
 countries:<
   isoCode:"mh"
   defaultTimeZoneId:"Pacific/Majuro"
   timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Majuro"
-    priority:10
+    priority:2
   >
   timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Kwajalein"
+    priority:1
   >
 >
 
@@ -2046,76 +2138,99 @@ countries:<
 
 # MEXICO
 #
-# Priorities assigned on 20180309 using:
+# Priorities assigned on 20180406 using:
 # https://en.wikipedia.org/wiki/List_of_cities_in_Mexico
+# Priority is based on city population.
 countries:<
   isoCode:"mx"
   defaultTimeZoneId:"America/Mexico_City"
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Mexico_City"
-    priority:10
+    # 8.92M
+    priority:8920
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Merida"
+    # 892K
+    priority:892
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Monterrey"
+    # 1.12M
+    priority:1120
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Matamoros"
+    # 520K
+    priority:520
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Bahia_Banderas"
+    # 83.7K
+    priority:84
   >
 
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Cancun"
+    # 744K
+    priority:744
   >
 
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Chihuahua"
-    priority:10
+    # 878K
+    priority:878
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Hermosillo"
+    # 812K
+    priority:812
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Mazatlan"
+    # 658K
+    priority:658
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Ojinaga"
+    # 28.0K
+    priority:28
   >
 
   timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Tijuana"
+    # 1.64M
+    priority:1640
   >
 >
 
 # MALAYSIA
 # Priorities assigned on 20180329 using:
 # https://en.wikipedia.org/wiki/List_of_cities_and_towns_in_Malaysia_by_population
+# Priority is just an abstract score.
 countries:<
   isoCode:"my"
   defaultTimeZoneId:"Asia/Kuala_Lumpur"
   timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Kuala_Lumpur"
-    priority:10
+    priority:2
   >
   timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Kuching"
+    priority:1
   >
 >
 
@@ -2290,9 +2405,6 @@ countries:<
 >
 
 # PAPUA NEW GUINEA
-#
-# Priorities assigned on 20180309 using:
-# https://en.wikipedia.org/wiki/List_of_cities_and_towns_in_Papua_New_Guinea_by_population
 countries:<
   isoCode:"pg"
   defaultTimeZoneId:"Pacific/Port_Moresby"
@@ -2363,21 +2475,25 @@ countries:<
 
 # PALESTINE
 #
-# Priorities assigned on 20180309 using:
+# Priorities assigned on 20180406 using:
 # https://en.wikipedia.org/wiki/List_of_cities_administered_by_the_Palestinian_Authority
 # https://en.wikipedia.org/wiki/Gaza_Strip
 # https://en.wikipedia.org/wiki/West_Bank
+# Priorities are set based on territory population.
 countries:<
   isoCode:"ps"
   defaultTimeZoneId:"Asia/Gaza"
   timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Gaza"
+    # Territory: 1.85M
+    priority:1850
   >
   timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Hebron"
-    priority:10
+    # Territory: 3.28M
+    priority:3280
   >
 >
 
@@ -2385,22 +2501,25 @@ countries:<
 #
 # Priorities assigned on 20180309 using:
 # https://en.wikipedia.org/wiki/List_of_cities_in_Portugal
+# Prorities are just an abstract score.
 countries:<
   isoCode:"pt"
   defaultTimeZoneId:"Europe/Lisbon"
   timeZoneMappings:<
     utcOffset:"0:00"
     id:"Europe/Lisbon"
-    priority:10
+    priority:2
   >
   timeZoneMappings:<
     utcOffset:"0:00"
     id:"Atlantic/Madeira"
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"-1:00"
     id:"Atlantic/Azores"
+    priority:1
   >
 >
 
@@ -2460,133 +2579,178 @@ countries:<
 
 # RUSSIAN FEDERATION
 #
-# Priorities assigned on 20180309 using:
+# Priorities assigned on 20180406 using:
 # https://en.wikipedia.org/wiki/List_of_cities_and_towns_in_Russia_by_population
 # https://en.wikipedia.org/wiki/Khandyga
 # https://en.wikipedia.org/wiki/Ust-Nera
+# Priority are based on oblast / district population.
 countries:<
   isoCode:"ru"
   defaultTimeZoneId:"Europe/Moscow"
   timeZoneMappings:<
     utcOffset:"12:00"
     id:"Asia/Kamchatka"
+    # 322K
+    priority:322
   >
   timeZoneMappings:<
     utcOffset:"12:00"
     id:"Asia/Anadyr"
+    # 50.5K
+    priority:51
   >
 
   timeZoneMappings:<
     utcOffset:"11:00"
     id:"Asia/Magadan"
+    # 150K
+    priority:150
   >
   timeZoneMappings:<
     utcOffset:"11:00"
     id:"Asia/Sakhalin"
+    # 498K
+    priority:498
   >
   timeZoneMappings:<
     utcOffset:"11:00"
     id:"Asia/Srednekolymsk"
+    # 7.90K
+    priority:8
   >
 
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Asia/Vladivostok"
-    priority:10
+    # 1.96M
+    priority:1960
   >
   timeZoneMappings:<
     utcOffset:"10:00"
     id:"Asia/Ust-Nera"
+    # 10.1K
+    priority:10
   >
 
   timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Yakutsk"
-    priority:9
+    # 959K (Sakha Republic)
+    priority:959
   >
   timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Chita"
-    priority:10
+    # 1.11M
+    priority:1110
   >
   timeZoneMappings:<
     utcOffset:"9:00"
     id:"Asia/Khandyga"
+    # 959K (Sakha Republic). Priority set just below Yakutsk.
+    priority:958
   >
 
   timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Irkutsk"
+    # 2.43M
+    priority:2430
   >
 
   timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Krasnoyarsk"
-    priority:10
+    # 2.83M
+    priority:2830
   >
   timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Novosibirsk"
+    # 2.67M
+    priority:2670
   >
   timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Barnaul"
-    priority:10
+    # 2.42M
+    priority:2420
   >
   timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Novokuznetsk"
+    # 2.76M
+    priority:2760
   >
   timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Tomsk"
+    # 1.05M
+    priority:1050
   >
 
   timeZoneMappings:<
     utcOffset:"6:00"
     id:"Asia/Omsk"
+    # 1.98M
+    priority:1980
   >
 
   timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Yekaterinburg"
+    # 4.30M
+    priority:4300
   >
 
   timeZoneMappings:<
     utcOffset:"4:00"
     id:"Europe/Samara"
+    # 3.22M
+    priority:3220
   >
   timeZoneMappings:<
     utcOffset:"4:00"
     id:"Europe/Astrakhan"
+    # 1.01M
+    priority:1010
   >
   timeZoneMappings:<
     utcOffset:"4:00"
     id:"Europe/Ulyanovsk"
-    priority:9
+    # 1.29M
+    priority:1290
   >
   timeZoneMappings:<
     utcOffset:"4:00"
     id:"Europe/Saratov"
-    priority:10
+    # 2.52M
+    priority:2520
   >
 
   timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Moscow"
-    priority:10
+    # 7.10M
+    priority:7100
   >
   timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Volgograd"
+    # 2.61M
+    priority:2610
   >
   timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Kirov"
+    # 474K
+    priority:474
   >
   timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Simferopol"
+    # ?
+    priority:1
     # http://b/73922616
     shownInPicker:false
   >
@@ -2594,6 +2758,8 @@ countries:<
   timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Kaliningrad"
+    # 942K
+    priority:942
   >
 >
 
@@ -2943,22 +3109,24 @@ countries:<
 #
 # Priorities assigned on 20180309 using:
 # https://en.wikipedia.org/wiki/List_of_cities_in_Ukraine
+# Priorities are just an abstract score.
 countries:<
   isoCode:"ua"
   defaultTimeZoneId:"Europe/Kiev"
   timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Kiev"
-    priority:10
+    priority:3
   >
   timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Uzhgorod"
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Zaporozhye"
-    priority:9
+    priority:2
   >
 >
 
@@ -2991,147 +3159,189 @@ countries:<
 # Priorities assigned on 20180309 using:
 # https://en.wikipedia.org/wiki/List_of_United_States_cities_by_population
 # https://en.wikipedia.org/wiki/Knox,_Indiana
-# https://en.wikipedia.org/wiki/Tell_City,_Indiana
-# https://en.wikipedia.org/wiki/Petersburg,_Indiana
-# https://en.wikipedia.org/wiki/Vincennes,_Indiana
-# https://en.wikipedia.org/wiki/Juneau,_Alaska
-# https://en.wikipedia.org/wiki/Yakutat,_Alaska
-# https://en.wikipedia.org/wiki/Nome,_Alaska
-# https://en.wikipedia.org/wiki/Metlakatla,_Alaska
-# https://en.wikipedia.org/wiki/Sitka,_Alaska
+# ...etc.
+# Priorities are based on city population.
 countries:<
   isoCode:"us"
   defaultTimeZoneId:"America/New_York"
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/New_York"
-    priority:10
+    # 8.54M
+    priority:8540
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Detroit"
+    # 673K
+    priority:673
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Kentucky/Louisville"
+    # 760K
+    priority:760
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Kentucky/Monticello"
+    # 6.19K
+    priority:6
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Indianapolis"
-    priority:9
+    # 820K
+    priority:820
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Vincennes"
-    priority:9
+    # 18.4K
+    priority:18
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Winamac"
+    # 2.49K
+    priority:2
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Marengo"
+    # 0.83K
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Petersburg"
+    # 2.38K
+    priority:3
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Indiana/Vevay"
+    # 1.68K
+    priority:2
   >
 
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Chicago"
-    priority:10
+    # 2.70M
+    priority:2700
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Indiana/Knox"
+    # 3.70K
+    priority:4
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Menominee"
-  >
-  timeZoneMappings:<
-    utcOffset:"-6:00"
-    id:"America/North_Dakota/Center"
-  >
-  timeZoneMappings:<
-    utcOffset:"-6:00"
-    id:"America/North_Dakota/New_Salem"
-  >
-  timeZoneMappings:<
-    utcOffset:"-6:00"
-    id:"America/Indiana/Tell_City"
+    # 8.60K
     priority:9
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
+    id:"America/North_Dakota/Center"
+    # 0.57K
+    priority:1
+  >
+  timeZoneMappings:<
+    utcOffset:"-6:00"
+    id:"America/North_Dakota/New_Salem"
+    # 0.95K
+    priority:1
+  >
+  timeZoneMappings:<
+    utcOffset:"-6:00"
+    id:"America/Indiana/Tell_City"
+    # 7.27K
+    priority:7
+  >
+  timeZoneMappings:<
+    utcOffset:"-6:00"
     id:"America/North_Dakota/Beulah"
+    # 3.12K
+    priority:3
   >
 
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Denver"
-    priority:9
+    # 600K
+    priority:600
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Boise"
+    # 206K
+    priority:206
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Phoenix"
-    priority:10
+    # 1.45M
+    priority:1450
   >
 
   timeZoneMappings:<
     utcOffset:"-8:00"
     id:"America/Los_Angeles"
+    # 3.79M
+    priority:3790
   >
 
   timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Anchorage"
-    priority:10
+    # 292K
+    priority:292
   >
   timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Juneau"
-    priority:9
+    # 31.2K
+    priority:31
   >
   timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Yakutat"
+    # 0.66K
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Nome"
+    # 3.60K
+    priority:4
   >
   timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Metlakatla"
+    # 1.38K
+    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-9:00"
     id:"America/Sitka"
+    # 8.88K
+    priority:9
   >
 
   timeZoneMappings:<
     utcOffset:"-10:00"
     id:"Pacific/Honolulu"
-    priority:10
+    # 337K
+    priority:337
   >
   timeZoneMappings:<
     utcOffset:"-10:00"
     id:"America/Adak"
+    # 0.33K
+    priority:1
   >
 >
 
@@ -3149,17 +3359,19 @@ countries:<
 # Priorities assigned on 20180309 using:
 # https://en.wikipedia.org/wiki/Tashkent
 # https://en.wikipedia.org/wiki/Samarkand
+# Priority is just an abstract score.
 countries:<
   isoCode:"uz"
   defaultTimeZoneId:"Asia/Tashkent"
   timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Tashkent"
-    priority:10
+    priority:2
   >
   timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Samarkand"
+    priority:1
   >
 >
 
