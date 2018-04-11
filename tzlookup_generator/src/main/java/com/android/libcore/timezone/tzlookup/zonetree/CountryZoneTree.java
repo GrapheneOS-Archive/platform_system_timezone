@@ -572,11 +572,11 @@ public final class CountryZoneTree {
                         + "\nFrom=" + fromTimestamp + " to " + toTimestamp
                         + "\nPeriod count=" + node.getPeriodCount();
                 if (node.getPeriodCount() == 1) {
-                    ZoneInfo primaryZoneInfo = node.getPrimaryZoneInfo();
+                    ZoneInfo arbitraryZoneInfo = node.getZoneInfos().get(0);
                     int periodIndex =
-                            primaryZoneInfo.getZoneOffsetPeriodCount() - node.getPeriodOffset();
+                            arbitraryZoneInfo.getZoneOffsetPeriodCount() - node.getPeriodOffset();
                     ZoneOffsetPeriod zoneOffsetPeriod =
-                            primaryZoneInfo.getZoneOffsetPeriod(periodIndex);
+                            arbitraryZoneInfo.getZoneOffsetPeriod(periodIndex);
                     label += "\nrawOffset=" + durationString(zoneOffsetPeriod.getRawOffsetMillis());
                     label += "\ndstOffset=" + durationString(zoneOffsetPeriod.getDstOffsetMillis());
                     label += "\nname=" + zoneOffsetPeriod.getName();
