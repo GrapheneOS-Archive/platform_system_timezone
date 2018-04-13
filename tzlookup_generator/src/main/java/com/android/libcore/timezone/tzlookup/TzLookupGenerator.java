@@ -240,7 +240,7 @@ public final class TzLookupGenerator {
 
             // Each Country needs a default time zone ID (but we can guess in some cases).
             String defaultTimeZoneId = determineCountryDefaultZoneId(countryIn, processingErrors);
-            if (processingErrors.hasError()) {
+            if (defaultTimeZoneId == null) {
                 // No point in continuing.
                 return null;
             }
@@ -254,15 +254,22 @@ public final class TzLookupGenerator {
             }
 
             // Validate the other zone IDs.
-            for (String countryTimeZoneId : countryTimeZoneIds) {
-                if (invalidTimeZoneId(countryTimeZoneId)) {
-                    processingErrors.addError("countryTimeZoneId=" + countryTimeZoneId
-                            + " is not a valid zone ID");
+            try {
+                processingErrors.pushScope("validate country zone ids");
+                boolean errors = false;
+                for (String countryTimeZoneId : countryTimeZoneIds) {
+                    if (invalidTimeZoneId(countryTimeZoneId)) {
+                        processingErrors.addError("countryTimeZoneId=" + countryTimeZoneId
+                                + " is not a valid zone ID");
+                        errors = true;
+                    }
                 }
-                if (processingErrors.hasError()) {
+                if (errors) {
                     // No point in continuing.
                     return null;
                 }
+            } finally {
+                processingErrors.popScope();
             }
 
             // Work out the hint for whether the country uses a zero offset from UTC.
@@ -294,8 +301,8 @@ public final class TzLookupGenerator {
             // Calculate countryZoneUsage.
             CountryZoneUsage countryZoneUsage =
                     calculateCountryZoneUsage(countryIn, processingErrors);
-            if (processingErrors.hasError()) {
-                // No point in continuing.
+            if (countryZoneUsage == null) {
+                // No point in continuing with this country.
                 return null;
             }
 

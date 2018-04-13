@@ -37,12 +37,8 @@ final class Errors {
     Errors() {
     }
 
-    boolean isEmpty() {
-        return messages.isEmpty();
-    }
-
-    void pushScope(String scope) {
-        scopes.add(scope);
+    void pushScope(String name) {
+        scopes.add(name);
     }
 
     String popScope() {
@@ -50,23 +46,17 @@ final class Errors {
     }
 
     void addFatal(String msg) {
-        if (level < LEVEL_FATAL) {
-            level = LEVEL_FATAL;
-        }
+        level = Math.max(level, LEVEL_FATAL);
         add(msg);
     }
 
     void addError(String msg) {
-        if (level < LEVEL_ERROR) {
-            level = LEVEL_ERROR;
-        }
+        level = Math.max(level, LEVEL_ERROR);
         add(msg);
     }
 
     void addWarning(String msg) {
-        if (level < LEVEL_WARNING) {
-            level = LEVEL_WARNING;
-        }
+        level = Math.max(level, LEVEL_WARNING);
         add(msg);
     }
 
@@ -77,6 +67,10 @@ final class Errors {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    boolean isEmpty() {
+        return messages.isEmpty();
     }
 
     boolean hasError() {
