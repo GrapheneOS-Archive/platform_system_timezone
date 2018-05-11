@@ -29,11 +29,6 @@ import i18nutil
 import icuutil
 import tzdatautil
 
-regions = ['africa', 'antarctica', 'asia', 'australasia',
-           'etcetera', 'europe', 'northamerica', 'southamerica',
-           # This deliberately comes last so it can override what came
-           # before.
-           'backward' ]
 
 # Calculate the paths that are referred to by multiple functions.
 android_build_top = i18nutil.GetAndroidRootOrDie()
@@ -53,20 +48,33 @@ i18nutil.CheckDirExists(timezone_output_data_dir, 'output_data')
 
 tmp_dir = tempfile.mkdtemp('-tzdata')
 
+def GenerateZicInputFile(extracted_iana_data_dir):
+  # Android APIs assume DST means "summer time" so we follow the rearguard format
+  # introduced in 2018e.
+  zic_input_file_name = 'rearguard.zi'
 
-def WriteSetupFile(extracted_iana_data_dir):
+  # 'NDATA=' is used to remove unnecessary rules files.
+  subprocess.check_call(['make', '-C', extracted_iana_data_dir, 'NDATA=', zic_input_file_name])
+
+  zic_input_file = '%s/%s' % (extracted_iana_data_dir, zic_input_file_name)
+  if not os.path.exists(zic_input_file):
+    print 'Could not find %s' % zic_input_file
+    sys.exit(1)
+  return zic_input_file
+
+
+def WriteSetupFile(zic_input_file):
   """Writes the list of zones that ZoneCompactor should process."""
   links = []
   zones = []
-  for region in regions:
-    for line in open('%s/%s' % (extracted_iana_data_dir, region)):
-      fields = line.split()
-      if fields:
-        if fields[0] == 'Link':
-          links.append('%s %s %s' % (fields[0], fields[1], fields[2]))
-          zones.append(fields[2])
-        elif fields[0] == 'Zone':
-          zones.append(fields[1])
+  for line in open(zic_input_file):
+    fields = line.split()
+    if fields:
+      if fields[0] == 'Link':
+        links.append('%s %s %s' % (fields[0], fields[1], fields[2]))
+        zones.append(fields[2])
+      elif fields[0] == 'Zone':
+        zones.append(fields[1])
   zones.sort()
 
   zone_compactor_setup_file = '%s/setup' % tmp_dir
@@ -128,23 +136,23 @@ def BuildZic(iana_tools_dir):
 
   zic_binary_file = '%s/zic' % zic_build_dir
   if not os.path.exists(zic_binary_file):
-    print 'Could not find %s' %s
-    system.exit(1)
+    print 'Could not find %s' % zic_binary_file
+    sys.exit(1)
   return zic_binary_file
 
 
 def BuildTzdata(zic_binary_file, extracted_iana_data_dir, iana_data_version):
+  print 'Generating zic input file...'
+  zic_input_file = GenerateZicInputFile(extracted_iana_data_dir)
+
   print 'Calling zic...'
   zic_output_dir = '%s/data' % tmp_dir
   os.mkdir(zic_output_dir)
-  zic_generator_template = '%s/%%s' % extracted_iana_data_dir
-  zic_inputs = [zic_generator_template % x for x in regions]
-  zic_cmd = [zic_binary_file, '-d', zic_output_dir]
-  zic_cmd.extend(zic_inputs)
+  zic_cmd = [zic_binary_file, '-d', zic_output_dir, zic_input_file]
   subprocess.check_call(zic_cmd)
 
   # ZoneCompactor
-  zone_compactor_setup_file = WriteSetupFile(extracted_iana_data_dir)
+  zone_compactor_setup_file = WriteSetupFile(zic_input_file)
 
   print 'Calling ZoneCompactor to update tzdata to %s...' % iana_data_version
   subprocess.check_call(['make', '-C', android_build_top, '-j30', 'zone_compactor'])
