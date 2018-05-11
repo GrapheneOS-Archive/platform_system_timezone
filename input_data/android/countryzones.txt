@@ -25,7 +25,7 @@
 # a time zone for an Android device.
 
 # ianaVersion: The version of the IANA rules this file matches.
-ianaVersion:"2018d"
+ianaVersion:"2018e"
 
 # countries:
 #
@@ -1765,7 +1765,7 @@ countries:<
 countries:<
   isoCode:"kp"
   timeZoneMappings:<
-    utcOffset:"8:30"
+    utcOffset:"9:00"
     id:"Asia/Pyongyang"
   >
 >
