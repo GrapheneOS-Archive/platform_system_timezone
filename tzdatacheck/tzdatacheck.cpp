@@ -288,21 +288,6 @@ static bool deleteDir(const std::string& dirToDelete) {
 }
 
 /*
- * Deletes the ConfigInstaller metadata directory.
- * TODO(nfuller). http://b/31008728 Remove this when ConfigInstaller is no longer used.
- */
-static void deleteConfigUpdaterMetadataDir(const char* dataZoneInfoDir) {
-    // Delete the update metadata
-    std::string dataUpdatesDirName(dataZoneInfoDir);
-    dataUpdatesDirName += "/updates";
-    LOG(INFO) << "Removing: " << dataUpdatesDirName;
-    if (!deleteDir(dataUpdatesDirName)) {
-        LOG(WARNING) << "Deletion of install metadata " << dataUpdatesDirName
-                << " was not successful";
-    }
-}
-
-/*
  * Deletes the timezone update distro directory.
  */
 static void deleteUpdateDistroDir(const std::string& distroDirName) {
@@ -511,7 +496,6 @@ int main(int argc, char* argv[]) {
         LOG(WARNING) << "distro version file " << distroVersionFileName
                 << " does not exist or is too short. Deleting distro dir.";
         // Implies the contents of the data partition is corrupt in some way. Try to clean up.
-        deleteConfigUpdaterMetadataDir(dataZoneInfoDir);
         deleteUpdateDistroDir(dataCurrentDirName);
         return 3;
     }
@@ -520,7 +504,6 @@ int main(int argc, char* argv[]) {
         LOG(WARNING) << "distro version file " << distroVersionFileName
                 << " is not valid. Deleting distro dir.";
         // Implies the contents of the data partition is corrupt in some way. Try to clean up.
-        deleteConfigUpdaterMetadataDir(dataZoneInfoDir);
         deleteUpdateDistroDir(dataCurrentDirName);
         return 4;
     }
@@ -539,7 +522,6 @@ int main(int argc, char* argv[]) {
                 << ", was \"" << actualDistroVersion << "\". Deleting distro dir.";
         // This implies there has been an OTA and the installed distro is not compatible with the
         // new version of Android. Remove the installed distro.
-        deleteConfigUpdaterMetadataDir(dataZoneInfoDir);
         deleteUpdateDistroDir(dataCurrentDirName);
         return 5;
     }
@@ -557,7 +539,6 @@ int main(int argc, char* argv[]) {
                 << ", was \"" << actualDistroVersion << "\". Deleting distro dir.";
         // This implies there has been an OTA and the installed distro is not compatible with the
         // new version of Android. Remove the installed distro.
-        deleteConfigUpdaterMetadataDir(dataZoneInfoDir);
         deleteUpdateDistroDir(dataCurrentDirName);
         return 5;
     }
@@ -595,7 +576,6 @@ int main(int argc, char* argv[]) {
     LOG(INFO) << "timezone distro in " << dataCurrentDirName << " is older than data in "
             << systemTzDataFileName << "; fixing...";
 
-    deleteConfigUpdaterMetadataDir(dataZoneInfoDir);
     deleteUpdateDistroDir(dataCurrentDirName);
     return 0;
 }
