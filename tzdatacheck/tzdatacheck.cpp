@@ -167,8 +167,10 @@ static bool checkValidDistroVersion(const char* buffer) {
 
 /* Return the parent directory of dirName. */
 static std::string getParentDir(const std::string& dirName) {
-    std::unique_ptr<char> mutable_dirname(strdup(dirName.c_str()));
-    return dirname(mutable_dirname.get());
+    char *cMutableDirName = strdup(dirName.c_str());
+    std::string parentDir = dirname(cMutableDirName);
+    free(cMutableDirName);
+    return parentDir;
 }
 
 /* Deletes a single file, symlink or directory. Called from nftw(). */
