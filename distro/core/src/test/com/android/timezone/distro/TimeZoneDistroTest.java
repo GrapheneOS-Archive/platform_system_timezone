@@ -17,6 +17,8 @@ package com.android.timezone.distro;
 
 import junit.framework.TestCase;
 
+import libcore.testing.io.TestIoUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,10 +29,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import libcore.io.IoUtils;
 
 /**
  * Tests for {@link TimeZoneDistro}.
@@ -166,7 +166,7 @@ public class TimeZoneDistroTest extends TestCase {
 
     private File createTempDir() {
         final String tempPrefix = getClass().getSimpleName();
-        File tempDir = IoUtils.createTemporaryDirectory(tempPrefix);
+        File tempDir = TestIoUtils.createTemporaryDirectory(tempPrefix);
         testFiles.add(tempDir);
         return tempDir;
     }
