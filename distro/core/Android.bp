@@ -42,6 +42,7 @@ java_library_static {
     srcs: ["src/test/**/*.java"],
     static_libs: [
         "time_zone_distro",
+        "core-tests-support",
         "junit",
     ],
 }
