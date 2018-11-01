@@ -182,19 +182,15 @@ def BuildTzlookup(iana_data_dir):
                          countryzones_source_file, zone_tab_file, tzlookup_dest_file])
 
 
-def CreateDistroFiles(iana_data_version, output_dir):
+def CreateDistroFiles(iana_data_version, output_distro_dir, output_version_file):
   create_distro_script = '%s/distro/tools/create-distro.py' % timezone_dir
 
   tzdata_file = '%s/iana/tzdata' % timezone_output_data_dir
   icu_file = '%s/icu_overlay/icu_tzdata.dat' % timezone_output_data_dir
   tzlookup_file = '%s/android/tzlookup.xml' % timezone_output_data_dir
 
-  distro_file_pattern = '%s/*.zip' % output_dir
-  existing_distro_files = glob.glob(distro_file_pattern)
-
-  distro_file_metadata_pattern = '%s/*.txt' % output_dir
-  existing_distro_metadata_files = glob.glob(distro_file_metadata_pattern)
-  existing_files = existing_distro_files + existing_distro_metadata_files
+  distro_file_pattern = '%s/*.zip' % output_distro_dir
+  existing_files = glob.glob(distro_file_pattern)
 
   print 'Removing %s' % existing_files
   for existing_file in existing_files:
@@ -205,7 +201,8 @@ def CreateDistroFiles(iana_data_version, output_dir):
       '-tzdata', tzdata_file,
       '-icu', icu_file,
       '-tzlookup', tzlookup_file,
-      '-output', output_dir])
+      '-output_distro_dir', output_distro_dir,
+      '-output_version_file', output_version_file])
 
 def UpdateTestFiles():
   testing_data_dir = '%s/testing/data' % timezone_dir
@@ -238,9 +235,10 @@ def main():
   BuildTzdata(zic_binary_file, iana_data_dir, iana_data_version)
   BuildTzlookup(iana_data_dir)
 
-  # Create a distro file from the output from prior stages.
-  distro_output_dir = '%s/distro' % timezone_output_data_dir
-  CreateDistroFiles(iana_data_version, distro_output_dir)
+  # Create a distro file and version file from the output from prior stages.
+  output_distro_dir = '%s/distro' % timezone_output_data_dir
+  output_version_file = '%s/version/tz_version' % timezone_output_data_dir
+  CreateDistroFiles(iana_data_version, output_distro_dir, output_version_file)
 
   # Update test versions of distro files too.
   UpdateTestFiles()
