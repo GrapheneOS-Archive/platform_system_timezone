@@ -710,8 +710,8 @@
    <id notafter="701823600000">Europe/Astrakhan</id>
    <id notafter="1480806000000">Europe/Ulyanovsk</id>
    <id>Europe/Saratov</id>
+   <id>Europe/Volgograd</id>
    <id>Europe/Moscow</id>
-   <id notafter="701823600000">Europe/Volgograd</id>
    <id>Europe/Kirov</id>
    <id picker="n" notafter="1396137600000">Europe/Simferopol</id>
    <id>Europe/Kaliningrad</id>
