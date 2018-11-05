@@ -96,9 +96,14 @@ def BuildIcuData(iana_data_tar_file):
   # Create ICU system image files.
   icuutil.MakeAndCopyIcuDataFiles(icu_build_dir)
 
+  icu_overlay_dir = '%s/icu_overlay' % timezone_output_data_dir
+
   # Create the ICU overlay time zone file.
-  icu_overlay_dat_file = '%s/icu_overlay/icu_tzdata.dat' % timezone_output_data_dir
+  icu_overlay_dat_file = '%s/icu_tzdata.dat' % icu_overlay_dir
   icuutil.MakeAndCopyOverlayTzIcuData(icu_build_dir, icu_overlay_dat_file)
+
+  # Copy ICU license file(s)
+  icuutil.CopyLicenseFiles(icu_overlay_dir)
 
 
 def GetIanaVersion(iana_tar_file):

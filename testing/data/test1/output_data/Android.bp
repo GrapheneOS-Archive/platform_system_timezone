@@ -37,6 +37,7 @@ prebuilt_etc {
 prebuilt_etc {
     name: "apex_icu_tzdata.dat_test1",
     src: "icu_overlay/icu_tzdata.dat",
+    notice: "icu_overlay/LICENSE",
     filename: "icu_tzdata.dat",
     installable: false,
 }
