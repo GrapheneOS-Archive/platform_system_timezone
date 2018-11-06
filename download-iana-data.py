@@ -52,6 +52,11 @@ def CheckSignature(data_filename, signature_filename):
 def main():
   print 'Looking for new IANA tzdata...'
 
+  tar_prefix = 'tzdata20'
+  # Use the input tzdata version name if it exists
+  if len(sys.argv) > 1:
+    tar_prefix = 'tzdata' + sys.argv[1]
+
   iana_tar_filenames = []
 
   ftp = ftplib.FTP('ftp.iana.org')
@@ -62,7 +67,7 @@ def main():
       print "FTP server returned bogus file name"
       sys.exit(1)
 
-    if filename.startswith('tzdata20') and filename.endswith('.tar.gz'):
+    if filename.startswith(tar_prefix) and filename.endswith('.tar.gz'):
       iana_tar_filenames.append(filename)
   iana_tar_filenames.sort(reverse=True)
 
