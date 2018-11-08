@@ -13,7 +13,7 @@
 // limitations under the License.
 
 apex {
-    name: "apex.tzdata",
+    name: "com.android.tzdata",
     manifest: "manifest.json",
     file_contexts: "file_contexts",
     prebuilts: [

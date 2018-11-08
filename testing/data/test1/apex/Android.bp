@@ -17,7 +17,7 @@
 // end-to-end installation testing on devices with the latests real
 // data.
 apex {
-    name: "apex.tzdata_test1",
+    name: "test1_com.android.tzdata",
     manifest: "manifest.json",
     file_contexts: "file_contexts",
     prebuilts: [
