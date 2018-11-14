@@ -15,7 +15,6 @@
 apex {
     name: "com.android.tzdata",
     manifest: "manifest.json",
-    file_contexts: "file_contexts",
     prebuilts: [
         "apex_tz_version",
         "apex_tzlookup.xml",
