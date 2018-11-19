@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package libcore.tzdata.testing;
+package libcore.timezone.testing;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
