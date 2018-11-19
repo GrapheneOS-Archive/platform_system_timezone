@@ -15,6 +15,8 @@
  */
 package com.android.timezone.distro.tools;
 
+import libcore.timezone.TzDataSetVersion;
+
 import com.android.timezone.distro.DistroVersion;
 import com.android.timezone.distro.TimeZoneDistro;
 
@@ -28,7 +30,8 @@ import java.io.Reader;
 import java.util.Properties;
 
 /**
- * A command-line tool for creating a time zone update distro file.
+ * A command-line tool for creating a time zone update distro and associated
+ * files.
  *
  * <p>Args:
  * <dl>
@@ -79,13 +82,21 @@ public class CreateTimeZoneDistro {
         Properties properties = loadProperties(f);
         String ianaRulesVersion = getMandatoryProperty(properties, "rules.version");
         int revision = Integer.parseInt(getMandatoryProperty(properties, "revision"));
-        DistroVersion distroVersion = new DistroVersion(
-                DistroVersion.CURRENT_FORMAT_MAJOR_VERSION,
-                DistroVersion.CURRENT_FORMAT_MINOR_VERSION,
+
+        // Create an object to hold version metadata for the tz data.
+        TzDataSetVersion tzDataSetVersion = new TzDataSetVersion(
+                TzDataSetVersion.currentFormatMajorVersion(),
+                TzDataSetVersion.currentFormatMinorVersion(),
                 ianaRulesVersion,
                 revision);
-        byte[] distroVersionBytes = distroVersion.toBytes();
+        byte[] tzDataSetVersionBytes = tzDataSetVersion.toBytes();
 
+        // Create a DistroVersion from the TzDataSetVersion.
+        DistroVersion distroVersion = new DistroVersion(
+                tzDataSetVersion.formatMajorVersion,
+                tzDataSetVersion.formatMinorVersion,
+                tzDataSetVersion.rulesVersion,
+                tzDataSetVersion.revision);
         TimeZoneDistroBuilder builder = new TimeZoneDistroBuilder()
                 .setDistroVersion(distroVersion)
                 .setTzDataFile(getMandatoryPropertyFile(properties, "tzdata.file"))
@@ -96,9 +107,9 @@ public class CreateTimeZoneDistro {
         File outputDistroDir = getMandatoryPropertyFile(properties, "output.distro.dir");
         File outputVersionFile = new File(getMandatoryProperty(properties, "output.version.file"));
 
-        // Write the distro version file outside the zip for reference.
+        // Write the tz data set version file.
         try (OutputStream os = new FileOutputStream(outputVersionFile)) {
-            os.write(distroVersionBytes);
+            os.write(tzDataSetVersionBytes);
         }
         System.out.println("Wrote " + outputVersionFile);
 

@@ -55,14 +55,15 @@ static const char* DISTRO_VERSION_FILENAME = "/distro_version";
 static const int DISTRO_VERSION_LENGTH = 13;
 
 // The major version of the distro format supported by this code as a null-terminated char[].
-// See also com.android.timezone.distro.TimeZoneDistro / com.android.timezone.distro.DistroVersion.
+// See also com.android.timezone.distro.TimeZoneDistro / libcore.timezone.TzDataSetVersion.
 static const char SUPPORTED_DISTRO_MAJOR_VERSION[] = "003";
 
 // The length of the distro format major version excluding the \0
 static const size_t SUPPORTED_DISTRO_MAJOR_VERSION_LEN = sizeof(SUPPORTED_DISTRO_MAJOR_VERSION) - 1;
 
 // The minor version of the distro format supported by this code as a null-terminated char[].
-// See also com.android.timezone.distro.TimeZoneDistro / com.android.timezone.distro.DistroVersion.
+// See also com.android.timezone.distro.TimeZoneDistro /
+// libcore.timezone.TzDataSetVersion
 static const char SUPPORTED_DISTRO_MINOR_VERSION[] = "001";
 
 // The length of the distro format minor version excluding the \0
