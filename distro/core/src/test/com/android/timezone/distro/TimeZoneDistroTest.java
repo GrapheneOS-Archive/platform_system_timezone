@@ -18,6 +18,7 @@ package com.android.timezone.distro;
 import junit.framework.TestCase;
 
 import libcore.testing.io.TestIoUtils;
+import libcore.timezone.TzDataSetVersion;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -50,8 +51,9 @@ public class TimeZoneDistroTest extends TestCase {
     }
 
     public void testGetDistroVersion() throws Exception {
-        DistroVersion distroVersion = new DistroVersion(DistroVersion.CURRENT_FORMAT_MAJOR_VERSION,
-                DistroVersion.CURRENT_FORMAT_MINOR_VERSION, "2016c", 1);
+        DistroVersion distroVersion = new DistroVersion(
+                TzDataSetVersion.currentFormatMajorVersion(),
+                TzDataSetVersion.currentFormatMinorVersion(), "2016c", 1);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(baos)) {
             addZipEntry(zipOutputStream, TimeZoneDistro.DISTRO_VERSION_FILE_NAME,
@@ -63,8 +65,8 @@ public class TimeZoneDistroTest extends TestCase {
     }
 
     public void testGetDistroVersion_closesStream() throws Exception {
-        DistroVersion distroVersion = new DistroVersion(DistroVersion.CURRENT_FORMAT_MAJOR_VERSION,
-                DistroVersion.CURRENT_FORMAT_MINOR_VERSION, "2016c", 1);
+        DistroVersion distroVersion = new DistroVersion(
+                3 /* majorVersion */, 2 /* minorVersion */, "2016c", 1);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(baos)) {
             addZipEntry(zipOutputStream, TimeZoneDistro.DISTRO_VERSION_FILE_NAME,
@@ -79,8 +81,8 @@ public class TimeZoneDistroTest extends TestCase {
     }
 
     public void testExtractTo_closesStream() throws Exception {
-        DistroVersion distroVersion = new DistroVersion(DistroVersion.CURRENT_FORMAT_MAJOR_VERSION,
-                DistroVersion.CURRENT_FORMAT_MINOR_VERSION, "2016c", 1);
+        DistroVersion distroVersion = new DistroVersion(
+                3 /* majorVersion */, 2 /* minorVersion */, "2016c", 1);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(baos)) {
             addZipEntry(zipOutputStream, TimeZoneDistro.DISTRO_VERSION_FILE_NAME,
