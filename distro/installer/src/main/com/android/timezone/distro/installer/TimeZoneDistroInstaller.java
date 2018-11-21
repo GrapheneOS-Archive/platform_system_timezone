@@ -29,6 +29,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import libcore.timezone.TzDataSetVersion;
+import libcore.timezone.TzDataSetVersion.TzDataSetException;
 import libcore.util.TimeZoneFinder;
 import libcore.util.ZoneInfoDB;
 
@@ -175,7 +177,16 @@ public class TimeZoneDistroInstaller {
                 Slog.i(logTag, "Update not applied: Distro version could not be loaded");
                 return INSTALL_FAIL_BAD_DISTRO_STRUCTURE;
             }
-            if (!DistroVersion.isCompatibleWithThisDevice(distroVersion)) {
+            TzDataSetVersion distroTzDataSetVersion;
+            try {
+                distroTzDataSetVersion = new TzDataSetVersion(
+                        distroVersion.formatMajorVersion, distroVersion.formatMinorVersion,
+                        distroVersion.rulesVersion, distroVersion.revision);
+            } catch (TzDataSetException e) {
+                Slog.i(logTag, "Update not applied: Distro version could not be converted", e);
+                return INSTALL_FAIL_BAD_DISTRO_STRUCTURE;
+            }
+            if (!TzDataSetVersion.isCompatibleWithThisDevice(distroTzDataSetVersion)) {
                 Slog.i(logTag, "Update not applied: Distro format version check failed: "
                         + distroVersion);
                 return INSTALL_FAIL_BAD_DISTRO_FORMAT_VERSION;
@@ -186,7 +197,7 @@ public class TimeZoneDistroInstaller {
                 return INSTALL_FAIL_BAD_DISTRO_STRUCTURE;
             }
 
-            if (!checkDistroRulesNewerThanSystem(systemTzDataFile, distroVersion)) {
+            if (!checkDistroRulesNewerThanSystem(systemTzDataFile, distroTzDataSetVersion)) {
                 Slog.i(logTag, "Update not applied: Distro rules version check failed");
                 return INSTALL_FAIL_RULES_TOO_OLD;
             }
@@ -387,7 +398,7 @@ public class TimeZoneDistroInstaller {
      * Returns true if the the distro IANA rules version is >= system IANA rules version.
      */
     private boolean checkDistroRulesNewerThanSystem(
-            File systemTzDataFile, DistroVersion distroVersion) throws IOException {
+            File systemTzDataFile, TzDataSetVersion distroVersion) throws IOException {
 
         // We only check the /system tzdata file and assume that other data like ICU is in sync.
         // There is a CTS test that checks ICU and bionic/libcore are in sync.

@@ -14,7 +14,7 @@
 
 // Library of tools classes for creating / interpreting time zone distros.
 // Used when generating distros and in host-side tests.
-java_library_static {
+java_library {
     name: "time_zone_distro_tools",
     host_supported: true,
 

@@ -38,7 +38,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import libcore.io.IoUtils;
-import libcore.tzdata.testing.ZoneInfoTestHelper;
+import libcore.timezone.TzDataSetVersion;
+import libcore.timezone.testing.ZoneInfoTestHelper;
 
 import static org.junit.Assert.assertArrayEquals;
 
@@ -333,8 +334,8 @@ public class TimeZoneDistroInstallerTest extends TestCase {
         // Create a distro that will appear to be newer than the one currently supported.
         byte[] distroBytes = createValidTimeZoneDistroBuilder(NEW_RULES_VERSION, 1)
                 .replaceFormatVersionForTests(
-                        DistroVersion.CURRENT_FORMAT_MAJOR_VERSION + 1,
-                        DistroVersion.CURRENT_FORMAT_MINOR_VERSION)
+                        TzDataSetVersion.currentFormatMajorVersion() + 1,
+                        TzDataSetVersion.currentFormatMinorVersion())
                 .buildUnvalidatedBytes();
         assertEquals(
                 TimeZoneDistroInstaller.INSTALL_FAIL_BAD_DISTRO_FORMAT_VERSION,
@@ -597,8 +598,8 @@ public class TimeZoneDistroInstallerTest extends TestCase {
                 + "  </countryzones>\n"
                 + "</timezones>\n";
         DistroVersion distroVersion = new DistroVersion(
-                DistroVersion.CURRENT_FORMAT_MAJOR_VERSION,
-                DistroVersion.CURRENT_FORMAT_MINOR_VERSION,
+                TzDataSetVersion.currentFormatMajorVersion(),
+                TzDataSetVersion.currentFormatMinorVersion(),
                 rulesVersion,
                 revision);
         return new TimeZoneDistroBuilder()
