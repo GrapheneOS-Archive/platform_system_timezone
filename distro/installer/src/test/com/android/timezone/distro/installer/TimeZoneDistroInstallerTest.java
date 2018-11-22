@@ -19,7 +19,7 @@ import com.android.timezone.distro.DistroVersion;
 import com.android.timezone.distro.FileUtils;
 import com.android.timezone.distro.StagedDistroOperation;
 import com.android.timezone.distro.TimeZoneDistro;
-import com.android.timezone.distro.tools.TimeZoneDistroBuilder;
+import com.android.timezone.distro.builder.TimeZoneDistroBuilder;
 
 import junit.framework.TestCase;
 
