@@ -27,7 +27,7 @@ java_library {
     srcs: ["src/test/**/*.java"],
     static_libs: [
         "time_zone_distro",
-        "time_zone_distro_tools",
+        "time_zone_distro_builder",
         "time_zone_distro_installer",
         "tzdata-testing",
         "junit",
