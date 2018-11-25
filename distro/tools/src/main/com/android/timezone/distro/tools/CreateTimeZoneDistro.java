@@ -19,6 +19,7 @@ import libcore.timezone.TzDataSetVersion;
 
 import com.android.timezone.distro.DistroVersion;
 import com.android.timezone.distro.TimeZoneDistro;
+import com.android.timezone.distro.builder.TimeZoneDistroBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
