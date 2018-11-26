@@ -31,7 +31,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import libcore.timezone.TzDataSetVersion;
 import libcore.timezone.TzDataSetVersion.TzDataSetException;
-import libcore.util.TimeZoneFinder;
+import libcore.timezone.TimeZoneFinder;
 import libcore.util.ZoneInfoDB;
 
 /**
