@@ -32,7 +32,7 @@ import java.lang.annotation.RetentionPolicy;
 import libcore.timezone.TzDataSetVersion;
 import libcore.timezone.TzDataSetVersion.TzDataSetException;
 import libcore.timezone.TimeZoneFinder;
-import libcore.util.ZoneInfoDB;
+import libcore.timezone.ZoneInfoDB;
 
 /**
  * A distro-validation / extraction class. Separate from the services code that uses it for easier
