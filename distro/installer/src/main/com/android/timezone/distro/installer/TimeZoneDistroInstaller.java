@@ -197,7 +197,7 @@ public class TimeZoneDistroInstaller {
                 return INSTALL_FAIL_BAD_DISTRO_STRUCTURE;
             }
 
-            if (!checkDistroRulesNewerThanSystem(systemTzDataFile, distroTzDataSetVersion)) {
+            if (!checkDistroRulesNewerThanSystem(systemTzDataFile, distroVersion)) {
                 Slog.i(logTag, "Update not applied: Distro rules version check failed");
                 return INSTALL_FAIL_RULES_TOO_OLD;
             }
@@ -398,7 +398,7 @@ public class TimeZoneDistroInstaller {
      * Returns true if the the distro IANA rules version is >= system IANA rules version.
      */
     private boolean checkDistroRulesNewerThanSystem(
-            File systemTzDataFile, TzDataSetVersion distroVersion) throws IOException {
+            File systemTzDataFile, DistroVersion distroVersion) throws IOException {
 
         // We only check the /system tzdata file and assume that other data like ICU is in sync.
         // There is a CTS test that checks ICU and bionic/libcore are in sync.
