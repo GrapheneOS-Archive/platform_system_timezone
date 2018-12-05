@@ -39,6 +39,7 @@ prebuilt_etc {
     src: "icu_overlay/icu_tzdata.dat",
     notice: "icu_overlay/LICENSE",
     filename: "icu_tzdata.dat",
+    sub_dir: "icu",
     installable: false,
 }
 
