@@ -131,7 +131,7 @@ Changing the distro format version
         "${ANDROID_PRODUCT_OUT}/data/app/FrameworksServicesTests/FrameworksServicesTests.apk"
     adb shell am instrument -e package com.android.server.timezone -w \
         com.android.frameworks.servicestests \
-        "com.android.frameworks.servicestests/android.support.test.runner.AndroidJUnitRunner"
+        "com.android.frameworks.servicestests/androidx.test.runner.AndroidJUnitRunner"
 5) Upload, review, submit the changes from system/timezone, libcore and external/icu.
 
 REMINDER: Any prebuilt apks of OEM-specific time zone data apps .apk files
