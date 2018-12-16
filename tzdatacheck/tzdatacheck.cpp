@@ -84,11 +84,11 @@ static const size_t VERSION_RULES_IDX = 8;
 
 
 static void usage() {
-    std::cerr << "Usage: tzdatacheck SYSTEM_TZ_DIR DATA_TZ_DIR\n"
+    std::cerr << "Usage: tzdatacheck BASE_TZ_DIR DATA_TZ_DIR\n"
             "\n"
             "Checks whether any timezone update distro in DATA_TZ_DIR is compatible with the\n"
-            "current Android release and better than or the same as base system timezone rules in\n"
-            "SYSTEM_TZ_DIR. If the timezone rules in SYSTEM_TZ_DIR are a higher version than the\n"
+            "current Android release and better than or the same as base timezone rules in\n"
+            "BASE_TZ_DIR. If the timezone rules in BASE_TZ_DIR are a higher version than the\n"
             "one in DATA_TZ_DIR the DATA_TZ_DIR is renamed and then deleted.\n";
     exit(1);
 }
@@ -429,7 +429,7 @@ static void processStagedOperation(const std::string& dataStagedDirName,
  * paths for the metadata and current timezone data must match.
  *
  * Typically on device the two args will be:
- *   /system/usr/share/zoneinfo /data/misc/zoneinfo
+ *   /apex/com.google.runtime/etc/tz /data/misc/zoneinfo
  *
  * See usage() for usage notes.
  */
