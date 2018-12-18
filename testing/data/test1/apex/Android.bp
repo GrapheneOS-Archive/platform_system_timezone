@@ -27,5 +27,9 @@ apex {
         "apex_icu_tzdata.dat_test1",
     ],
     key: "apex.tzdata.key",
+
+    // installable: false as we do not want test APEX versions in the system
+    // image.
+    installable: false,
 }
 
