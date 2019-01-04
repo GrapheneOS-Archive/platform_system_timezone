@@ -28,14 +28,26 @@ ifeq ($(WITH_HOST_DALVIK),true)
 # A host version of the tz_version module for use by
 # hostdex rules.
 
+# Simulate /system
 include $(CLEAR_VARS)
-LOCAL_MODULE := tz_version
+LOCAL_MODULE := tz_version_host
 LOCAL_IS_HOST_MODULE := true
-LOCAL_SRC_FILES := $(LOCAL_MODULE)
+LOCAL_SRC_FILES := tz_version
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_STEM := $(LOCAL_SRC_FILES)
 LOCAL_MODULE_PATH := $(HOST_OUT)/usr/share/zoneinfo
+include $(BUILD_PREBUILT)
+
+# Simulate the runtime module
+include $(CLEAR_VARS)
+LOCAL_MODULE := tz_version_host_runtime_apex
+LOCAL_IS_HOST_MODULE := true
+LOCAL_SRC_FILES := tz_version
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_STEM := $(LOCAL_SRC_FILES)
+LOCAL_MODULE_PATH := $(HOST_OUT)/com.android.runtime/etc/tz
 include $(BUILD_PREBUILT)
 
 endif
