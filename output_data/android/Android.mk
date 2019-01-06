@@ -20,8 +20,9 @@ ifeq ($(WITH_HOST_DALVIK),true)
 # A host version of the tzlookup.xml module for use by
 # hostdex rules.
 
+# Simulate the runtime module.
 include $(CLEAR_VARS)
-LOCAL_MODULE := tzlookup.xml
+LOCAL_MODULE := tzlookup.xml_host_runtime_apex
 LOCAL_IS_HOST_MODULE := true
 LOCAL_SRC_FILES := tzlookup.xml
 LOCAL_MODULE_CLASS := ETC
