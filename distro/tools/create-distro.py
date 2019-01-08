@@ -16,6 +16,8 @@
 
 """Generates a time zone distro file"""
 
+from __future__ import print_function
+
 import argparse
 import os
 import shutil
@@ -107,8 +109,8 @@ def main():
       output_distro_dir=output_distro_dir,
       output_version_file=output_version_file)
 
-  print 'Distro file created in %s' % output_distro_dir
-  print 'Version file created as %s' % output_version_file
+  print('Distro file created in %s' % output_distro_dir)
+  print('Version file created as %s' % output_version_file)
   sys.exit(0)
 
 
