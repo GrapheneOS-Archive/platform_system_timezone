@@ -47,6 +47,11 @@
 $(call add-clean-step, rm -f $(TARGET_OUT)/system/usr/share/zoneinfo/tzlookup.xml)
 $(call add-clean-step, rm -f $(HOST_OUT)/usr/share/zoneinfo/tzlookup.xml)
 
+# Fixes for the steps above which seem to be broken because TARGET_OUT / HOST_OUT aren't set
+# for CleanSpec.mk.
+$(call add-clean-step, rm -f $(PRODUCT_OUT)/system/usr/share/zoneinfo/tzlookup.xml)
+$(call add-clean-step, rm -f $(OUT_DIR)/host/linux-x86/usr/share/zoneinfo/tzlookup.xml)
+
 # ************************************************
 # NEWER CLEAN STEPS MUST BE AT THE END OF THE LIST
 # ************************************************
