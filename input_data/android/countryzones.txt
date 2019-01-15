@@ -1202,7 +1202,7 @@ countries:<
 countries:<
   isoCode:"eh"
   timeZoneMappings:<
-    utcOffset:"1:00"
+    utcOffset:"0:00"
     id:"Africa/El_Aaiun"
   >
 >
@@ -1944,7 +1944,7 @@ countries:<
 countries:<
   isoCode:"ma"
   timeZoneMappings:<
-    utcOffset:"1:00"
+    utcOffset:"0:00"
     id:"Africa/Casablanca"
   >
 >
