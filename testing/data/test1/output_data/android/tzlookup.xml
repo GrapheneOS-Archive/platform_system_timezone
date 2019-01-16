@@ -465,10 +465,11 @@
   </country>
   <country code="kz" default="Asia/Almaty" everutc="n">
    <id>Asia/Almaty</id>
-   <id notafter="1099170000000">Asia/Qyzylorda</id>
+   <id notafter="1099170000000">Asia/Qostanay</id>
    <id notafter="1099173600000">Asia/Aqtau</id>
    <id>Asia/Oral</id>
-   <id>Asia/Aqtobe</id>
+   <id notafter="1545328800000">Asia/Qyzylorda</id>
+   <id notafter="1545328800000">Asia/Aqtobe</id>
    <id notafter="922572000000">Asia/Atyrau</id>
   </country>
   <country code="la" default="Asia/Vientiane" everutc="n">
@@ -524,7 +525,7 @@
   </country>
   <country code="mh" default="Pacific/Majuro" everutc="n">
    <id>Pacific/Majuro</id>
-   <id notafter="745848000000">Pacific/Kwajalein</id>
+   <id notafter="745934400000">Pacific/Kwajalein</id>
   </country>
   <country code="mk" default="Europe/Skopje" everutc="n">
    <id>Europe/Skopje</id>
@@ -868,7 +869,7 @@
    <id notafter="436359600000">America/Juneau</id>
    <id notafter="436356000000">America/Yakutat</id>
    <id notafter="436363200000">America/Nome</id>
-   <id notafter="1446372000000">America/Metlakatla</id>
+   <id notafter="1552215600000">America/Metlakatla</id>
    <id notafter="341402400000">America/Sitka</id>
    <id>Pacific/Honolulu</id>
    <id>America/Adak</id>
