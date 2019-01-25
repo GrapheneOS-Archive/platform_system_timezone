@@ -31,5 +31,6 @@ apex {
     // installable: false as we do not want test APEX versions in the system
     // image.
     installable: false,
+    certificate: "com.android.tzdata",
 }
 
