@@ -16,6 +16,7 @@ prebuilt_etc {
     name: "apex_tz_version_test1",
     src: "version/tz_version",
     filename: "tz_version",
+    sub_dir: "tz",
     installable: false,
 }
 
@@ -23,6 +24,7 @@ prebuilt_etc {
     name: "apex_tzlookup.xml_test1",
     src: "android/tzlookup.xml",
     filename: "tzlookup.xml",
+    sub_dir: "tz",
     installable: false,
 }
 
@@ -31,6 +33,7 @@ prebuilt_etc {
     src: "iana/tzdata",
     notice: "iana/NOTICE",
     filename: "tzdata",
+    sub_dir: "tz",
     installable: false,
 }
 
