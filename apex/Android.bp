@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-apex {
-    name: "com.android.tzdata",
-    manifest: "manifest.json",
-    prebuilts: [
-        "apex_tz_version",
-        "apex_tzlookup.xml",
-        "apex_tzdata",
-        "apex_icu_tzdata.dat",
-    ],
+// Defaults shared between real and test versions of the APEX.
+apex_defaults {
+    name: "com.android.tzdata-defaults",
+
+    // Explicit because the defaulting behavior only works for the real
+    // module.
+    file_contexts: "com.android.tzdata",
+
+    // Shared signing information.
     key: "apex.tzdata.key",
     certificate: "com.android.tzdata",
 }
@@ -29,5 +29,18 @@ apex_key {
     name: "apex.tzdata.key",
     public_key: "com.android.tzdata.avbpubkey",
     private_key: "com.android.tzdata.pem",
+}
+
+// The definition for the real (not test) tzdata APEX.
+apex {
+    name: "com.android.tzdata",
+    defaults: ["com.android.tzdata-defaults"],
+    manifest: "manifest.json",
+    prebuilts: [
+        "apex_tz_version",
+        "apex_tzlookup.xml",
+        "apex_tzdata",
+        "apex_icu_tzdata.dat",
+    ],
 }
 
