@@ -18,19 +18,17 @@
 // data.
 apex {
     name: "test1_com.android.tzdata",
+    defaults: ["com.android.tzdata-defaults"],
     manifest: "manifest.json",
-    file_contexts: "com.android.tzdata",
     prebuilts: [
         "apex_tz_version_test1",
         "apex_tzlookup.xml_test1",
         "apex_tzdata_test1",
         "apex_icu_tzdata.dat_test1",
     ],
-    key: "apex.tzdata.key",
 
     // installable: false as we do not want test APEX versions in the system
     // image.
     installable: false,
-    certificate: "com.android.tzdata",
 }
 
