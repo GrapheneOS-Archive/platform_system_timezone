@@ -22,13 +22,18 @@ apex_defaults {
 
     // Shared signing information.
     key: "apex.tzdata.key",
-    certificate: "com.android.tzdata",
+    certificate: ":com.android.tzdata.certificate",
 }
 
 apex_key {
     name: "apex.tzdata.key",
     public_key: "com.android.tzdata.avbpubkey",
     private_key: "com.android.tzdata.pem",
+}
+
+android_app_certificate {
+    name: "com.android.tzdata.certificate",
+    certificate: "com.android.tzdata",
 }
 
 // The definition for the real (not test) tzdata APEX.
@@ -43,4 +48,3 @@ apex {
         "apex_icu_tzdata.dat",
     ],
 }
-
