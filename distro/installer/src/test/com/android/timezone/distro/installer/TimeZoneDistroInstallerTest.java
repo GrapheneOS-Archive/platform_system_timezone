@@ -48,31 +48,36 @@ import static org.junit.Assert.assertArrayEquals;
  */
 public class TimeZoneDistroInstallerTest extends TestCase {
 
-    // OLDER_RULES_VERSION < SYSTEM_RULES_VERSION < NEW_RULES_VERSION < NEWER_RULES_VERSION
+    // OLDER_RULES_VERSION < BASE_RULES_VERSION < NEW_RULES_VERSION < NEWER_RULES_VERSION
     private static final String OLDER_RULES_VERSION = "2030a";
-    private static final String SYSTEM_RULES_VERSION = "2030b";
+    private static final String BASE_RULES_VERSION = "2030b";
     private static final String NEW_RULES_VERSION = "2030c";
     private static final String NEWER_RULES_VERSION = "2030d";
 
     private TimeZoneDistroInstaller installer;
     private File tempDir;
     private File testInstallDir;
-    private File testSystemTzDataDir;
+    private File testBaseDataDir;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         tempDir = createUniqueDirectory(null, "tempDir");
         testInstallDir = createSubDirectory(tempDir, "testInstall");
-        testSystemTzDataDir =  createSubDirectory(tempDir, "testSystemTzData");
+        testBaseDataDir =  createSubDirectory(tempDir, "testBaseData");
 
-        // Create a file to represent the tzdata file in the /system partition of the device.
-        File testSystemTzDataFile = new File(testSystemTzDataDir, "tzdata");
-        byte[] systemTzDataBytes = createTzData(SYSTEM_RULES_VERSION);
-        createFile(testSystemTzDataFile, systemTzDataBytes);
+        // Create a tz_version file to indicate the base version of tz data on a device.
+        TzDataSetVersion tzDataSetVersion =
+                new TzDataSetVersion(
+                        TzDataSetVersion.currentFormatMajorVersion(),
+                        TzDataSetVersion.currentFormatMinorVersion(),
+                        BASE_RULES_VERSION,
+                        1 /* revision */);
+        File testBaseVersionFile = new File(testBaseDataDir, TzDataSetVersion.DEFAULT_FILE_NAME);
+        createFile(testBaseVersionFile, tzDataSetVersion.toBytes());
 
         installer = new TimeZoneDistroInstaller(
-                "TimeZoneDistroInstallerTest", testSystemTzDataFile, testInstallDir);
+                "TimeZoneDistroInstallerTest", testBaseVersionFile, testInstallDir);
     }
 
     /**
@@ -100,15 +105,15 @@ public class TimeZoneDistroInstallerTest extends TestCase {
         super.tearDown();
     }
 
-    /** Tests the an update on a device will fail if the /system tzdata file cannot be found. */
-    public void testStageInstallWithErrorCode_badSystemFile() throws Exception {
-        File doesNotExist = new File(testSystemTzDataDir, "doesNotExist");
-        TimeZoneDistroInstaller brokenSystemInstaller = new TimeZoneDistroInstaller(
+    /** Tests the an update on a device will fail if the base tz_version file cannot be found. */
+    public void testStageInstallWithErrorCode_badBaseFile() throws Exception {
+        File doesNotExist = new File(testBaseDataDir, "doesNotExist");
+        TimeZoneDistroInstaller brokenBaseInstaller = new TimeZoneDistroInstaller(
                 "TimeZoneDistroInstallerTest", doesNotExist, testInstallDir);
         byte[] distroBytes = createValidTimeZoneDistroBytes(NEW_RULES_VERSION, 1);
 
         try {
-            brokenSystemInstaller.stageInstallWithErrorCode(new TimeZoneDistro(distroBytes));
+            brokenBaseInstaller.stageInstallWithErrorCode(new TimeZoneDistro(distroBytes));
             fail();
         } catch (IOException expected) {}
 
@@ -128,11 +133,11 @@ public class TimeZoneDistroInstallerTest extends TestCase {
     }
 
     /**
-     * Tests we can install an update the same version as is in /system.
+     * Tests we can install an update with the same version as the base version.
      */
-    public void testStageInstallWithErrorCode_successfulFirstUpdate_sameVersionAsSystem()
+    public void testStageInstallWithErrorCode_successfulFirstUpdate_sameVersionAsBase()
             throws Exception {
-        byte[] distroBytes = createValidTimeZoneDistroBytes(SYSTEM_RULES_VERSION, 1);
+        byte[] distroBytes = createValidTimeZoneDistroBytes(BASE_RULES_VERSION, 1);
         assertEquals(
                 TimeZoneDistroInstaller.INSTALL_SUCCESS,
                 installer.stageInstallWithErrorCode(new TimeZoneDistro(distroBytes)));
@@ -141,9 +146,9 @@ public class TimeZoneDistroInstallerTest extends TestCase {
     }
 
     /**
-     * Tests we cannot install an update older than the version in /system.
+     * Tests we cannot install an update older than the base version.
      */
-    public void testStageInstallWithErrorCode_unsuccessfulFirstUpdate_olderVersionThanSystem()
+    public void testStageInstallWithErrorCode_unsuccessfulFirstUpdate_olderVersionThanBase()
             throws Exception {
         byte[] distroBytes = createValidTimeZoneDistroBytes(OLDER_RULES_VERSION, 1);
         assertEquals(
@@ -180,7 +185,7 @@ public class TimeZoneDistroInstallerTest extends TestCase {
 
     /**
      * Tests an update on a device when there is a prior update already applied, but the follow
-     * on update is older than in /system.
+     * on update is older than the base version.
      */
     public void testStageInstallWithErrorCode_unsuccessfulFollowOnUpdate_olderVersion()
             throws Exception {
@@ -494,8 +499,9 @@ public class TimeZoneDistroInstallerTest extends TestCase {
         assertInstalledDistro(installedDistroBytes);
     }
 
-    public void testGetSystemRulesVersion() throws Exception {
-        assertEquals(SYSTEM_RULES_VERSION, installer.getSystemRulesVersion());
+    public void testReadBaseRulesVersion() throws Exception {
+        TzDataSetVersion actualBaseVersion = installer.readBaseVersion();
+        assertEquals(BASE_RULES_VERSION, actualBaseVersion.rulesVersion);
     }
 
     public void testGetInstalledDistroVersion() throws Exception {
