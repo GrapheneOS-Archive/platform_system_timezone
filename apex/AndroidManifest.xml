@@ -23,5 +23,9 @@
     *  the version of ICU being used on the device. Since that typically
     *  updates every dessert release, we lock the module to a single API level.
     -->
-  <uses-sdk android:minSdkVersion="28" android:maxSdkVersion="28" />
+  <uses-sdk
+      android:minSdkVersion="28"
+      android:maxSdkVersion="28"
+      android:targetSdkVersion="28"
+  />
 </manifest>
