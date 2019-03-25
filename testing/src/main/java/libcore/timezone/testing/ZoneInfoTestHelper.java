@@ -31,7 +31,8 @@ public class ZoneInfoTestHelper {
     private ZoneInfoTestHelper() {}
 
     /**
-     * Constructs valid and invalid zic data for tests.
+     * Constructs valid and invalid zic data for tests. Currently it only creates minimal TZif
+     * version 1 data necessary to be compatible with Android's ZoneInfo class.
      */
     public static class ZicDataBuilder {
 
