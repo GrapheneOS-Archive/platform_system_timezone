@@ -46,3 +46,17 @@ prebuilt_etc {
     installable: false,
 }
 
+// tzdata packaged into a jar for use in robolectric
+java_genrule {
+    name: "robolectric_tzdata",
+    out: ["robolectric_tzdata.jar"],
+    tools: ["soong_zip"],
+    srcs: [
+        "iana/tzdata",
+        "android/tzlookup.xml",
+    ],
+    cmd: "mkdir -p $(genDir)/usr/share/zoneinfo/ && " +
+        "cp $(location iana/tzdata) $(genDir)/usr/share/zoneinfo/ && " +
+        "cp $(location android/tzlookup.xml) $(genDir)/usr/share/zoneinfo/ && " +
+        "$(location soong_zip) -o $(out) -C $(genDir) -D $(genDir)/usr/share/zoneinfo",
+}
