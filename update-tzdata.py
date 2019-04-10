@@ -39,8 +39,8 @@ i18nutil.CheckDirExists(timezone_dir, 'system/timezone')
 
 android_host_out = i18nutil.GetAndroidHostOutOrDie()
 
-zone_compactor_dir = os.path.realpath('%s/system/timezone/zone_compactor' % android_build_top)
-i18nutil.CheckDirExists(timezone_dir, 'system/timezone/zone_zompactor')
+zone_compactor_dir = os.path.realpath('%s/system/timezone/input_tools/android' % android_build_top)
+i18nutil.CheckDirExists(zone_compactor_dir, 'system/timezone/input_tools/android')
 
 timezone_input_tools_dir = os.path.realpath('%s/input_tools' % timezone_dir)
 timezone_input_data_dir = os.path.realpath('%s/input_data' % timezone_dir)
