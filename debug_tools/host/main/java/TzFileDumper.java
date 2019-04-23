@@ -29,9 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Dumps out the contents of a tzfile (v1 format data only) in a CSV form.
+ * Dumps out the contents of a tzfile in a CSV form.
  *
- * <p>This class contains a copy of logic found in Android's ZoneInfo.
+ * <p>This class contains a near copy of logic found in Android's ZoneInfo class.
  */
 public class TzFileDumper {
 
@@ -60,10 +60,6 @@ public class TzFileDumper {
                 }
             }
         } else {
-            if (!output.isFile()) {
-                System.err.println("If first args is a file, second arg must be a file");
-                System.exit(1);
-            }
             new TzFileDumper(input, output).execute();
         }
     }
@@ -80,14 +76,54 @@ public class TzFileDumper {
         System.out.println("Dumping " + inputFile + " to " + outputFile);
         MappedByteBuffer mappedTzFile = ZoneSplitter.createMappedByteBuffer(inputFile);
 
+        try (Writer fileWriter = new OutputStreamWriter(
+                new FileOutputStream(outputFile), StandardCharsets.UTF_8)) {
+            Header header32Bit = readHeader(mappedTzFile);
+            List<Transition> transitions32Bit = read32BitTransitions(mappedTzFile, header32Bit);
+            List<Type> types32Bit = readTypes(mappedTzFile, header32Bit);
+            skipUninteresting32BitData(mappedTzFile, header32Bit);
+            types32Bit = mergeTodInfo(mappedTzFile, header32Bit, types32Bit);
+
+            writeCsvRow(fileWriter, "File format version: " + (char) header32Bit.tzh_version);
+            writeCsvRow(fileWriter);
+            writeCsvRow(fileWriter, "32-bit data");
+            writeCsvRow(fileWriter);
+            writeTypes(types32Bit, fileWriter);
+            writeCsvRow(fileWriter);
+            writeTransitions(transitions32Bit, types32Bit, fileWriter);
+            writeCsvRow(fileWriter);
+
+            if (header32Bit.tzh_version >= '2') {
+                Header header64Bit = readHeader(mappedTzFile);
+                List<Transition> transitions64Bit = read64BitTransitions(mappedTzFile, header64Bit);
+                List<Type> types64Bit = readTypes(mappedTzFile, header64Bit);
+                skipUninteresting64BitData(mappedTzFile, header64Bit);
+                types64Bit = mergeTodInfo(mappedTzFile, header64Bit, types64Bit);
+
+                writeCsvRow(fileWriter, "64-bit data");
+                writeCsvRow(fileWriter);
+                writeTypes(types64Bit, fileWriter);
+                writeCsvRow(fileWriter);
+                writeTransitions(transitions64Bit, types64Bit, fileWriter);
+            }
+        }
+    }
+
+    private Header readHeader(MappedByteBuffer mappedTzFile) throws IOException {
         // Variable names beginning tzh_ correspond to those in "tzfile.h".
         // Check tzh_magic.
         int tzh_magic = mappedTzFile.getInt();
         if (tzh_magic != 0x545a6966) { // "TZif"
             throw new IOException("File=" + inputFile + " has an invalid header=" + tzh_magic);
         }
+
+        byte tzh_version = mappedTzFile.get();
+
         // Skip the uninteresting part of the header.
-        mappedTzFile.position(mappedTzFile.position() + 28);
+        mappedTzFile.position(mappedTzFile.position() + 15);
+        int tzh_ttisgmtcnt = mappedTzFile.getInt();
+        int tzh_ttisstdcnt = mappedTzFile.getInt();
+        int tzh_leapcnt = mappedTzFile.getInt();
 
         // Read the sizes of the arrays we're about to read.
         int tzh_timecnt = mappedTzFile.getInt();
@@ -109,33 +145,36 @@ public class TzFileDumper {
                     "File=" + inputFile + " has too many types=" + tzh_typecnt);
         }
 
-        mappedTzFile.getInt(); // Skip tzh_charcnt.
+        int tzh_charcnt = mappedTzFile.getInt();
 
-        List<Transition> v1Transitions = readV1Transitions(mappedTzFile, tzh_timecnt, tzh_typecnt);
-        List<Type> v1Types = readTypes(mappedTzFile, tzh_typecnt);
-
-        try (Writer fileWriter = new OutputStreamWriter(
-                new FileOutputStream(outputFile), StandardCharsets.UTF_8)) {
-            writeCsvRow(fileWriter, "V1");
-            writeCsvRow(fileWriter);
-            writeTypes(v1Types, fileWriter);
-            writeCsvRow(fileWriter);
-            writeTransitions(v1Transitions, v1Types, fileWriter);
-        }
+        return new Header(
+                tzh_version, tzh_ttisgmtcnt, tzh_ttisstdcnt, tzh_leapcnt, tzh_timecnt, tzh_typecnt,
+                tzh_charcnt);
     }
 
-    private List<Transition> readV1Transitions(MappedByteBuffer mappedTzFile, int transitionCount,
-            int typeCount) throws IOException {
-        int[] transitionTimes = new int[transitionCount];
-        byte[] typeIndexes = new byte[transitionCount];
+    private List<Transition> read32BitTransitions(MappedByteBuffer mappedTzFile, Header header)
+            throws IOException {
 
         // Read the data.
+        int[] transitionTimes = new int[header.tzh_timecnt];
         fillIntArray(mappedTzFile, transitionTimes);
+
+        byte[] typeIndexes = new byte[header.tzh_timecnt];
         mappedTzFile.get(typeIndexes);
 
-        // Validate and construct the CSV rows.
+        // Convert int times to longs
+        long[] transitionTimesLong = new long[header.tzh_timecnt];
+        for (int i = 0; i < header.tzh_timecnt; ++i) {
+            transitionTimesLong[i] = transitionTimes[i];
+        }
+
+        return createTransitions(header, transitionTimesLong, typeIndexes);
+    }
+
+    private List<Transition> createTransitions(Header header,
+            long[] transitionTimes, byte[] typeIndexes) throws IOException {
         List<Transition> transitions = new ArrayList<>();
-        for (int i = 0; i < transitionCount; ++i) {
+        for (int i = 0; i < header.tzh_timecnt; ++i) {
             if (i > 0 && transitionTimes[i] <= transitionTimes[i - 1]) {
                 throw new IOException(
                         inputFile + " transition at " + i + " is not sorted correctly, is "
@@ -143,16 +182,26 @@ public class TzFileDumper {
             }
 
             int typeIndex = typeIndexes[i] & 0xff;
-            if (typeIndex >= typeCount) {
-                throw new IOException(inputFile + " type at " + i + " is not < " + typeCount
-                        + ", is " + typeIndex);
+            if (typeIndex >= header.tzh_typecnt) {
+                throw new IOException(inputFile + " type at " + i + " is not < "
+                        + header.tzh_typecnt + ", is " + typeIndex);
             }
 
             Transition transition = new Transition(transitionTimes[i], typeIndex);
             transitions.add(transition);
         }
-
         return transitions;
+    }
+
+    private List<Transition> read64BitTransitions(MappedByteBuffer mappedTzFile, Header header)
+            throws IOException {
+        long[] transitionTimes = new long[header.tzh_timecnt];
+        fillLongArray(mappedTzFile, transitionTimes);
+
+        byte[] typeIndexes = new byte[header.tzh_timecnt];
+        mappedTzFile.get(typeIndexes);
+
+        return createTransitions(header, transitionTimes, typeIndexes);
     }
 
     private void writeTransitions(List<Transition> transitions, List<Type> types, Writer fileWriter)
@@ -176,11 +225,9 @@ public class TzFileDumper {
                 "[Type isDST]");
     }
 
-    private List<Type> readTypes(MappedByteBuffer mappedTzFile, int typeCount)
-            throws IOException {
-
+    private List<Type> readTypes(MappedByteBuffer mappedTzFile, Header header) throws IOException {
         List<Type> types = new ArrayList<>();
-        for (int i = 0; i < typeCount; ++i) {
+        for (int i = 0; i < header.tzh_typecnt; ++i) {
             int gmtOffsetSeconds = mappedTzFile.getInt();
             byte isDst = mappedTzFile.get();
             if (isDst != 0 && isDst != 1) {
@@ -192,17 +239,54 @@ public class TzFileDumper {
 
             types.add(new Type(gmtOffsetSeconds, isDst));
         }
-
         return types;
     }
 
-    private void writeTypes(List<Type> types, Writer fileWriter) throws IOException {
+    private static void skipUninteresting32BitData(MappedByteBuffer mappedTzFile, Header header) {
+        mappedTzFile.get(new byte[header.tzh_charcnt]);
+        int leapInfoSize = 4 + 4;
+        mappedTzFile.get(new byte[header.tzh_leapcnt * leapInfoSize]);
+    }
 
+
+    private void skipUninteresting64BitData(MappedByteBuffer mappedTzFile, Header header) {
+        mappedTzFile.get(new byte[header.tzh_charcnt]);
+        int leapInfoSize = 8 + 4;
+        mappedTzFile.get(new byte[header.tzh_leapcnt * leapInfoSize]);
+    }
+
+    /**
+     * Populate ttisstd and ttisgmt information by copying {@code types} and populating those fields
+     * in the copies.
+     */
+    private static List<Type> mergeTodInfo(
+            MappedByteBuffer mappedTzFile, Header header, List<Type> types) {
+
+        byte[] ttisstds = new byte[header.tzh_ttisstdcnt];
+        mappedTzFile.get(ttisstds);
+        byte[] ttisgmts = new byte[header.tzh_ttisgmtcnt];
+        mappedTzFile.get(ttisgmts);
+
+        List<Type> outputTypes = new ArrayList<>();
+        for (int i = 0; i < types.size(); i++) {
+            Type inputType = types.get(i);
+            Byte ttisstd = ttisstds.length == 0 ? null : ttisstds[i];
+            Byte ttisgmt = ttisgmts.length == 0 ? null : ttisgmts[i];
+            Type outputType =
+                    new Type(inputType.gmtOffsetSeconds, inputType.isDst, ttisstd, ttisgmt);
+            outputTypes.add(outputType);
+        }
+        return outputTypes;
+    }
+
+    private void writeTypes(List<Type> types, Writer fileWriter) throws IOException {
         List<Object[]> rows = new ArrayList<>();
         for (Type type : types) {
             Object[] row = new Object[] {
                     type.gmtOffsetSeconds,
                     type.isDst,
+                    type.ttisgmt,
+                    type.ttisstd,
                     formatDurationSeconds(type.gmtOffsetSeconds),
                     formatIsDst(type.isDst),
             };
@@ -211,12 +295,19 @@ public class TzFileDumper {
 
         writeCsvRow(fileWriter, "Types");
         writeTuplesCsv(
-                fileWriter, rows, "gmtOffset (seconds)", "isDst", "[gmtOffset ISO]", "[DST?]");
+                fileWriter, rows, "gmtOffset (seconds)", "isDst", "ttisgmt", "ttisstd",
+                "[gmtOffset ISO]", "[DST?]");
     }
 
     private static void fillIntArray(MappedByteBuffer mappedByteBuffer, int[] toFill) {
         for (int i = 0; i < toFill.length; i++) {
             toFill[i] = mappedByteBuffer.getInt();
+        }
+    }
+
+    private static void fillLongArray(MappedByteBuffer mappedByteBuffer, long[] toFill) {
+        for (int i = 0; i < toFill.length; i++) {
+            toFill[i] = mappedByteBuffer.getLong();
         }
     }
 
@@ -247,14 +338,45 @@ public class TzFileDumper {
         }
     }
 
+    private static class Header {
+
+        /** The version. Known values are 0 (ASCII NUL), 50 (ASCII '2'), 51 (ASCII '3'). */
+        final byte tzh_version;
+        final int tzh_timecnt;
+        final int tzh_typecnt;
+        final int tzh_charcnt;
+        final int tzh_leapcnt;
+        final int tzh_ttisstdcnt;
+        final int tzh_ttisgmtcnt;
+
+        Header(byte tzh_version, int tzh_ttisgmtcnt, int tzh_ttisstdcnt, int tzh_leapcnt,
+                int tzh_timecnt, int tzh_typecnt, int tzh_charcnt) {
+            this.tzh_version = tzh_version;
+            this.tzh_timecnt = tzh_timecnt;
+            this.tzh_typecnt = tzh_typecnt;
+            this.tzh_charcnt = tzh_charcnt;
+            this.tzh_leapcnt = tzh_leapcnt;
+            this.tzh_ttisstdcnt = tzh_ttisstdcnt;
+            this.tzh_ttisgmtcnt = tzh_ttisgmtcnt;
+        }
+    }
+
     private static class Type {
 
         final int gmtOffsetSeconds;
         final byte isDst;
+        final Byte ttisstd;
+        final Byte ttisgmt;
 
         Type(int gmtOffsetSeconds, byte isDst) {
+            this(gmtOffsetSeconds, isDst, null, null);
+        }
+
+        Type(int gmtOffsetSeconds, byte isDst, Byte ttisstd, Byte ttisgmt) {
             this.gmtOffsetSeconds = gmtOffsetSeconds;
             this.isDst = isDst;
+            this.ttisstd = ttisstd;
+            this.ttisgmt = ttisgmt;
         }
     }
 
