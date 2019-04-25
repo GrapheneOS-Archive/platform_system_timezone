@@ -119,10 +119,10 @@ def DownloadAndReplaceLocalFiles(file_prefixes, ftp, local_dir):
 # See http://www.iana.org/time-zones/ for more about the source of this data.
 def main():
   parser = argparse.ArgumentParser(description=('Update IANA files from upstream'))
-  parser.add_argument('--notools', help='Skip tools files', action='store_true')
-  parser.add_argument('--nodata', help='Skip data files', action='store_true')
+  parser.add_argument('--tools', help='Download tools files', action='store_true')
+  parser.add_argument('--data', help='Download data files', action='store_true')
   args = parser.parse_args()
-  if args.notools and args.nodata:
+  if not args.tools and not args.data:
     parser.error("Nothing to do")
     sys.exit(1)
 
@@ -133,14 +133,14 @@ def main():
   ftp.cwd('tz/releases')
 
   output_files = []
-  if not args.notools:
+  if args.tools:
     # The tools and data files are kept separate to make the updates independent.
     # This means we duplicate the tzdata20xx file (once in the tools dir, once
     # in the data dir) but the contents of the data tar appear to be needed for
     # the zic build.
     new_files = DownloadAndReplaceLocalFiles(['tzdata20', 'tzcode20'], ftp, iana_tools_dir)
     output_files += new_files
-  if not args.nodata:
+  if args.data:
     new_files = DownloadAndReplaceLocalFiles(['tzdata20'], ftp, iana_data_dir)
     output_files += new_files
 
