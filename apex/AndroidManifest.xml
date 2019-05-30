@@ -24,8 +24,8 @@
     *  updates every dessert release, we lock the module to a single API level.
     -->
   <uses-sdk
-      android:minSdkVersion="28"
-      android:maxSdkVersion="28"
-      android:targetSdkVersion="28"
+      android:minSdkVersion="29"
+      android:maxSdkVersion="29"
+      android:targetSdkVersion="29"
   />
 </manifest>
