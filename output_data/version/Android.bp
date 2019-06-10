@@ -43,8 +43,17 @@ prebuilt_usr_share_host {
 // TODO(b/121117762, b/129332183): Remove this module definition when
 // the ART Buildbot and Golem have full support for the Runtime APEX.
 prebuilt_etc {
-    name: "tz_version-art-test",
+    name: "tz_version-art-test-runtime",
     src: "tz_version",
     filename_from_src: true,
     sub_dir: "tz",
+}
+
+// TODO(b/121117762, b/129332183): Remove this module definition when
+// the ART Buildbot and Golem have full support for the Time Zone Data APEX.
+prebuilt_etc {
+    name: "tz_version-art-test-tzdata",
+    src: "tz_version",
+    filename_from_src: true,
+    sub_dir: "tzdata_module/etc/tz",
 }
