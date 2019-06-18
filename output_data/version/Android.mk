@@ -19,17 +19,6 @@ ifeq ($(WITH_HOST_DALVIK),true)
 
 # Host simulations of APEX modules for use by hostdex rules.
 
-# Simulate the runtime module
-include $(CLEAR_VARS)
-LOCAL_MODULE := tz_version_host_runtime_apex
-LOCAL_IS_HOST_MODULE := true
-LOCAL_SRC_FILES := tz_version
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_STEM := $(LOCAL_SRC_FILES)
-LOCAL_MODULE_PATH := $(HOST_OUT)/com.android.runtime/etc/tz
-include $(BUILD_PREBUILT)
-
 # Simulate the time zone data module
 include $(CLEAR_VARS)
 LOCAL_MODULE := tz_version_host_tzdata_apex
