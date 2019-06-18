@@ -31,5 +31,5 @@ java_library {
     libs: [
         "time_zone_distro",
     ],
-    no_framework_libs: true,
+    sdk_version: "core_platform",
 }
