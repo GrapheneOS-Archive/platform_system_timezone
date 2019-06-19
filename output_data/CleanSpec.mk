@@ -55,6 +55,10 @@ $(call add-clean-step, rm -f $(OUT_DIR)/host/linux-x86/usr/share/zoneinfo/tzlook
 # Remove host files that simulate time zone data files in the runtime mainline module APEX.
 $(call add-clean-step, rm -rf $(HOST_OUT)/com.android.runtime/etc/tz/*)
 
+# Remove on-device files that simulate time zone data files in the runtime
+# mainline module APEX in ART's special on-device test environment.
+$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/etc/tz)
+
 # ************************************************
 # NEWER CLEAN STEPS MUST BE AT THE END OF THE LIST
 # ************************************************
