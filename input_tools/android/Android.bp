@@ -14,9 +14,9 @@
 
 // A static library for the zone_compactor host tool.
 // The tool can be run with java -jar zone_compactor.jar
-java_library_host {
+java_binary_host {
     name: "zone_compactor",
-    manifest: "main/manifest/MANIFEST.mf",
+    main_class: "ZoneCompactor",
     srcs: ["main/java/**/*.java"],
 }
 

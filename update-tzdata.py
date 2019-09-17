@@ -162,17 +162,17 @@ def BuildTzdata(zic_binary_file, extracted_iana_data_dir, iana_data_version):
   zone_compactor_setup_file = WriteSetupFile(zic_input_file)
 
   print('Calling ZoneCompactor to update tzdata to %s...' % iana_data_version)
-  subprocess.check_call(['make', '-C', android_build_top, '-j30', 'zone_compactor'])
+
+  tzdatautil.InvokeSoong(android_build_top, ['zone_compactor'])
 
   # Create args for ZoneCompactor
   zone_tab_file = '%s/zone.tab' % extracted_iana_data_dir
-  jar_file = '%s/framework/zone_compactor.jar' % android_host_out
   header_string = 'tzdata%s' % iana_data_version
 
   print('Executing ZoneCompactor...')
+  command = '%s/bin/zone_compactor' % android_host_out
   iana_output_data_dir = '%s/iana' % timezone_output_data_dir
-  subprocess.check_call(['java', '-jar', jar_file,
-                         zone_compactor_setup_file, zic_output_dir, zone_tab_file,
+  subprocess.check_call([command, zone_compactor_setup_file, zic_output_dir, zone_tab_file,
                          iana_output_data_dir, header_string])
 
 
@@ -181,12 +181,11 @@ def BuildTzlookup(iana_data_dir):
   tzlookup_dest_file = '%s/android/tzlookup.xml' % timezone_output_data_dir
 
   print('Calling TzLookupGenerator to create tzlookup.xml...')
-  subprocess.check_call(['make', '-C', android_build_top, '-j30', 'tzlookup_generator'])
+  tzdatautil.InvokeSoong(android_build_top, ['tzlookup_generator'])
 
-  jar_file = '%s/framework/tzlookup_generator.jar' % android_host_out
   zone_tab_file = '%s/zone.tab' % iana_data_dir
-  subprocess.check_call(['java', '-jar', jar_file,
-                         countryzones_source_file, zone_tab_file, tzlookup_dest_file])
+  command = '%s/bin/tzlookup_generator' % android_host_out
+  subprocess.check_call([command, countryzones_source_file, zone_tab_file, tzlookup_dest_file])
 
 
 def CreateDistroFiles(iana_data_version, output_distro_dir, output_version_file):
