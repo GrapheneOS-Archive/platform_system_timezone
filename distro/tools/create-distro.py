@@ -27,6 +27,8 @@ import sys
 sys.path.append('%s/external/icu/tools' % os.environ.get('ANDROID_BUILD_TOP'))
 import i18nutil
 
+sys.path.append('%s/system/timezone' % os.environ.get('ANDROID_BUILD_TOP'))
+import tzdatautil
 
 android_build_top = i18nutil.GetAndroidRootOrDie()
 android_host_out_dir = i18nutil.GetAndroidHostOutOrDie()
@@ -35,20 +37,11 @@ i18nutil.CheckDirExists(timezone_dir, 'system/timezone')
 
 def RunCreateTimeZoneDistro(properties_file):
   # Build the libraries needed.
-  subprocess.check_call(['make', '-C', android_build_top, 'create_time_zone_distro',
-      'time_zone_distro'])
-
-  libs = [ 'create_time_zone_distro', 'time_zone_distro' ]
-  host_java_libs_dir = '%s/../common/obj/JAVA_LIBRARIES' % android_host_out_dir
-  classpath_components = []
-  for lib in libs:
-      classpath_components.append('%s/%s_intermediates/javalib.jar' % (host_java_libs_dir, lib))
-
-  classpath = ':'.join(classpath_components)
+  tzdatautil.InvokeSoong(android_build_top, ['create_time_zone_distro'])
 
   # Run the CreateTimeZoneDistro tool
-  subprocess.check_call(['java', '-cp', classpath,
-      'com.android.timezone.distro.tools.CreateTimeZoneDistro', properties_file])
+  command = '%s/bin/create_time_zone_distro' % android_host_out_dir
+  subprocess.check_call([command, properties_file])
 
 
 def CreateTimeZoneDistro(
