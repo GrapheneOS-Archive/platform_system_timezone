@@ -27,7 +27,7 @@ java_library_host {
 java_binary_host {
     name: "tzlookup_generator",
 
-    manifest: "src/main/manifest/MANIFEST.mf",
+    main_class: "com.android.libcore.timezone.tzlookup.TzLookupGenerator",
     srcs: ["src/main/java/**/*.java"],
     javacflags: [
         "-encoding UTF-8",
