@@ -15,6 +15,7 @@
 from __future__ import print_function
 
 import os
+import subprocess
 import sys
 
 """Shared functions for use in tzdata scripts."""
@@ -33,3 +34,9 @@ def GetIanaTarFile(dir_name, file_prefix):
     print('Multiple %s files found unexpectedly %s' % (file_prefix, matching_files))
     sys.exit(1)
 
+
+def InvokeSoong(android_build_top, build_modules):
+  old_cwd = os.getcwd()
+  os.chdir(android_build_top)
+  subprocess.check_call(['build/soong/soong_ui.bash', '--make-mode', '-j30'] + build_modules)
+  os.chdir(old_cwd)
