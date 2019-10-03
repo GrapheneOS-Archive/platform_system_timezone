@@ -29,7 +29,8 @@ message CountryZones {
 message Country {
     required string isoCode = 1;
     optional string defaultTimeZoneId = 2;
-    repeated TimeZoneMapping timeZoneMappings = 3;
+    optional bool defaultTimeZoneBoost = 3;
+    repeated TimeZoneMapping timeZoneMappings = 4;
 }
 
 message TimeZoneMapping {
