@@ -244,6 +244,8 @@ public final class TzLookupGenerator {
                 // No point in continuing.
                 return null;
             }
+            boolean defaultTimeZoneBoost =
+                    determineCountryDefaultTimeZoneBoost(countryIn, processingErrors);
 
             // Validate the default.
             if (!countryTimeZoneIds.contains(defaultTimeZoneId)) {
@@ -307,8 +309,8 @@ public final class TzLookupGenerator {
             }
 
             // Add the country to the output structure.
-            TzLookupFile.Country countryOut =
-                    new TzLookupFile.Country(isoCode, defaultTimeZoneId, everUsesUtc);
+            TzLookupFile.Country countryOut = new TzLookupFile.Country(
+                    isoCode, defaultTimeZoneId, defaultTimeZoneBoost, everUsesUtc);
 
             // Process each input time zone.
             for (CountryZonesFile.TimeZoneMapping timeZoneIn : timeZonesIn) {
@@ -375,6 +377,24 @@ public final class TzLookupGenerator {
             defaultTimeZoneId = timeZonesIn.get(0).getId();
         }
         return defaultTimeZoneId;
+    }
+
+    /**
+     * Determines the defaultTimeZoneBoost value for the country.
+     */
+    private static boolean determineCountryDefaultTimeZoneBoost(
+            CountryZonesFile.Country countryIn, Errors processingErrorsOut) {
+        if (!countryIn.hasDefaultTimeZoneBoost()) {
+            return false;
+        }
+
+        boolean defaultTimeZoneBoost = countryIn.getDefaultTimeZoneBoost();
+        if (!countryIn.hasDefaultTimeZoneId() && defaultTimeZoneBoost) {
+            processingErrorsOut.addError(
+                    "defaultTimeZoneBoost is specified but defaultTimeZoneId is not explicit");
+        }
+
+        return defaultTimeZoneBoost;
     }
 
     /**
