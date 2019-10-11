@@ -47,10 +47,11 @@ final class TzLookupFile {
     // <countryzones>
     private static final String COUNTRY_ZONES_ELEMENT = "countryzones";
 
-    // <country code="iso_code" default="olson_id" everutc="n|y">
+    // <country code="iso_code" default="olson_id" [defaultBoost="n|y"] everutc="n|y">
     private static final String COUNTRY_ELEMENT = "country";
     private static final String COUNTRY_CODE_ATTRIBUTE = "code";
     private static final String DEFAULT_ATTRIBUTE = "default";
+    private static final String DEFAULT_BOOST_ATTRIBUTE = "defaultBoost";
     private static final String EVER_USES_UTC_ATTRIBUTE = "everutc";
 
     // <id [picker="n|y"]>
@@ -79,7 +80,7 @@ final class TzLookupFile {
          *       <id picker="n">America/Los_Angeles</id>
          *       ...
          *     </country>
-         *     <country code="gb" default="Europe/London" everutc="y">
+         *     <country code="gb" default="Europe/London" defaultBoost="y" everutc="y">
          *       <!-- 0:00 -->
          *       <id>Europe/London</id>
          *     </country>
@@ -164,12 +165,15 @@ final class TzLookupFile {
 
         private final String isoCode;
         private final String defaultTimeZoneId;
+        private final boolean defaultTimeZoneBoost;
         private final boolean everUsesUtc;
         private final List<TimeZoneMapping> timeZoneIds = new ArrayList<>();
 
-        Country(String isoCode, String defaultTimeZoneId, boolean everUsesUtc) {
+        Country(String isoCode, String defaultTimeZoneId, boolean defaultTimeZoneBoost,
+                boolean everUsesUtc) {
             this.defaultTimeZoneId = defaultTimeZoneId;
             this.isoCode = isoCode;
+            this.defaultTimeZoneBoost = defaultTimeZoneBoost;
             this.everUsesUtc = everUsesUtc;
         }
 
@@ -182,6 +186,10 @@ final class TzLookupFile {
             writer.writeStartElement(COUNTRY_ELEMENT);
             writer.writeAttribute(COUNTRY_CODE_ATTRIBUTE, country.isoCode);
             writer.writeAttribute(DEFAULT_ATTRIBUTE, country.defaultTimeZoneId);
+            if (country.defaultTimeZoneBoost) {
+                writer.writeAttribute(DEFAULT_BOOST_ATTRIBUTE,
+                        encodeBooleanAttribute(country.defaultTimeZoneBoost));
+            }
             writer.writeAttribute(EVER_USES_UTC_ATTRIBUTE, encodeBooleanAttribute(
                     country.everUsesUtc));
             for (TimeZoneMapping timeZoneId : country.timeZoneIds) {
