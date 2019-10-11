@@ -40,7 +40,7 @@
    <id>Antarctica/Rothera</id>
    <id>Antarctica/Palmer</id>
   </country>
-  <country code="ar" default="America/Argentina/Buenos_Aires" everutc="n">
+  <country code="ar" default="America/Argentina/Buenos_Aires" defaultBoost="y" everutc="n">
    <id>America/Argentina/Buenos_Aires</id>
    <id notafter="687931200000">America/Argentina/Cordoba</id>
    <id notafter="1096171200000">America/Argentina/Salta</id>
@@ -219,7 +219,7 @@
   <country code="cm" default="Africa/Douala" everutc="n">
    <id>Africa/Douala</id>
   </country>
-  <country code="cn" default="Asia/Shanghai" everutc="n">
+  <country code="cn" default="Asia/Shanghai" defaultBoost="y" everutc="n">
    <id>Asia/Shanghai</id>
    <id>Asia/Urumqi</id>
   </country>
@@ -267,7 +267,7 @@
   <country code="dz" default="Africa/Algiers" everutc="n">
    <id>Africa/Algiers</id>
   </country>
-  <country code="ec" default="America/Guayaquil" everutc="n">
+  <country code="ec" default="America/Guayaquil" defaultBoost="y" everutc="n">
    <id>America/Guayaquil</id>
    <id>Pacific/Galapagos</id>
   </country>
@@ -621,7 +621,7 @@
   <country code="nu" default="Pacific/Niue" everutc="n">
    <id>Pacific/Niue</id>
   </country>
-  <country code="nz" default="Pacific/Auckland" everutc="n">
+  <country code="nz" default="Pacific/Auckland" defaultBoost="y" everutc="n">
    <id>Pacific/Auckland</id>
    <id>Pacific/Chatham</id>
   </country>

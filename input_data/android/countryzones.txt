@@ -40,18 +40,39 @@ ianaVersion:"2019c"
 # zones.tab file.
 #
 # defaultTimeZoneId:
-# The (optional) defaultTimeZoneId is used to specify which of the time
+# The optional defaultTimeZoneId is used to specify which of the time
 # zones associated with the country should be used if only
 # a country code is available. If it is not specified and the country
 # has only one obvious choice then the defaultTimeZoneId can be omitted.
+#
+# defaultTimeZoneBoost:
+# An optional boolean value that can be used to provide a boost to
+# decision-making around the defaultTimeZoneId at runtime based on factors that are not
+# obvious from the time zone data alone.
+#
+# For ease of maintenance, it is recommended that this value is only specified
+# where the default selection criteria wouldn't otherwise do the right thing
+# and where defaultTimeZoneId is explicitly specified.
+#
+# false: the defaultTimeZoneId is to be treated "normally". i.e.
+#     defaultTimeZoneId can be used in obvious cases (e.g. where the country
+#     only uses a single zone), or where _any_ time zone is considered better
+#     than nothing (e.g. for defaulting in UIs or setting zones on an
+#     uninitialized device).
+# true: the defaultTimeZoneId is to be treated as a "strong" signal. i.e. if
+#     supporting information isn't available, or it is and doesn't help pick
+#     a distinct zone, then the defaultTimeZoneId is a good choice for devices
+#     in the country. This is useful for countries like New Zealand which the
+#     data tells us has two zones, but in reality the overwhelming majority of
+#     the population uses a single zone.
 #
 # timeZoneMappings:
 # Time zones associated with the country and associated metadata.
 #
 # The ordering of TimeZoneMapping elements is important because it influence
-# the order that time zones in a country are considered when the device
-# has a known local time, offset from UTC and whether the local zone is
-# currently observing DST.
+# the order that time zones in a country are considered when the device is
+# trying to detect a time zone and has a known local time, offset from UTC,
+# and whether the local zone is currently observing DST.
 #
 # There will often be several time zones within a country that could match
 # at any given instant, but the first zone that matches a user's country,
@@ -232,6 +253,15 @@ countries:<
 countries:<
   isoCode:"ar"
   defaultTimeZoneId:"America/Argentina/Buenos_Aires"
+
+  # Boost the strength of the country default:
+  # Argentina is known to have one zone so we explicitly boost the strength of
+  # the country default. The generated tzlookup.xml data says there are two
+  # zones because the generator uses CLDR data to determine if zone names are
+  # the same and there is a CLDR bug with America/Argentina/San_Luis; "Western
+  # Argentina Standard Time" is not a thing. http://b/77677947
+  defaultTimeZoneBoost: true
+
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Argentina/Buenos_Aires"
@@ -1012,6 +1042,11 @@ countries:<
 countries:<
   isoCode:"cn"
   defaultTimeZoneId:"Asia/Shanghai"
+
+  # Boost the strength of the country default:
+  # >99% of the population use "Asia/Shanghai"
+  defaultTimeZoneBoost: true
+
   timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Shanghai"
@@ -1169,6 +1204,11 @@ countries:<
 countries:<
   isoCode:"ec"
   defaultTimeZoneId:"America/Guayaquil"
+
+  # Boost the strength of the country default:
+  # Pacific/Galapagos covers only ~25k people Vs ~16m total population.
+  defaultTimeZoneBoost: true
+
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Guayaquil"
@@ -2350,6 +2390,11 @@ countries:<
 countries:<
   isoCode:"nz"
   defaultTimeZoneId:"Pacific/Auckland"
+
+  # Boost the strength of the country default:
+  # Pacific/Chatham only covers ~600 people.
+  defaultTimeZoneBoost: true
+
   timeZoneMappings:<
     utcOffset:"12:00"
     id:"Pacific/Auckland"
