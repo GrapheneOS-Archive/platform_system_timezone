@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package com.android.libcore.timezone.tzlookup;
+package com.android.libcore.timezone.util;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import com.android.libcore.timezone.testing.TestUtils;
 
 public class ErrorsTest {
 
