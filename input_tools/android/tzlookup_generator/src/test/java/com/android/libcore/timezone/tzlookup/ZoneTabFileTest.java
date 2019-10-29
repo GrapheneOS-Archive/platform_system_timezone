@@ -16,6 +16,8 @@
 
 package com.android.libcore.timezone.tzlookup;
 
+import com.android.libcore.timezone.testing.TestUtils;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
