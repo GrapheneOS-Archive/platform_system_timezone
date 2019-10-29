@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A class containing utility methods for details with CountryZonesFile proto objects.
+ * A class containing utility methods for dealing with CountryZonesFile proto objects.
  */
 public final class CountryZonesFileSupport {
 

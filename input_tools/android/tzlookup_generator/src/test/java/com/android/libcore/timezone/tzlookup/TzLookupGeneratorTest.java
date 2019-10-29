@@ -16,6 +16,7 @@
 
 package com.android.libcore.timezone.tzlookup;
 
+import com.android.libcore.timezone.testing.TestUtils;
 import com.android.libcore.timezone.tzlookup.proto.CountryZonesFile;
 import com.google.protobuf.TextFormat;
 import com.ibm.icu.util.TimeZone;
@@ -34,9 +35,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.android.libcore.timezone.tzlookup.TestUtils.assertAbsent;
-import static com.android.libcore.timezone.tzlookup.TestUtils.assertContains;
-import static com.android.libcore.timezone.tzlookup.TestUtils.createFile;
+import static com.android.libcore.timezone.testing.TestUtils.assertAbsent;
+import static com.android.libcore.timezone.testing.TestUtils.assertContains;
+import static com.android.libcore.timezone.testing.TestUtils.createFile;
 import static com.android.libcore.timezone.tzlookup.proto.CountryZonesFile.Country;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -454,7 +455,7 @@ public class TzLookupGeneratorTest {
                 + "<id notafter=\"436359600000\">America/Juneau</id>\n"
                 + "<id notafter=\"436356000000\">America/Yakutat</id>\n"
                 + "<id notafter=\"436363200000\">America/Nome</id>\n"
-                + "<id notafter=\"1446372000000\">America/Metlakatla</id>\n"
+                + "<id notafter=\"1547978400000\">America/Metlakatla</id>\n"
                 + "<id notafter=\"341402400000\">America/Sitka</id>\n"
                 + "<id>Pacific/Honolulu</id>\n"
                 + "<id>America/Adak</id>\n";
