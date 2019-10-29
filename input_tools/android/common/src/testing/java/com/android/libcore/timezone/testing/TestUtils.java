@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.libcore.timezone.tzlookup;
+package com.android.libcore.timezone.testing;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -32,17 +32,17 @@ import static org.junit.Assert.assertTrue;
 /**
  * Arbitrary static utility methods to help with testing.
  */
-class TestUtils {
+public final class TestUtils {
 
     private TestUtils() {}
 
-    static String createFile(Path dir, String... lines) throws IOException {
+    public static String createFile(Path dir, String... lines) throws IOException {
         Path tempFile = Files.createTempFile(dir, "tmp", null /* suffix */);
         Files.write(tempFile, Arrays.asList(lines), StandardCharsets.US_ASCII);
         return tempFile.toString();
     }
 
-    static void deleteDir(Path tempDir) throws IOException {
+    public static void deleteDir(Path tempDir) throws IOException {
         FileVisitor<? super Path> deleter = new SimpleFileVisitor<Path>() {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
@@ -64,13 +64,13 @@ class TestUtils {
         Files.walkFileTree(tempDir, deleter);
     }
 
-    static void assertAbsent(String s, String... absents) {
+    public static void assertAbsent(String s, String... absents) {
         for (String absent : absents) {
             assertFalse(s + " must not contain " + absent, s.contains(absent));
         }
     }
 
-    static void assertContains(String s, String... expecteds) {
+    public static void assertContains(String s, String... expecteds) {
         for (String expected : expecteds) {
             assertTrue(s + " must contain " + expected, s.contains(expected));
         }
