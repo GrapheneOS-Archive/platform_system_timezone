@@ -18,6 +18,7 @@ package com.android.libcore.timezone.tzlookup;
 import com.android.libcore.timezone.tzlookup.proto.CountryZonesFile;
 import com.android.libcore.timezone.tzlookup.zonetree.CountryZoneTree;
 import com.android.libcore.timezone.tzlookup.zonetree.CountryZoneUsage;
+import com.android.libcore.timezone.util.Errors;
 import com.ibm.icu.util.BasicTimeZone;
 import com.ibm.icu.util.Calendar;
 import com.ibm.icu.util.GregorianCalendar;
@@ -82,7 +83,7 @@ public final class TzLookupGenerator {
     public static void main(String[] args) throws Exception {
         if (args.length != 3) {
             System.err.println(
-                    "usage: java com.android.libcore.timezone.tzlookup.proto.TzLookupGenerator"
+                    "usage: java com.android.libcore.timezone.tzlookup.TzLookupGenerator"
                             + " <input proto file> <zone.tab file> <output xml file>");
             System.exit(0);
         }

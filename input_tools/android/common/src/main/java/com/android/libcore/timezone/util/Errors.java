@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.libcore.timezone.tzlookup;
+package com.android.libcore.timezone.util;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Stores context, errors and error severity for logging and flow control.
  */
-final class Errors {
+public final class Errors {
 
     private final static int LEVEL_WARNING = 1;
     private final static int LEVEL_ERROR = 2;
@@ -34,33 +34,33 @@ final class Errors {
     private final LinkedList<String> scopes = new LinkedList<>();
     private final List<String> messages = new ArrayList<>();
 
-    Errors() {
+    public Errors() {
     }
 
-    void pushScope(String name) {
+    public void pushScope(String name) {
         scopes.add(name);
     }
 
-    String popScope() {
+    public String popScope() {
         return scopes.removeLast();
     }
 
-    void addFatal(String msg) {
+    public void addFatal(String msg) {
         level = Math.max(level, LEVEL_FATAL);
         add(msg);
     }
 
-    void addError(String msg) {
+    public void addError(String msg) {
         level = Math.max(level, LEVEL_ERROR);
         add(msg);
     }
 
-    void addWarning(String msg) {
+    public void addWarning(String msg) {
         level = Math.max(level, LEVEL_WARNING);
         add(msg);
     }
 
-    String asString() {
+    public String asString() {
         StringBuilder sb = new StringBuilder();
         for (String message : messages) {
             sb.append(message);
@@ -69,15 +69,15 @@ final class Errors {
         return sb.toString();
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return messages.isEmpty();
     }
 
-    boolean hasError() {
+    public boolean hasError() {
         return level >= LEVEL_ERROR;
     }
 
-    boolean hasFatal() {
+    public boolean hasFatal() {
         return level >= LEVEL_FATAL;
     }
 
