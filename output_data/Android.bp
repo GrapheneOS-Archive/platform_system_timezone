@@ -29,6 +29,14 @@ prebuilt_etc {
 }
 
 prebuilt_etc {
+    name: "apex_telephonylookup.xml",
+    src: "android/telephonylookup.xml",
+    filename: "telephonylookup.xml",
+    sub_dir: "tz",
+    installable: false,
+}
+
+prebuilt_etc {
     name: "apex_tzdata",
     src: "iana/tzdata",
     notice: "iana/NOTICE",
@@ -54,9 +62,11 @@ java_genrule {
     srcs: [
         "iana/tzdata",
         "android/tzlookup.xml",
+        "android/telephonylookup.xml",
     ],
     cmd: "mkdir -p $(genDir)/usr/share/zoneinfo/ && " +
         "cp $(location iana/tzdata) $(genDir)/usr/share/zoneinfo/ && " +
         "cp $(location android/tzlookup.xml) $(genDir)/usr/share/zoneinfo/ && " +
+        "cp $(location android/telephonylookup.xml) $(genDir)/usr/share/zoneinfo/ && " +
         "$(location soong_zip) -o $(out) -C $(genDir) -D $(genDir)/usr/share/zoneinfo",
 }

@@ -29,6 +29,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import libcore.timezone.TelephonyLookup;
 import libcore.timezone.TzDataSetVersion;
 import libcore.timezone.TzDataSetVersion.TzDataSetException;
 import libcore.timezone.TimeZoneFinder;
@@ -233,6 +235,23 @@ public class TimeZoneDistroInstaller {
                 timeZoneFinder.validate();
             } catch (IOException e) {
                 Slog.i(logTag, "Update not applied: " + tzLookupFile + " failed validation", e);
+                return INSTALL_FAIL_VALIDATION_ERROR;
+            }
+
+            // Validate the telephonylookup.xml file.
+            File telephonyLookupFile =
+                    new File(workingDir, TimeZoneDistro.TELEPHONYLOOKUP_FILE_NAME);
+            if (!telephonyLookupFile.exists()) {
+                Slog.i(logTag, "Update not applied: " + telephonyLookupFile + " does not exist");
+                return INSTALL_FAIL_BAD_DISTRO_STRUCTURE;
+            }
+            try {
+                TelephonyLookup telephonyLookup =
+                        TelephonyLookup.createInstance(telephonyLookupFile.getPath());
+                telephonyLookup.validate();
+            } catch (IOException e) {
+                Slog.i(logTag, "Update not applied: " + telephonyLookupFile + " failed validation",
+                        e);
                 return INSTALL_FAIL_VALIDATION_ERROR;
             }
 
