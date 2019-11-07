@@ -188,12 +188,24 @@ def BuildTzlookup(iana_data_dir):
   subprocess.check_call([command, countryzones_source_file, zone_tab_file, tzlookup_dest_file])
 
 
+def BuildTelephonylookup():
+  telephonylookup_source_file = '%s/android/telephonylookup.txt' % timezone_input_data_dir
+  telephonylookup_dest_file = '%s/android/telephonylookup.xml' % timezone_output_data_dir
+
+  print('Calling TelephonyLookupGenerator to create telephonylookup.xml...')
+  tzdatautil.InvokeSoong(android_build_top, ['telephonylookup_generator'])
+
+  command = '%s/bin/telephonylookup_generator' % android_host_out
+  subprocess.check_call([command, telephonylookup_source_file, telephonylookup_dest_file])
+
+
 def CreateDistroFiles(iana_data_version, output_distro_dir, output_version_file):
   create_distro_script = '%s/distro/tools/create-distro.py' % timezone_dir
 
   tzdata_file = '%s/iana/tzdata' % timezone_output_data_dir
   icu_file = '%s/icu_overlay/icu_tzdata.dat' % timezone_output_data_dir
   tzlookup_file = '%s/android/tzlookup.xml' % timezone_output_data_dir
+  telephonylookup_file = '%s/android/telephonylookup.xml' % timezone_output_data_dir
 
   distro_file_pattern = '%s/*.zip' % output_distro_dir
   existing_files = glob.glob(distro_file_pattern)
@@ -207,6 +219,7 @@ def CreateDistroFiles(iana_data_version, output_distro_dir, output_version_file)
       '-tzdata', tzdata_file,
       '-icu', icu_file,
       '-tzlookup', tzlookup_file,
+      '-telephonylookup', telephonylookup_file,
       '-output_distro_dir', output_distro_dir,
       '-output_version_file', output_version_file])
 
@@ -240,6 +253,7 @@ def main():
   ExtractTarFile(iana_data_tar_file, iana_data_dir)
   BuildTzdata(zic_binary_file, iana_data_dir, iana_data_version)
   BuildTzlookup(iana_data_dir)
+  BuildTelephonylookup()
 
   # Create a distro file and version file from the output from prior stages.
   output_distro_dir = '%s/distro' % timezone_output_data_dir
