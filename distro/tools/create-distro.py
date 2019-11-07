@@ -45,8 +45,8 @@ def RunCreateTimeZoneDistro(properties_file):
 
 
 def CreateTimeZoneDistro(
-    iana_version, revision, tzdata_file, icu_file, tzlookup_file, output_distro_dir,
-    output_version_file):
+    iana_version, revision, tzdata_file, icu_file, tzlookup_file, telephonylookup_file,
+    output_distro_dir, output_version_file):
   original_cwd = os.getcwd()
 
   i18nutil.SwitchToNewTemporaryDirectory()
@@ -60,6 +60,7 @@ def CreateTimeZoneDistro(
     properties.write('tzdata.file=%s\n' % tzdata_file)
     properties.write('icu.file=%s\n' % icu_file)
     properties.write('tzlookup.file=%s\n' % tzlookup_file)
+    properties.write('telephonylookup.file=%s\n' % telephonylookup_file)
     properties.write('output.distro.dir=%s\n' % output_distro_dir)
     properties.write('output.version.file=%s\n' % output_version_file)
 
@@ -79,6 +80,8 @@ def main():
       help='The location of the ICU overlay .dat file to include')
   parser.add_argument('-tzlookup', required=True,
       help='The location of the tzlookup.xml file to include')
+  parser.add_argument('-telephonylookup', required=True,
+      help='The location of the telephonylookup.xml file to include')
   parser.add_argument('-output_distro_dir', required=True,
       help='The output directory for the distro.zip')
   parser.add_argument('-output_version_file', required=True,
@@ -90,6 +93,7 @@ def main():
   tzdata_file = os.path.abspath(args.tzdata)
   icu_file = os.path.abspath(args.icu)
   tzlookup_file = os.path.abspath(args.tzlookup)
+  telephonylookup_file = os.path.abspath(args.telephonylookup)
   output_distro_dir = os.path.abspath(args.output_distro_dir)
   output_version_file = os.path.abspath(args.output_version_file)
 
@@ -99,6 +103,7 @@ def main():
       tzdata_file=tzdata_file,
       icu_file=icu_file,
       tzlookup_file=tzlookup_file,
+      telephonylookup_file=telephonylookup_file,
       output_distro_dir=output_distro_dir,
       output_version_file=output_version_file)
 

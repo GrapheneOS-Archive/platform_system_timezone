@@ -30,4 +30,14 @@ LOCAL_MODULE_STEM := $(LOCAL_SRC_FILES)
 LOCAL_MODULE_PATH := $(HOST_OUT)/com.android.tzdata/etc/tz
 include $(BUILD_PREBUILT)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := telephonylookup.xml_host_tzdata_apex
+LOCAL_IS_HOST_MODULE := true
+LOCAL_SRC_FILES := telephonylookup.xml
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_STEM := $(LOCAL_SRC_FILES)
+LOCAL_MODULE_PATH := $(HOST_OUT)/com.android.tzdata/etc/tz
+include $(BUILD_PREBUILT)
+
 endif
