@@ -35,7 +35,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 public class TelephonyLookupGeneratorTest {
 
@@ -65,36 +64,70 @@ public class TelephonyLookupGeneratorTest {
 
     @Test
     public void upperCaseCountryIsoCodeIsRejected() throws Exception {
-        TelephonyLookupProtoFile.Network network = createNetwork(123, 456, "GB");
+        TelephonyLookupProtoFile.Network network = createNetwork("123", "456", "GB");
         checkGenerationFails(createTelephonyLookup(network));
     }
 
     @Test
     public void unknownCountryIsoCodeIsRejected() throws Exception {
-        TelephonyLookupProtoFile.Network network = createNetwork(123, 456, "zx");
+        TelephonyLookupProtoFile.Network network = createNetwork("123", "456", "zx");
+        checkGenerationFails(createTelephonyLookup(network));
+    }
+
+    @Test
+    public void badMccIsRejected_nonNumeric() throws Exception {
+        TelephonyLookupProtoFile.Network network = createNetwork("XXX", "456", "gb");
+        checkGenerationFails(createTelephonyLookup(network));
+    }
+
+    @Test
+    public void badMccIsRejected_tooShort() throws Exception {
+        TelephonyLookupProtoFile.Network network = createNetwork("12", "456", "gb");
+        checkGenerationFails(createTelephonyLookup(network));
+    }
+
+    @Test
+    public void badMccIsRejected_tooLong() throws Exception {
+        TelephonyLookupProtoFile.Network network = createNetwork("1234", "567", "gb");
+        checkGenerationFails(createTelephonyLookup(network));
+    }
+
+    @Test
+    public void badMncIsRejected_nonNumeric() throws Exception {
+        TelephonyLookupProtoFile.Network network = createNetwork("123", "XXX", "gb");
+        checkGenerationFails(createTelephonyLookup(network));
+    }
+
+    @Test
+    public void badMncIsRejected_tooShort() throws Exception {
+        TelephonyLookupProtoFile.Network network = createNetwork("123", "4", "gb");
+        checkGenerationFails(createTelephonyLookup(network));
+    }
+
+    @Test
+    public void badMncIsRejected_tooLong() throws Exception {
+        TelephonyLookupProtoFile.Network network = createNetwork("123", "4567", "gb");
         checkGenerationFails(createTelephonyLookup(network));
     }
 
     @Test
     public void duplicateMccMncComboIsRejected() throws Exception {
-        TelephonyLookupProtoFile.Network network1 = createNetwork(123, 456, "gb");
-        TelephonyLookupProtoFile.Network network2 = createNetwork(123, 456, "us");
+        TelephonyLookupProtoFile.Network network1 = createNetwork("123", "456", "gb");
+        TelephonyLookupProtoFile.Network network2 = createNetwork("123", "456", "us");
         checkGenerationFails(createTelephonyLookup(network1, network2));
     }
 
     @Test
     public void validDataCreatesFile() throws Exception {
-        TelephonyLookupProtoFile.Network network1 = createNetwork(123, 456, "gb");
-        TelephonyLookupProtoFile.Network network2 = createNetwork(234, 567, "us");
+        TelephonyLookupProtoFile.Network network1 = createNetwork("123", "456", "gb");
+        TelephonyLookupProtoFile.Network network2 = createNetwork("123", "56", "us");
         TelephonyLookupProtoFile.TelephonyLookup telephonyLookupProto =
                 createTelephonyLookup(network1, network2);
 
         String telephonyLookupXml = generateTelephonyLookupXml(telephonyLookupProto);
         assertContains(telephonyLookupXml,
-                "<network mcc=\"123\" mnc=\"456\">",
-                "<country code=\"gb\"/>",
-                "<network mcc=\"234\" mnc=\"567\">",
-                "<country code=\"us\"/>"
+                "<network mcc=\"123\" mnc=\"456\" country=\"gb\"/>",
+                "<network mcc=\"123\" mnc=\"56\" country=\"us\"/>"
         );
 
     }
@@ -140,7 +173,7 @@ public class TelephonyLookupGeneratorTest {
         return new String(Files.readAllBytes(file), StandardCharsets.UTF_8);
     }
 
-    private static TelephonyLookupProtoFile.Network createNetwork(int mcc, int mnc,
+    private static TelephonyLookupProtoFile.Network createNetwork(String mcc, String mnc,
             String isoCountryCode) {
         return TelephonyLookupProtoFile.Network.newBuilder()
                 .setMcc(mcc)

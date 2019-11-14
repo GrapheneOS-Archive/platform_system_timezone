@@ -46,7 +46,7 @@
 
 networks:<
   # DOCOMO PACIFIC http://b/117863016
-  mcc: 310
-  mnc: 370
+  mcc: "310"
+  mnc: "370"
   countryIsoCode: "gu"
 >
