@@ -116,21 +116,41 @@ public final class TelephonyLookupGenerator {
         Set<String> knownIsoCountries = getLowerCaseCountryIsoCodes();
         Set<String> mccMncSet = new HashSet<>();
         for (TelephonyLookupProtoFile.Network networkIn : networksIn) {
-            int mcc = networkIn.getMcc();
-            int mnc = networkIn.getMnc();
+            String mcc = networkIn.getMcc();
+            if (mcc.length() != 3 || !isAsciiNumeric(mcc)) {
+                processingErrors.addFatal("mcc=" + mcc + " must have 3 decimal digits");
+            }
+
+            String mnc = networkIn.getMnc();
+            if (!(mnc.length() == 2 || mnc.length() == 3) || !isAsciiNumeric(mnc)) {
+                processingErrors.addFatal("mnc=" + mnc + " must have 2 or 3 decimal digits");
+            }
+
             String mccMnc = "" + mcc + mnc;
             if (!mccMncSet.add(mccMnc)) {
                 processingErrors.addFatal("Duplicate entry for mcc=" + mcc + ", mnc=" + mnc);
             }
+
             String countryIsoCode = networkIn.getCountryIsoCode();
             String countryIsoCodeLower = countryIsoCode.toLowerCase(Locale.ROOT);
             if (!countryIsoCodeLower.equals(countryIsoCode)) {
                 processingErrors.addFatal("Country code not lower case: " + countryIsoCode);
             }
+
             if (!knownIsoCountries.contains(countryIsoCodeLower)) {
                 processingErrors.addFatal("Country code not known: " + countryIsoCode);
             }
         }
+    }
+
+    private static boolean isAsciiNumeric(String string) {
+        for (int i = 0; i < string.length(); i++) {
+            char character = string.charAt(i);
+            if (character < '0' || character > '9') {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static Set<String> getLowerCaseCountryIsoCodes() {
@@ -146,8 +166,8 @@ public final class TelephonyLookupGenerator {
             List<TelephonyLookupProtoFile.Network> networksIn) {
         List<TelephonyLookupXmlFile.Network> networksOut = new ArrayList<>();
         for (TelephonyLookupProtoFile.Network networkIn : networksIn) {
-            int mcc = networkIn.getMcc();
-            int mnc = networkIn.getMnc();
+            String mcc = networkIn.getMcc();
+            String mnc = networkIn.getMnc();
             String countryIsoCode = networkIn.getCountryIsoCode();
             TelephonyLookupXmlFile.Network networkOut =
                     new TelephonyLookupXmlFile.Network(mcc, mnc, countryIsoCode);

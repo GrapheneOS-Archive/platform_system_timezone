@@ -26,7 +26,10 @@ message TelephonyLookup {
 }
 
 message Network {
-    required uint32 mcc = 1;
-    required uint32 mnc = 2;
+    /* A 3-digit numeric in ASCII. */
+    required string mcc = 1;
+    /* A 2- or 3-digit numeric in ASCII. */
+    required string mnc = 2;
+    /* An ISO 3166 alpha-2 code (lower case).  */
     required string countryIsoCode = 3;
 }
