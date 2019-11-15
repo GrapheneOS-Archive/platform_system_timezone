@@ -23,6 +23,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -115,27 +116,23 @@ final class TelephonyLookupXmlFile {
 
     static class Network {
 
-        private final int mcc;
-        private final int mnc;
+        private final String mcc;
+        private final String mnc;
         private final String countryIsoCode;
 
-        Network(int mcc, int mnc, String countryIsoCode) {
-            this.mcc = mcc;
-            this.mnc = mnc;
-            this.countryIsoCode = countryIsoCode;
+        Network(String mcc, String mnc, String countryIsoCode) {
+            this.mcc = Objects.requireNonNull(mcc);
+            this.mnc = Objects.requireNonNull(mnc);
+            this.countryIsoCode = Objects.requireNonNull(countryIsoCode);
         }
 
         static void writeXml(Network network, XMLStreamWriter writer)
                 throws XMLStreamException {
             writer.writeStartElement(NETWORK_ELEMENT);
-            writer.writeAttribute(MOBILE_COUNTRY_CODE_ATTRIBUTE, encodeIntAttribute(network.mcc));
-            writer.writeAttribute(MOBILE_NETWORK_CODE_ATTRIBUTE, encodeIntAttribute(network.mnc));
+            writer.writeAttribute(MOBILE_COUNTRY_CODE_ATTRIBUTE, network.mcc);
+            writer.writeAttribute(MOBILE_NETWORK_CODE_ATTRIBUTE, network.mnc);
             writer.writeAttribute(COUNTRY_ISO_CODE_ATTRIBUTE, network.countryIsoCode);
             writer.writeEndElement(); // NETWORK_ELEMENT
         }
-    }
-
-    private static String encodeIntAttribute(int value) {
-        return Integer.toString(value);
     }
 }
