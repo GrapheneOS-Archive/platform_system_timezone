@@ -21,7 +21,7 @@ apex_defaults {
 
     // Explicit because the defaulting behavior only works for the real
     // module.
-    file_contexts: "com.android.tzdata",
+    file_contexts: ":com.android.tzdata-file_contexts",
 
     // Shared signing information.
     key: "apex.tzdata.key",
