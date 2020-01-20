@@ -209,7 +209,7 @@ public class TimeZoneDistroInstaller {
 
             // Validate the tzdata file.
             File zoneInfoFile = new File(workingDir, TimeZoneDistro.TZDATA_FILE_NAME);
-            ZoneInfoDB.TzData tzData = ZoneInfoDB.TzData.loadTzData(zoneInfoFile.getPath());
+            ZoneInfoDB tzData = ZoneInfoDB.loadTzData(zoneInfoFile.getPath());
             if (tzData == null) {
                 Slog.i(logTag, "Update not applied: " + zoneInfoFile + " could not be loaded");
                 return INSTALL_FAIL_VALIDATION_ERROR;
