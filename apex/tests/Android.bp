@@ -17,12 +17,20 @@ android_test {
 
     defaults: ["cts_defaults"],
     static_libs: [
+        "androidx.core_core",
         "ctstestrunner-axt",
         "junit",
     ],
     srcs: ["src/**/*.java"],
-    sdk_version: "current",
-    libs: ["android.test.base.stubs"],
+
+    // TODO Switch to sdk_version for the module-libs stubs when it is implemented
+    // and remove the framework-res / framework_module_lib_stubs_current below.
+    sdk_version: "core_platform",
+    libs: [
+        "android.test.base.stubs",
+        "framework_module_lib_stubs_current",
+        "framework-res",
+    ],
 
     // Tag this module as an mts test artifact
     test_suites: [
