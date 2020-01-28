@@ -96,10 +96,10 @@ public class CreateTimeZoneDistro {
 
         // Create a DistroVersion from the TzDataSetVersion.
         DistroVersion distroVersion = new DistroVersion(
-                tzDataSetVersion.formatMajorVersion,
-                tzDataSetVersion.formatMinorVersion,
-                tzDataSetVersion.rulesVersion,
-                tzDataSetVersion.revision);
+                tzDataSetVersion.getFormatMajorVersion(),
+                tzDataSetVersion.getFormatMinorVersion(),
+                tzDataSetVersion.getRulesVersion(),
+                tzDataSetVersion.getRevision());
         TimeZoneDistroBuilder builder = new TimeZoneDistroBuilder()
                 .setDistroVersion(distroVersion)
                 .setTzDataFile(getMandatoryPropertyFile(properties, "tzdata.file"))
