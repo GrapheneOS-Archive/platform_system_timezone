@@ -29,7 +29,7 @@ import java.util.Arrays;
  * tzdata file. This enables easier debugging / inspection of Android's tzdata file with standard
  * tools like zdump or Android tools like TzFileDumper.
  *
- * <p>This class contains a copy of logic found in Android's ZoneInfoDB.
+ * <p>This class contains a copy of logic found in Android's ZoneInfoDb.
  */
 public class ZoneSplitter {
 
