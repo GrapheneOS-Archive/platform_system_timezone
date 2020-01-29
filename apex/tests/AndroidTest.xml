@@ -24,8 +24,6 @@
     </target_preparer>
     <test class="com.android.tradefed.testtype.AndroidJUnitTest" >
         <option name="package" value="android.tzdata.mts" />
-        <!-- module-libs APIs are not accessible to app code by default intentionally. -->
-        <option name="hidden-api-checks" value="false" />
         <option name="runtime-hint" value="1m" />
     </test>
 
