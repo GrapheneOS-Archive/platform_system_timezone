@@ -539,7 +539,7 @@ public class TimeZoneDistroInstallerTest extends TestCase {
 
     public void testReadBaseRulesVersion() throws Exception {
         TzDataSetVersion actualBaseVersion = installer.readBaseVersion();
-        assertEquals(BASE_RULES_VERSION, actualBaseVersion.rulesVersion);
+        assertEquals(BASE_RULES_VERSION, actualBaseVersion.getRulesVersion());
     }
 
     public void testGetInstalledDistroVersion() throws Exception {
