@@ -24,11 +24,11 @@ android_test {
     srcs: ["src/**/*.java"],
 
     // TODO Switch to sdk_version for the module-libs stubs when it is implemented
-    // and remove the framework-res / framework_module_lib_stubs_current below.
+    // and remove the framework-res / android_module_lib_stubs_current below.
     sdk_version: "core_platform",
     libs: [
         "android.test.base.stubs",
-        "framework_module_lib_stubs_current",
+        "android_module_lib_stubs_current",
         "framework-res",
     ],
 
