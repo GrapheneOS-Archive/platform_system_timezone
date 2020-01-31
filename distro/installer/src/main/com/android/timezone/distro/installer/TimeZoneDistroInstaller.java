@@ -440,7 +440,7 @@ public class TimeZoneDistroInstaller {
         Slog.i(logTag, "Reading base time zone rules version");
         TzDataSetVersion baseVersion = readBaseVersion(baseVersionFile);
 
-        String baseRulesVersion = baseVersion.rulesVersion;
+        String baseRulesVersion = baseVersion.getRulesVersion();
         String distroRulesVersion = distroVersion.rulesVersion;
         // canApply = distroRulesVersion >= baseRulesVersion
         boolean canApply = distroRulesVersion.compareTo(baseRulesVersion) >= 0;
