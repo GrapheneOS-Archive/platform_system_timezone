@@ -94,10 +94,10 @@ public class TimeZoneFinderTest {
         assertEquals("Europe/London", countryTimeZones.getDefaultTimeZoneId());
         assertEquals(timeZone("Europe/London"), countryTimeZones.getDefaultTimeZone());
 
-        assertTrue(countryTimeZones.isForCountryCode("gb"));
-        assertTrue(countryTimeZones.isForCountryCode("GB"));
-        assertTrue(countryTimeZones.isForCountryCode("gB"));
-        assertTrue(countryTimeZones.isForCountryCode("Gb"));
+        assertTrue(countryTimeZones.matchesCountryCode("gb"));
+        assertTrue(countryTimeZones.matchesCountryCode("GB"));
+        assertTrue(countryTimeZones.matchesCountryCode("gB"));
+        assertTrue(countryTimeZones.matchesCountryCode("Gb"));
     }
 
     // Only intended for R+. This tests APIs exposed in R.
@@ -174,10 +174,10 @@ public class TimeZoneFinderTest {
         assertEquals(expectedZoneId, countryTimeZones.getDefaultTimeZoneId());
         assertEquals(timeZone(expectedZoneId), countryTimeZones.getDefaultTimeZone());
 
-        assertTrue(countryTimeZones.isForCountryCode("us"));
-        assertTrue(countryTimeZones.isForCountryCode("US"));
-        assertTrue(countryTimeZones.isForCountryCode("uS"));
-        assertTrue(countryTimeZones.isForCountryCode("Us"));
+        assertTrue(countryTimeZones.matchesCountryCode("us"));
+        assertTrue(countryTimeZones.matchesCountryCode("US"));
+        assertTrue(countryTimeZones.matchesCountryCode("uS"));
+        assertTrue(countryTimeZones.matchesCountryCode("Us"));
     }
 
     // Only intended for R+. This tests APIs exposed in R.
