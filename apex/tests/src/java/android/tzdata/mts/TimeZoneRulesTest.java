@@ -37,8 +37,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Tests relating to time zone rules that could be changed by the time zone data module. These are
  * intended to prove that a time zone data module update hasn't broken behavior. Since time zone
- * rules mutate over time this test could be quite brittle, so it is suggested that only a few
- * examples are tested and general public API behavior testing be left to CTS.
+ * rule mutate over time this test could be quite brittle, so it is suggested that only a few
+ * examples are tested.
  */
 public class TimeZoneRulesTest {
 

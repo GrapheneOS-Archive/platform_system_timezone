@@ -16,14 +16,11 @@
 package android.tzdata.mts;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import android.timezone.TimeZoneFinder;
-import android.timezone.TzDataSetVersion;
-import android.timezone.ZoneInfoDb;
+import android.icu.util.VersionInfo;
+import android.os.Build;
 import android.util.TimeUtils;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -35,42 +32,31 @@ import java.nio.charset.StandardCharsets;
  * Tests concerning version information associated with, or affected by, the time zone data module.
  *
  * <p>Generally we don't want to assert anything too specific here (like exact version), since that
- * would mean more to update every tzdb release. Also, if the module being tested incorrectly
- * contains an old version, then why wouldn't the tests be just as old too?
+ * would mean more to update every tzdb release. Also, if the module being tested contains an old
+ * version then why wouldn't the tests be just as old too?
  */
 public class TimeZoneVersionTest {
 
     private static final File TIME_ZONE_MODULE_VERSION_FILE =
             new File("/apex/com.android.tzdata/etc/tz/tz_version");
 
-    @Before
-    public void checkKnownRelease() {
-        MtsTestSupport.assertKnownRelease();
-    }
-
     @Test
-    public void timeZoneModuleIsCompatibleWithThisDevice() throws Exception {
-        if (MtsTestSupport.isQ()) {
-            String majorVersion = readMajorFormatVersionFromModuleVersionFile();
-            // Q is 3.x.
-            assertEquals("003", majorVersion);
-        } else {
-            // R and above: APIs are exposed that enable the device to do its own checks.
-            TzDataSetVersion tzDataSetVersion = TzDataSetVersion.read();
-            assertTrue(TzDataSetVersion.isCompatibleWithThisDevice(tzDataSetVersion));
+    public void timeZoneModuleIsCompatibleWithThisRelease() throws Exception {
+        String majorVersion = readMajorFormatVersionFromModuleVersionFile();
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
 
-            // But we can assert some things without being too specific. This also exercises methods
-            // we may need in the future if we do want to be more prescriptive.
-            // These assertions are for the latest release at the time of writing.
-            assertTrue(tzDataSetVersion.getRulesVersion().compareTo("2019c") >= 0);
-            assertTrue(tzDataSetVersion.getFormatMajorVersion() >= 4);
-            assertTrue(tzDataSetVersion.getFormatMinorVersion() >= 1);
-            assertTrue(tzDataSetVersion.getRevision() >= 1);
-
-            assertEquals(tzDataSetVersion.getFormatMajorVersion(),
-                    TzDataSetVersion.currentFormatMajorVersion());
-            assertTrue(tzDataSetVersion.getFormatMinorVersion()
-                    >= TzDataSetVersion.currentFormatMinorVersion());
+            // TODO Hack for master: This ain't Q. Remove this after R devices are behaving
+            //  properly.
+            if (VersionInfo.ICU_VERSION.getMajor() > 63) {
+                // R is 4.x.
+                assertEquals("004", majorVersion);
+            } else {
+                // Q is 3.x.
+                assertEquals("003", majorVersion);
+            }
+        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.R) {
+            // R is 4.x.
+            assertEquals("004", majorVersion);
         }
     }
 
@@ -79,30 +65,12 @@ public class TimeZoneVersionTest {
      */
     @Test
     public void tzdbVersionIsConsistentAcrossApis() throws Exception {
+        String tzModuleTzdbVersion = readTzDbVersionFromModuleVersionFile();
+
         String icu4jTzVersion = android.icu.util.TimeZone.getTZDataVersion();
-        assertEquals(icu4jTzVersion, TimeUtils.getTimeZoneDatabaseVersion());
+        assertEquals(tzModuleTzdbVersion, icu4jTzVersion);
 
-        // NOTE: In Q and R *in general*, there's no guarantee that the tzdata module data isn't
-        // overridden by /data files from a time zone data APK. However, MTS tests are not expected
-        // to run against such devices. So, this test is opinionated that the various APIs must
-        // report the version from the tzdata mainline module.
-        String tzModuleTzdbVersion;
-        if (MtsTestSupport.isQ()) {
-            tzModuleTzdbVersion = readTzDbVersionFromModuleVersionFile();
-        } else {
-            // The device must be R or above.
-
-            TzDataSetVersion tzDataSetVersion = TzDataSetVersion.read();
-            tzModuleTzdbVersion = tzDataSetVersion.getRulesVersion();
-
-            // Check additional APIs that were added in R match ICU4J while we're here.
-            String javaUtilVersion = ZoneInfoDb.getInstance().getVersion();
-            assertEquals(icu4jTzVersion, javaUtilVersion);
-
-            String tzLookupTzVersion = TimeZoneFinder.getInstance().getIanaVersion();
-            assertEquals(icu4jTzVersion, tzLookupTzVersion);
-        }
-        assertEquals(icu4jTzVersion, tzModuleTzdbVersion);
+        assertEquals(tzModuleTzdbVersion, TimeUtils.getTimeZoneDatabaseVersion());
     }
 
     /**
