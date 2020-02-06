@@ -37,6 +37,6 @@ android_test {
         "general-tests",
         "mts",
     ],
-
+    min_sdk_version: "29",
 }
 
