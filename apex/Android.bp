@@ -15,6 +15,7 @@
 // Defaults shared between real and test versions of the APEX.
 apex_defaults {
     name: "com.android.tzdata-defaults",
+    updatable: true,
 
     // Use a custom AndroidManifest.xml used for API targeting.
     androidManifest: ":com.android.tzdata-androidManifest",
