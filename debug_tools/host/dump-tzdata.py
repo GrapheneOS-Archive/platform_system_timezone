@@ -26,6 +26,9 @@ import sys
 sys.path.append('%s/external/icu/tools' % os.environ.get('ANDROID_BUILD_TOP'))
 import i18nutil
 
+sys.path.append('%s/system/timezone' % os.environ.get('ANDROID_BUILD_TOP'))
+import tzdatautil
+
 
 # Calculate the paths that are referred to by multiple functions.
 android_build_top = i18nutil.GetAndroidRootOrDie()
@@ -39,7 +42,7 @@ i18nutil.CheckDirExists(debug_tools_dir, 'system/timezone/debug_tools/host')
 
 
 def BuildDebugTools():
-  subprocess.check_call(['make', '-C', android_build_top, '-j30', 'timezone_host_debug_tools'])
+  tzdatautil.InvokeSoong(android_build_top, ['timezone_host_debug_tools'])
 
 
 def SplitTzData(tzdata_file, output_dir):
