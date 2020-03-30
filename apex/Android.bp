@@ -16,6 +16,8 @@
 apex_defaults {
     name: "com.android.tzdata-defaults",
     updatable: true,
+    // tzdata apex is tied to dessert release
+    min_sdk_version: "current",
 
     // Use a custom AndroidManifest.xml used for API targeting.
     androidManifest: ":com.android.tzdata-androidManifest",
