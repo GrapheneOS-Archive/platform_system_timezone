@@ -16,6 +16,7 @@
 apex_defaults {
     name: "com.android.tzdata-defaults",
     updatable: true,
+    min_sdk_version: "R",
 
     // Use a custom AndroidManifest.xml used for API targeting.
     androidManifest: ":com.android.tzdata-androidManifest",
