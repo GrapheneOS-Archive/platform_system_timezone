@@ -25,7 +25,7 @@
 # a time zone for an Android device.
 
 # ianaVersion: The version of the IANA rules this file matches.
-ianaVersion:"2019c"
+ianaVersion:"2020a"
 
 # countries:
 #
@@ -764,7 +764,40 @@ countries:<
 # Priority is related to the city population.
 countries:<
   isoCode:"ca"
-  defaultTimeZoneId:"America/St_Johns"
+  defaultTimeZoneId:"America/Toronto"
+
+  # The following zones are in rough population order to support telephony
+  # time zone detection.
+  timeZoneMappings:<
+    utcOffset:"-5:00"
+    id:"America/Toronto"
+    # 5.43M
+    priority:5430
+  >
+  timeZoneMappings:<
+    utcOffset:"-8:00"
+    id:"America/Vancouver"
+    # 2.26M
+    priority:2260
+  >
+  timeZoneMappings:<
+    utcOffset:"-7:00"
+    id:"America/Edmonton"
+    # 1.06M
+    priority:1060
+  >
+  timeZoneMappings:<
+    utcOffset:"-6:00"
+    id:"America/Winnipeg"
+    # 712K
+    priority:712
+  >
+  timeZoneMappings:<
+    utcOffset:"-4:00"
+    id:"America/Halifax"
+    # 316K
+    priority:316
+  >
   timeZoneMappings:<
     utcOffset:"-3:30"
     id:"America/St_Johns"
@@ -772,12 +805,8 @@ countries:<
     priority:109
   >
 
-  timeZoneMappings:<
-    utcOffset:"-4:00"
-    id:"America/Halifax"
-    # 316K
-    priority:316
-  >
+  # Other zones are in offset (in July) order.
+
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Glace_Bay"
@@ -803,12 +832,6 @@ countries:<
     priority:1
   >
 
-  timeZoneMappings:<
-    utcOffset:"-5:00"
-    id:"America/Toronto"
-    # 5.43M
-    priority:5430
-  >
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Nipigon"
@@ -842,12 +865,6 @@ countries:<
 
   timeZoneMappings:<
     utcOffset:"-6:00"
-    id:"America/Winnipeg"
-    # 712K
-    priority:712
-  >
-  timeZoneMappings:<
-    utcOffset:"-6:00"
     id:"America/Regina"
     # 215K
     priority:215
@@ -879,12 +896,6 @@ countries:<
 
   timeZoneMappings:<
     utcOffset:"-7:00"
-    id:"America/Edmonton"
-    # 1.06M
-    priority:1060
-  >
-  timeZoneMappings:<
-    utcOffset:"-7:00"
     id:"America/Cambridge_Bay"
     # 1.77K
     priority:2
@@ -900,6 +911,12 @@ countries:<
     id:"America/Inuvik"
     # 3.24K
     priority:3
+  >
+  timeZoneMappings:<
+    utcOffset:"-7:00"
+    id:"America/Whitehorse"
+    # 25.1K
+    priority:251
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
@@ -919,21 +936,8 @@ countries:<
     # 3.90K
     priority:4
   >
-
   timeZoneMappings:<
-    utcOffset:"-8:00"
-    id:"America/Vancouver"
-    # 2.26M
-    priority:2260
-  >
-  timeZoneMappings:<
-    utcOffset:"-8:00"
-    id:"America/Whitehorse"
-    # 25.1K
-    priority:251
-  >
-  timeZoneMappings:<
-    utcOffset:"-8:00"
+    utcOffset:"-7:00"
     id:"America/Dawson"
     # 1.38K
     priority:1
@@ -1430,7 +1434,7 @@ countries:<
 # GREENLAND
 countries:<
   isoCode:"gl"
-  defaultTimeZoneId:"America/Godthab"
+  defaultTimeZoneId:"America/Nuuk"
   timeZoneMappings:<
     utcOffset:"0:00"
     id:"America/Danmarkshavn"
@@ -1443,7 +1447,7 @@ countries:<
 
   timeZoneMappings:<
     utcOffset:"-3:00"
-    id:"America/Godthab"
+    id:"America/Nuuk"
   >
 
   timeZoneMappings:<
