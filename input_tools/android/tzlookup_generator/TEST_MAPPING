@@ -1,0 +1,8 @@
+{
+  "presubmit": [
+    {
+      "name" : "tzlookup_tests",
+      "host" : true
+    }
+  ]
+}

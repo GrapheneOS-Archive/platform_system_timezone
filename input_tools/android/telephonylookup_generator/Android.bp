@@ -47,4 +47,5 @@ java_test_host {
         "telephonylookup_generator",
         "tztools_common_testing",
     ],
+    test_suites: ["general-tests"],
 }
