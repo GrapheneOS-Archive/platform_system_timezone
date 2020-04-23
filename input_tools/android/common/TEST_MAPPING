@@ -1,0 +1,8 @@
+{
+  "presubmit": [
+    {
+      "name" : "tztools_common_tests",
+      "host" : true
+    }
+  ]
+}
