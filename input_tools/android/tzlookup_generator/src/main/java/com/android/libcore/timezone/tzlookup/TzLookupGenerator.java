@@ -111,8 +111,8 @@ public final class TzLookupGenerator {
         String icuTzDataVersion = TimeZone.getTZDataVersion();
         String inputIanaVersion = countryZonesIn.getIanaVersion();
         if (!icuTzDataVersion.equals(inputIanaVersion)) {
-            logError("Input data is for " + inputIanaVersion + " but the ICU you have is for "
-                    + icuTzDataVersion);
+            logError("Input data (countryzones.txt) is for " + inputIanaVersion
+                    + " but the ICU you have is for " + icuTzDataVersion);
             return false;
         }
 
