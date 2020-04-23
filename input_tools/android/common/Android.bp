@@ -40,4 +40,5 @@ java_test_host {
         "tztools_common",
         "tztools_common_testing",
     ],
+    test_suites: ["general-tests"],
 }
