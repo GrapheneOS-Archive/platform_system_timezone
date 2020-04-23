@@ -1,6 +1,6 @@
 #!/usr/bin/python -B
 
-# Copyright 2019 The Android Open Source Project
+# Copyright 2020 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Dumps the contents of a tzdata file."""
+"""Allows visualization of zone trees (the thing that works out if zones are distinct)."""
 
 from __future__ import print_function
 
 import argparse
+import glob
 import os
 import subprocess
 import sys
@@ -41,19 +42,18 @@ debug_tools_dir = os.path.realpath('%s/system/timezone/debug_tools/host' % andro
 i18nutil.CheckDirExists(debug_tools_dir, 'system/timezone/debug_tools/host')
 
 
-def BuildDebugTools():
-  tzdatautil.InvokeSoong(android_build_top, ['zone_splitter', 'tz_file_dumper'])
+def BuildAndRunTool(country_zones_txt, country_code, output_dir):
+  tzdatautil.InvokeSoong(android_build_top, ['unique_zones_visualizer'])
+  jar_file = '%s/framework/unique_zones_visualizer.jar' % android_host_out
+  subprocess.check_call(['java', '-jar', jar_file, country_zones_txt, country_code, output_dir])
 
-
-def SplitTzData(tzdata_file, output_dir):
-  jar_file = '%s/framework/zone_splitter.jar' % android_host_out
-  subprocess.check_call(['java', '-jar', jar_file, tzdata_file, output_dir])
-
-
-def CreateCsvFiles(zones_dir, csvs_dir):
-  jar_file = '%s/framework/tz_file_dumper.jar' % android_host_out
-  subprocess.check_call(['java', '-jar', jar_file, zones_dir, csvs_dir])
-
+def CreatePngs(output_dir):
+  gv_files = glob.glob('%s/*.gv' % output_dir)
+  for gv_file in gv_files:
+    png_file = gv_file.replace('.gv', '.png')
+    print('Generating %s...' % png_file)
+    with open(png_file, 'w') as out_file:
+      subprocess.check_call(['dot', '-Tpng', gv_file], stdout=out_file)
 
 def CheckFileExists(file, filename):
   if not os.path.isfile(file):
@@ -63,36 +63,28 @@ def CheckFileExists(file, filename):
 
 def main():
   parser = argparse.ArgumentParser()
-  parser.add_argument('-tzdata', required=True,
-      help='The tzdata file to process')
+  parser.add_argument('-input', required=True,
+      help='The country_zones.txt file to process')
+  parser.add_argument('-country_code', required=True,
+      help='The country code (e.g. "us") to process')
   parser.add_argument('-output', required=True,
       help='The output directory for the dump')
   args = parser.parse_args()
 
-  tzdata_file = args.tzdata
+  country_zones_txt = args.input
+  country_code = args.country_code
   output_dir = args.output
 
-  CheckFileExists(tzdata_file, '-tzdata')
+  CheckFileExists(country_zones_txt, '-input')
   if not os.path.exists(output_dir):
     print('Creating dir: %s'  % output_dir)
     os.mkdir(output_dir)
   i18nutil.CheckDirExists(output_dir, '-output')
 
-  BuildDebugTools()
+  BuildAndRunTool(country_zones_txt, country_code, output_dir)
+  CreatePngs(output_dir)
 
-  SplitTzData(tzdata_file, output_dir)
-
-  zones_dir = '%s/zones' % output_dir
-  csvs_dir = '%s/csvs' % output_dir
-
-  i18nutil.CheckDirExists(zones_dir, 'zones output dir')
-  if not os.path.exists(csvs_dir):
-    os.mkdir(csvs_dir)
-
-  CreateCsvFiles(zones_dir, csvs_dir)
-
-  print('Look in %s for all extracted files' % output_dir)
-  print('Look in %s for dumped CSVs' % csvs_dir)
+  print('Look in %s for all generated files' % output_dir)
   sys.exit(0)
 
 

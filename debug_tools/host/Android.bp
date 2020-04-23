@@ -18,3 +18,20 @@ java_library_host {
     static_libs: ["guava"],
 }
 
+java_binary_host {
+    name: "zone_splitter",
+    main_class: "ZoneSplitter",
+    static_libs: ["timezone_host_debug_tools"],
+}
+
+java_binary_host {
+    name: "tz_file_dumper",
+    main_class: "TzFileDumper",
+    static_libs: ["timezone_host_debug_tools"],
+}
+
+java_binary_host {
+    name: "unique_zones_visualizer",
+    main_class: "com.android.libcore.timezone.tzlookup.zonetree.UniqueZonesVisualizer",
+    static_libs: ["tzlookup"],
+}
