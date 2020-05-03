@@ -15,6 +15,7 @@
  */
 package com.android.libcore.timezone.tzlookup;
 
+import com.android.libcore.timezone.tzaliases.proto.TzAliasesFile;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -170,7 +171,7 @@ final class TzLookupFile {
         private final String defaultTimeZoneId;
         private final boolean defaultTimeZoneBoost;
         private final boolean everUsesUtc;
-        private final List<TimeZoneMapping> timeZoneIds = new ArrayList<>();
+        private final List<TimeZoneMapping> timeZoneMappings = new ArrayList<>();
 
         Country(String isoCode, String defaultTimeZoneId, boolean defaultTimeZoneBoost,
                 boolean everUsesUtc) {
@@ -180,8 +181,41 @@ final class TzLookupFile {
             this.everUsesUtc = everUsesUtc;
         }
 
-        void addTimeZoneIdentifier(TimeZoneMapping timeZoneId) {
-            timeZoneIds.add(timeZoneId);
+        void addTimeZoneMapping(TimeZoneMapping timeZoneMapping) {
+            timeZoneMappings.add(timeZoneMapping);
+        }
+
+        static TzAliasesFile.TimeZoneAliases createTimeZoneAliases(Country country) {
+            TzAliasesFile.TimeZoneAliases.Builder countryAliasesBuilder =
+                    TzAliasesFile.TimeZoneAliases.newBuilder();
+            for (TzLookupFile.TimeZoneMapping timeZoneMapping : country.timeZoneMappings) {
+                String mappingTimeZoneId = timeZoneMapping.olsonId;
+                String notUsedReplacementId = timeZoneMapping.notAfterReplacementId;
+                Instant notUsedAfterInstant = timeZoneMapping.notUsedAfterInclusive;
+                if (notUsedReplacementId != null && notUsedAfterInstant != null) {
+                    String replacedTimeZoneId = mappingTimeZoneId;
+                    TzAliasesFile.TimeZoneReplacement timeZoneReplacement =
+                            TzAliasesFile.TimeZoneReplacement.newBuilder()
+                                    .setReplacedId(replacedTimeZoneId)
+                                    .setReplacementId(notUsedReplacementId)
+                                    .setFromMillis(notUsedAfterInstant.toEpochMilli())
+                                    .build();
+                    countryAliasesBuilder.addTimeZoneReplacement(timeZoneReplacement);
+                }
+
+                for (String alternativeZoneId : timeZoneMapping.alternativeZoneIds) {
+                    // We could collapse links when notUsedReplacementId != null by using it instead
+                    // of mappingTimeZoneId below, but that would potentially lose information.
+                    // Leave it to the downstream components to collapse aliases if they want to.
+                    TzAliasesFile.TimeZoneLink timeZoneLink =
+                            TzAliasesFile.TimeZoneLink.newBuilder()
+                                    .setPreferredId(mappingTimeZoneId)
+                                    .setAlternativeId(alternativeZoneId)
+                                    .build();
+                    countryAliasesBuilder.addTimeZoneLink(timeZoneLink);
+                }
+            }
+            return countryAliasesBuilder.build();
         }
 
         static void writeXml(Country country, XMLStreamWriter writer)
@@ -195,8 +229,8 @@ final class TzLookupFile {
             }
             writer.writeAttribute(EVER_USES_UTC_ATTRIBUTE, encodeBooleanAttribute(
                     country.everUsesUtc));
-            for (TimeZoneMapping timeZoneId : country.timeZoneIds) {
-                TimeZoneMapping.writeXml(timeZoneId, writer);
+            for (TimeZoneMapping timeZoneMapping : country.timeZoneMappings) {
+                TimeZoneMapping.writeXml(timeZoneMapping, writer);
             }
             writer.writeEndElement();
         }

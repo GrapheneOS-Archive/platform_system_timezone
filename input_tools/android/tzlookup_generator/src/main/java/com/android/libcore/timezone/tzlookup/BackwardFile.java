@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * A class that knows about the structure of the backward file.
+ * A class that knows about the structure of the IANA tzdb backward file.
  */
 final class BackwardFile {
 
