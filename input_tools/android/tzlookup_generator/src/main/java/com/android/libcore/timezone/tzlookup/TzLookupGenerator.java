@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -71,25 +72,29 @@ public final class TzLookupGenerator {
 
     private final String countryZonesFile;
     private final String zoneTabFile;
+    private final String backwardFile;
     private final String outputFile;
 
     /**
      * Executes the generator.
      */
     public static void main(String[] args) throws Exception {
-        if (args.length != 3) {
+        if (args.length != 4) {
             System.err.println(
                     "usage: java com.android.libcore.timezone.tzlookup.TzLookupGenerator"
-                            + " <input proto file> <zone.tab file> <output xml file>");
+                            + " <input proto file> <zone.tab file> <backward file>"
+                            + " <output xml file>");
             System.exit(0);
         }
-        boolean success = new TzLookupGenerator(args[0], args[1], args[2]).execute();
+        boolean success = new TzLookupGenerator(args[0], args[1], args[2], args[3]).execute();
         System.exit(success ? 0 : 1);
     }
 
-    TzLookupGenerator(String countryZonesFile, String zoneTabFile, String outputFile) {
+    TzLookupGenerator(String countryZonesFile, String zoneTabFile, String backwardFile,
+            String outputFile) {
         this.countryZonesFile = countryZonesFile;
         this.zoneTabFile = zoneTabFile;
+        this.backwardFile = backwardFile;
         this.outputFile = outputFile;
     }
 
@@ -142,8 +147,12 @@ public final class TzLookupGenerator {
                         + " not present in zonetab.");
             }
 
+            // Obtain and validate a mapping from old IDs to new IDs.
+            Map<String, String> zoneIdLinks = parseAndValidateBackwardFile(backwardFile, errors);
+            errors.throwIfError("Errors accumulated");
+
             TzLookupFile.TimeZones timeZonesOut = createOutputTimeZones(
-                    inputIanaVersion, zoneTabMapping, countriesIn, errors);
+                    inputIanaVersion, zoneTabMapping, countriesIn, zoneIdLinks, errors);
             errors.throwIfError("Errors accumulated");
 
             // Write the output structure if there wasn't an error.
@@ -179,6 +188,36 @@ public final class TzLookupGenerator {
         }
     }
 
+    /**
+     * Load the backward file and return the links contained within. This is used as the source of
+     * equivalent time zone IDs.
+     */
+    private static Map<String, String> parseAndValidateBackwardFile(
+            String backwardFile, Errors errors) {
+        errors.pushScope("Parsing " + backwardFile);
+        try {
+            BackwardFile backwardIn = BackwardFile.parse(backwardFile);
+
+            // Validate the links.
+            Map<String, String> zoneIdLinks = backwardIn.getDirectLinks();
+            zoneIdLinks.forEach(
+                    (k, v) -> {
+                        if (invalidTimeZoneId(k)) {
+                            errors.addError("Bad 'from' link: " + k + "->" + v);
+                        }
+                        if (invalidTimeZoneId(v)) {
+                            errors.addError("Bad 'to' link: " + k + "->" + v);
+                        }
+                    });
+            return zoneIdLinks;
+        } catch (ParseException | IOException e) {
+            errors.addError("Unable to parse " + backwardFile, e);
+            return null;
+        } finally {
+            errors.popScope();
+        }
+    }
+
     private static CountryZonesFile.CountryZones parseAndValidateCountryZones(
             String countryZonesFile, Errors errors) throws HaltExecutionException {
         errors.pushScope("Parsing " + countryZonesFile);
@@ -195,7 +234,8 @@ public final class TzLookupGenerator {
 
     private static TzLookupFile.TimeZones createOutputTimeZones(String inputIanaVersion,
             Map<String, List<String>> zoneTabMapping, List<CountryZonesFile.Country> countriesIn,
-            Errors errors) throws HaltExecutionException {
+            Map<String, String> zoneIdLinks, Errors errors)
+            throws HaltExecutionException {
 
         // Start constructing the output structure.
         TzLookupFile.TimeZones timeZonesOut = new TzLookupFile.TimeZones(inputIanaVersion);
@@ -222,7 +262,7 @@ public final class TzLookupGenerator {
 
             TzLookupFile.Country countryOut = processCountry(
                     offsetSampleTimeMillis, everUseUtcStartTimeMillis, countryIn,
-                    zoneTabCountryTimeZoneIds, errors);
+                    zoneTabCountryTimeZoneIds, zoneIdLinks, errors);
             if (countryOut == null) {
                 // Continue processing countries if there are only errors.
                 continue;
@@ -235,7 +275,8 @@ public final class TzLookupGenerator {
 
     private static TzLookupFile.Country processCountry(long offsetSampleTimeMillis,
             long everUseUtcStartTimeMillis, CountryZonesFile.Country countryIn,
-            List<String> zoneTabCountryTimeZoneIds, Errors errors) {
+            List<String> zoneTabCountryTimeZoneIds, Map<String, String> zoneIdLinks,
+            Errors errors) {
         String isoCode = countryIn.getIsoCode();
         errors.pushScope("country=" + isoCode);
         try {
@@ -304,10 +345,12 @@ public final class TzLookupGenerator {
                     return null;
                 }
 
-                if (!Utils.setEquals(zoneTabCountryTimeZoneIds, countryTimeZoneIds)) {
-                    errors.addError("IANA lists " + isoCode
-                            + " as having zones: " + zoneTabCountryTimeZoneIds
-                            + ", but countryzones has " + countryTimeZoneIds);
+                // Validate the IDs being used against the IANA data for the country. If it fails
+                // the countryzones.txt needs to be updated with new IDs (or an alias can be added
+                // if there's some reason to keep using the old ID).
+                validateCountryZonesTzIdsAgainstIana(isoCode, zoneTabCountryTimeZoneIds,
+                        timeZonesIn, zoneIdLinks, errors);
+                if (errors.hasError()) {
                     // No point in continuing.
                     return null;
                 }
@@ -361,6 +404,37 @@ public final class TzLookupGenerator {
         } finally{
             // End of country processing.
             errors.popScope();
+        }
+    }
+
+    private static void validateCountryZonesTzIdsAgainstIana(String isoCode,
+            List<String> zoneTabCountryTimeZoneIds,
+            List<CountryZonesFile.TimeZoneMapping> timeZoneMappings,
+            Map<String, String> zoneIdLinks, Errors errors) {
+
+        List<String> expectedIanaTimeZoneIds = new ArrayList<>();
+        for (CountryZonesFile.TimeZoneMapping mapping : timeZoneMappings) {
+            String timeZoneId = mapping.getId();
+            String expectedIanaTimeZoneId;
+            if (!mapping.hasAliasId()) {
+                expectedIanaTimeZoneId = timeZoneId;
+            } else {
+                String aliasTimeZoneId = mapping.getAliasId();
+
+                // Confirm the alias is valid.
+                if (!aliasTimeZoneId.equals(zoneIdLinks.get(timeZoneId))) {
+                    errors.addError(timeZoneId + " does not link to " + aliasTimeZoneId);
+                    return;
+                }
+                expectedIanaTimeZoneId = aliasTimeZoneId;
+            }
+            expectedIanaTimeZoneIds.add(expectedIanaTimeZoneId);
+        }
+
+        if (!Utils.setEquals(zoneTabCountryTimeZoneIds, expectedIanaTimeZoneIds)) {
+            errors.addError("IANA lists " + isoCode
+                    + " as having zones: " + zoneTabCountryTimeZoneIds
+                    + ", but countryzones has " + expectedIanaTimeZoneIds);
         }
     }
 
