@@ -91,7 +91,15 @@ ianaVersion:"2020a"
 # TimeZoneMapping:
 #
 # id:
-# The ID of the time zone.
+# The ID of the time zone to use on device. See also aliasId.
+#
+# aliasId:
+# (Optional) Used to identify the modern Olson ID when the id property is
+# using an obsoleted time zone ID. A legacy time zone ID may be used on device
+# to avoid problems if the zone ID is widely used. This is intentionally
+# explicit to make it clear the use of an old ID is intentional rather than an
+# accident. The id must also link to the aliasId in IANA's data (see the IANA
+# "backward" file).
 #
 # utcOffset:
 # The expected non-DST offset for the time zone. Used as a form of
