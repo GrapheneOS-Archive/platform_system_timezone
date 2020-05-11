@@ -184,8 +184,10 @@ def BuildTzlookup(iana_data_dir):
   tzdatautil.InvokeSoong(android_build_top, ['tzlookup_generator'])
 
   zone_tab_file = '%s/zone.tab' % iana_data_dir
+  backward_file = '%s/backward' % iana_data_dir
   command = '%s/bin/tzlookup_generator' % android_host_out
-  subprocess.check_call([command, countryzones_source_file, zone_tab_file, tzlookup_dest_file])
+  subprocess.check_call([command, countryzones_source_file, zone_tab_file, backward_file,
+                         tzlookup_dest_file])
 
 
 def BuildTelephonylookup():
