@@ -43,16 +43,16 @@
   <country code="ar" default="America/Argentina/Buenos_Aires" defaultBoost="y" everutc="n">
    <id>America/Argentina/Buenos_Aires</id>
    <id notafter="687931200000">America/Argentina/Cordoba</id>
-   <id notafter="1096171200000">America/Argentina/Salta</id>
-   <id notafter="687931200000">America/Argentina/Jujuy</id>
+   <id notafter="1237082400000">America/Argentina/Mendoza</id>
    <id notafter="1087099200000">America/Argentina/Tucuman</id>
+   <id notafter="1096171200000">America/Argentina/Salta</id>
+   <id notafter="1090728000000">America/Argentina/San_Juan</id>
+   <id notafter="687931200000">America/Argentina/Jujuy</id>
    <id notafter="1087704000000">America/Argentina/Catamarca</id>
    <id notafter="687931200000">America/Argentina/La_Rioja</id>
-   <id notafter="1090728000000">America/Argentina/San_Juan</id>
-   <id notafter="1237082400000">America/Argentina/Mendoza</id>
-   <id>America/Argentina/San_Luis</id>
    <id notafter="673588800000">America/Argentina/Rio_Gallegos</id>
    <id notafter="1087704000000">America/Argentina/Ushuaia</id>
+   <id>America/Argentina/San_Luis</id>
   </country>
   <country code="as" default="Pacific/Pago_Pago" everutc="n">
    <id>Pacific/Pago_Pago</id>
@@ -63,9 +63,9 @@
   <country code="au" default="Australia/Sydney" everutc="n">
    <id>Australia/Sydney</id>
    <id notafter="796147200000">Australia/Melbourne</id>
-   <id>Australia/Brisbane</id>
    <id notafter="1193500800000">Australia/Hobart</id>
    <id notafter="37728000000">Australia/Currie</id>
+   <id>Australia/Brisbane</id>
    <id notafter="762883200000">Australia/Lindeman</id>
    <id>Antarctica/Macquarie</id>
    <id>Australia/Lord_Howe</id>
@@ -129,20 +129,20 @@
   <country code="br" default="America/Noronha" everutc="n">
    <id>America/Noronha</id>
    <id>America/Sao_Paulo</id>
-   <id notafter="1013911200000">America/Belem</id>
-   <id notafter="972180000000">America/Fortaleza</id>
-   <id notafter="1330221600000">America/Recife</id>
-   <id notafter="1361066400000">America/Araguaina</id>
-   <id notafter="824004000000">America/Maceio</id>
    <id notafter="1550368800000">America/Bahia</id>
    <id notafter="1214280000000">America/Santarem</id>
+   <id notafter="1330221600000">America/Recife</id>
+   <id notafter="972180000000">America/Fortaleza</id>
+   <id notafter="1013911200000">America/Belem</id>
+   <id notafter="824004000000">America/Maceio</id>
+   <id notafter="1361066400000">America/Araguaina</id>
    <id>America/Manaus</id>
-   <id notafter="1076814000000">America/Campo_Grande</id>
    <id notafter="1550372400000">America/Cuiaba</id>
+   <id notafter="1076814000000">America/Campo_Grande</id>
    <id notafter="761713200000">America/Porto_Velho</id>
    <id notafter="971578800000">America/Boa_Vista</id>
-   <id notafter="761716800000">America/Eirunepe</id>
    <id>America/Rio_Branco</id>
+   <id notafter="761716800000">America/Eirunepe</id>
   </country>
   <country code="bs" default="America/Nassau" everutc="n">
    <id>America/Nassau</id>
@@ -166,28 +166,28 @@
    <id>America/Winnipeg</id>
    <id>America/Halifax</id>
    <id>America/St_Johns</id>
-   <id notafter="57733200000">America/Glace_Bay</id>
    <id notafter="1162098000000">America/Moncton</id>
+   <id notafter="57733200000">America/Glace_Bay</id>
    <id notafter="1299996000000">America/Goose_Bay</id>
    <id>America/Blanc-Sablon</id>
-   <id notafter="89186400000">America/Nipigon</id>
    <id notafter="120636000000">America/Thunder_Bay</id>
    <id notafter="972802800000">America/Iqaluit</id>
+   <id notafter="89186400000">America/Nipigon</id>
    <id notafter="796806000000">America/Pangnirtung</id>
    <id>America/Atikokan</id>
    <id>America/Regina</id>
+   <id notafter="73472400000">America/Swift_Current</id>
    <id notafter="1130659200000">America/Rankin_Inlet</id>
    <id notafter="986112000000">America/Rainy_River</id>
-   <id notafter="73472400000">America/Swift_Current</id>
    <id notafter="1173600000000">America/Resolute</id>
-   <id notafter="986115600000">America/Cambridge_Bay</id>
    <id notafter="309945600000">America/Yellowknife</id>
-   <id notafter="294228000000">America/Inuvik</id>
-   <id>America/Whitehorse</id>
    <id notafter="1583661600000">America/Dawson_Creek</id>
    <id notafter="84013200000">America/Creston</id>
    <id notafter="1425808800000">America/Fort_Nelson</id>
+   <id notafter="294228000000">America/Inuvik</id>
+   <id notafter="986115600000">America/Cambridge_Bay</id>
    <id notafter="120646800000">America/Dawson</id>
+   <id>America/Whitehorse</id>
   </country>
   <country code="cc" default="Indian/Cocos" everutc="n">
    <id>Indian/Cocos</id>
@@ -466,8 +466,8 @@
   <country code="kz" default="Asia/Almaty" everutc="n">
    <id>Asia/Almaty</id>
    <id notafter="1099170000000">Asia/Qostanay</id>
-   <id notafter="1099173600000">Asia/Aqtau</id>
    <id>Asia/Oral</id>
+   <id notafter="1099173600000">Asia/Aqtau</id>
    <id notafter="1545328800000">Asia/Qyzylorda</id>
    <id notafter="1545328800000">Asia/Aqtobe</id>
    <id notafter="922572000000">Asia/Atyrau</id>
@@ -572,12 +572,12 @@
    <id>America/Mexico_City</id>
    <id notafter="407653200000">America/Merida</id>
    <id notafter="594198000000">America/Monterrey</id>
-   <id>America/Matamoros</id>
    <id notafter="1270371600000">America/Bahia_Banderas</id>
+   <id>America/Matamoros</id>
    <id>America/Cancun</id>
    <id>America/Chihuahua</id>
-   <id>America/Hermosillo</id>
    <id notafter="891766800000">America/Mazatlan</id>
+   <id>America/Hermosillo</id>
    <id>America/Ojinaga</id>
    <id>America/Tijuana</id>
   </country>
@@ -662,8 +662,8 @@
    <id>America/Puerto_Rico</id>
   </country>
   <country code="ps" default="Asia/Gaza" everutc="n">
-   <id notafter="1317330000000">Asia/Gaza</id>
    <id>Asia/Hebron</id>
+   <id notafter="1317330000000">Asia/Gaza</id>
   </country>
   <country code="pt" default="Europe/Lisbon" everutc="y">
    <id>Europe/Lisbon</id>
@@ -696,21 +696,21 @@
    <id>Asia/Srednekolymsk</id>
    <id>Asia/Vladivostok</id>
    <id notafter="1315828800000">Asia/Ust-Nera</id>
-   <id notafter="1459015200000">Asia/Yakutsk</id>
    <id>Asia/Chita</id>
+   <id notafter="1459015200000">Asia/Yakutsk</id>
    <id notafter="1315832400000">Asia/Khandyga</id>
    <id>Asia/Irkutsk</id>
    <id>Asia/Krasnoyarsk</id>
+   <id notafter="1459022400000">Asia/Novokuznetsk</id>
    <id>Asia/Novosibirsk</id>
    <id>Asia/Barnaul</id>
-   <id notafter="1459022400000">Asia/Novokuznetsk</id>
    <id notafter="1464465600000">Asia/Tomsk</id>
    <id>Asia/Omsk</id>
    <id>Asia/Yekaterinburg</id>
    <id>Europe/Samara</id>
-   <id notafter="701823600000">Europe/Astrakhan</id>
-   <id notafter="1480806000000">Europe/Ulyanovsk</id>
    <id>Europe/Saratov</id>
+   <id notafter="1480806000000">Europe/Ulyanovsk</id>
+   <id notafter="701823600000">Europe/Astrakhan</id>
    <id>Europe/Volgograd</id>
    <id>Europe/Moscow</id>
    <id>Europe/Kirov</id>
@@ -832,8 +832,8 @@
   </country>
   <country code="ua" default="Europe/Kiev" everutc="n">
    <id>Europe/Kiev</id>
-   <id notafter="686091600000">Europe/Uzhgorod</id>
    <id notafter="686102400000">Europe/Zaporozhye</id>
+   <id notafter="686091600000">Europe/Uzhgorod</id>
    <id picker="n">Europe/Simferopol</id>
   </country>
   <country code="ug" default="Africa/Kampala" everutc="n">
@@ -845,32 +845,32 @@
   </country>
   <country code="us" default="America/New_York" everutc="n">
    <id>America/New_York</id>
-   <id notafter="167814000000">America/Detroit</id>
    <id notafter="152089200000">America/Kentucky/Louisville</id>
-   <id notafter="972802800000">America/Kentucky/Monticello</id>
+   <id notafter="167814000000">America/Detroit</id>
    <id notafter="1130652000000">America/Indiana/Indianapolis</id>
    <id notafter="1194159600000">America/Indiana/Vincennes</id>
-   <id notafter="1173600000000">America/Indiana/Winamac</id>
-   <id notafter="183535200000">America/Indiana/Marengo</id>
+   <id notafter="972802800000">America/Kentucky/Monticello</id>
    <id notafter="247042800000">America/Indiana/Petersburg</id>
+   <id notafter="1173600000000">America/Indiana/Winamac</id>
    <id notafter="89186400000">America/Indiana/Vevay</id>
+   <id notafter="183535200000">America/Indiana/Marengo</id>
    <id>America/Chicago</id>
-   <id notafter="688546800000">America/Indiana/Knox</id>
    <id notafter="104918400000">America/Menominee</id>
-   <id notafter="720000000000">America/North_Dakota/Center</id>
-   <id notafter="1067155200000">America/North_Dakota/New_Salem</id>
    <id notafter="1143964800000">America/Indiana/Tell_City</id>
+   <id notafter="688546800000">America/Indiana/Knox</id>
    <id notafter="1289116800000">America/North_Dakota/Beulah</id>
+   <id notafter="1067155200000">America/North_Dakota/New_Salem</id>
+   <id notafter="720000000000">America/North_Dakota/Center</id>
    <id>America/Denver</id>
-   <id notafter="129114000000">America/Boise</id>
    <id>America/Phoenix</id>
+   <id notafter="129114000000">America/Boise</id>
    <id>America/Los_Angeles</id>
    <id>America/Anchorage</id>
    <id notafter="436359600000">America/Juneau</id>
-   <id notafter="436356000000">America/Yakutat</id>
+   <id notafter="341402400000">America/Sitka</id>
    <id notafter="436363200000">America/Nome</id>
    <id notafter="1547978400000">America/Metlakatla</id>
-   <id notafter="341402400000">America/Sitka</id>
+   <id notafter="436356000000">America/Yakutat</id>
    <id>Pacific/Honolulu</id>
    <id>America/Adak</id>
   </country>
