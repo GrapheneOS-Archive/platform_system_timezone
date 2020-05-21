@@ -17,7 +17,7 @@
 import java.io.*;
 import java.util.*;
 
-// usage: java ZoneCompiler <setup file> <data directory> <output directory> <tzdata version>
+// usage: java ZoneCompactor <setup file> <data directory> <output directory> <tzdata version>
 //
 // Compile a set of tzfile-formatted files into a single file containing an index.
 //
@@ -72,7 +72,8 @@ public class ZoneCompactor {
     out.flush();
   }
 
-  public ZoneCompactor(String setupFile, String dataDirectory, String zoneTabFile, String outputDirectory, String version) throws Exception {
+  public ZoneCompactor(String setupFile, String dataDirectory, String outputDirectory,
+          String version) throws Exception {
     // Read the setup file and concatenate all the data.
     ByteArrayOutputStream allData = new ByteArrayOutputStream();
     BufferedReader reader = new BufferedReader(new FileReader(setupFile));
@@ -119,7 +120,6 @@ public class ZoneCompactor {
     // byte[12] tzdata_version -- 'tzdata2012f\0'
     // int index_offset -- so we can slip in extra header fields in a backwards-compatible way
     // int data_offset
-    // int zonetab_offset
     // int final_offset
 
     // tzdata_version
@@ -130,8 +130,6 @@ public class ZoneCompactor {
     int index_offset_offset = (int) f.getFilePointer();
     f.writeInt(0);
     int data_offset_offset = (int) f.getFilePointer();
-    f.writeInt(0);
-    int zonetab_offset_offset = (int) f.getFilePointer();
     f.writeInt(0);
     // The final offset serves as a placeholder for sections that might be added in future and
     // ensures we know the size of the final "real" section. Relying on the last section ending at
@@ -168,18 +166,6 @@ public class ZoneCompactor {
     // Write the data.
     f.write(allData.toByteArray());
 
-    int zonetab_offset = (int) f.getFilePointer();
-
-    // Copy the zone.tab.
-    reader = new BufferedReader(new FileReader(zoneTabFile));
-    while ((s = reader.readLine()) != null) {
-      if (!s.startsWith("#")) {
-        f.writeBytes(s);
-        f.write('\n');
-      }
-    }
-    reader.close();
-
     int final_offset = (int) f.getFilePointer();
 
     // Go back and fix up the offsets in the header.
@@ -187,8 +173,6 @@ public class ZoneCompactor {
     f.writeInt(index_offset);
     f.seek(data_offset_offset);
     f.writeInt(data_offset);
-    f.seek(zonetab_offset_offset);
-    f.writeInt(zonetab_offset);
     f.seek(final_offset_offset);
     f.writeInt(final_offset);
 
@@ -206,11 +190,11 @@ public class ZoneCompactor {
   }
 
   public static void main(String[] args) throws Exception {
-    if (args.length != 5) {
-      System.err.println("usage: java ZoneCompactor <setup file> <data directory> <zone.tab file>"
-          + " <output directory> <tzdata version>");
-      System.exit(0);
+    if (args.length != 4) {
+      System.err.println("usage: java ZoneCompactor <setup file> <data directory>"
+              + " <output directory> <tzdata version>");
+      System.exit(1);
     }
-    new ZoneCompactor(args[0], args[1], args[2], args[3], args[4]);
+    new ZoneCompactor(args[0], args[1], args[2], args[3]);
   }
 }
