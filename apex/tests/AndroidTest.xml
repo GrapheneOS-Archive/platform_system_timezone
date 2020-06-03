@@ -27,7 +27,10 @@
         <option name="runtime-hint" value="1m" />
     </test>
 
-    <object type="module_controller" class="com.android.tradefed.testtype.suite.module.TestFailureModuleController">
-        <option name="screenshot-on-failure" value="false" />
+    <object type="module_controller" class="com.android.tradefed.testtype.suite.module.MainlineTestModuleController">
+        <!-- This module is found on Q devices. -->
+        <option name="mainline-module-package-name" value="com.google.android.tzdata" />
+        <!-- This module is found on R+ devices. -->
+        <option name="mainline-module-package-name" value="com.google.android.tzdata2" />
     </object>
 </configuration>
