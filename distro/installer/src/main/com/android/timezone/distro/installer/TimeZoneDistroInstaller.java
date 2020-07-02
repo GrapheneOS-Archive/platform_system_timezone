@@ -33,8 +33,8 @@ import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import libcore.timezone.TelephonyLookup;
-import libcore.timezone.TimeZoneFinder;
+import com.android.i18n.timezone.TelephonyLookup;
+import com.android.i18n.timezone.TimeZoneFinder;
 
 /**
  * A distro-validation / extraction class. Separate from the services code that uses it for easier
