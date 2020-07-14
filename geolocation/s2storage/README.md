@@ -7,6 +7,8 @@ High level file structure
   * `src/readonly/` - host + device code for reading TZ S2 data files
   * `src/write/`    - host code for writing TZ S2 data files
   * `src/test/`     - host tests for readonly/ and write/ code
+  * `tools/`        - host tooling to support generation / debugging / testing of TZ S2 data
+                      files.
 
 Block file format information
 =============================
