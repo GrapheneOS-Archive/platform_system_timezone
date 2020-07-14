@@ -1,0 +1,8 @@
+{
+  "presubmit": [
+    {
+      "name": "geotz_s2storage_tests",
+      "host": true
+    }
+  ]
+}
