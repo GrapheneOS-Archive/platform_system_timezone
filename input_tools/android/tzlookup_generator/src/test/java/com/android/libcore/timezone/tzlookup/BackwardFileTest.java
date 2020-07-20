@@ -30,8 +30,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class BackwardFileTest {
 
@@ -78,19 +81,34 @@ public class BackwardFileTest {
                 "Link\tAfrica/Nairobi\t\tAfrica/Asmera",
                 "# This is a comment",
                 "Link\tAfrica/Abidjan\t\tAfrica/Timbuktu",
-                "# This is a comment"
+                "# This is a comment",
+                "Link\tAfrica/Timbuktu\t\tAfrica/Timbuktu2"
         );
         BackwardFile backward = BackwardFile.parse(file);
         Map<String, String> expectedLinks = new HashMap<>();
         expectedLinks.put("America/Godthab", "America/Nuuk");
         expectedLinks.put("Africa/Asmera", "Africa/Nairobi");
         expectedLinks.put("Africa/Timbuktu", "Africa/Abidjan");
+        expectedLinks.put("Africa/Timbuktu2", "Africa/Timbuktu");
+        assertEquals(expectedLinks, backward.getLinks());
 
-        assertEquals(expectedLinks, backward.getDirectLinks());
+        Map<String, String> expectedDirectLinks = new HashMap<>();
+        expectedDirectLinks.put("America/Godthab", "America/Nuuk");
+        expectedDirectLinks.put("Africa/Asmera", "Africa/Nairobi");
+        expectedDirectLinks.put("Africa/Timbuktu", "Africa/Abidjan");
+        expectedDirectLinks.put("Africa/Timbuktu2", "Africa/Abidjan");
+        assertEquals(expectedDirectLinks, backward.getDirectLinks());
+
+        assertEquals(set("Africa/Abidjan", "Africa/Timbuktu2"),
+                backward.getAllAlternativeIds("Africa/Timbuktu"));
+        assertEquals(set("Africa/Abidjan", "Africa/Timbuktu"),
+                backward.getAllAlternativeIds("Africa/Timbuktu2"));
+        assertEquals(set("Africa/Timbuktu", "Africa/Timbuktu2"),
+                backward.getAllAlternativeIds("Africa/Abidjan"));
     }
 
     @Test(expected = IllegalStateException.class)
-    public void getLinksWithLoop() throws Exception {
+    public void getDirectLinksWithLoop() throws Exception {
         String file = createFile(
                 "Link\tAmerica/New_York\t\tAmerica/Los_Angeles",
                 "Link\tAmerica/Los_Angeles\t\tAmerica/Phoenix",
@@ -118,5 +136,9 @@ public class BackwardFileTest {
 
     private String createFile(String... lines) throws IOException {
         return TestUtils.createFile(tempDir, lines);
+    }
+
+    private static <T> Set<T> set(T... values) {
+        return new HashSet<>(Arrays.asList(values));
     }
 }
