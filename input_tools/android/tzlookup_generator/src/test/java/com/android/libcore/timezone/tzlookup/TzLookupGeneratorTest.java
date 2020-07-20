@@ -438,16 +438,15 @@ public class TzLookupGeneratorTest {
                 new ZoneTabFile.CountryEntry("GL", "America/Scoresbysund"),
                 new ZoneTabFile.CountryEntry("GL", "America/Thule")
         );
-        Map<String, String> links = new HashMap<>();
-        links.put("America/Godthab", "America/Nuuk");
+        Map<String, String> backwardLinks = new HashMap<>();
+        backwardLinks.put("America/Godthab", "America/Nuuk");
 
-        String tzLookupXml = generateTzLookupXml(country, zoneTabWithNewIds, links);
+        String tzLookupXml = generateTzLookupXml(country, zoneTabWithNewIds, backwardLinks);
 
-        String expectedOutput =
-                "<id>America/Danmarkshavn</id>\n"
-                        + "<id>America/Scoresbysund</id>\n"
-                        + "<id>America/Godthab</id>\n"
-                        + "<id>America/Thule</id>\n";
+        String expectedOutput = "<id>America/Danmarkshavn</id>\n"
+                + "<id>America/Scoresbysund</id>\n"
+                + "<id alts=\"America/Nuuk\">America/Godthab</id>\n"
+                + "<id>America/Thule</id>\n";
         String[] expectedLines = expectedOutput.split("\\n");
         for (String expectedLine : expectedLines) {
             assertContains(tzLookupXml, expectedLine);
@@ -562,32 +561,32 @@ public class TzLookupGeneratorTest {
                 createValidBackwardLinks());
         String expectedOutput =
                 "<id>America/New_York</id>\n"
-                + "<id notafter=\"167814000000\">America/Detroit</id>\n"
-                + "<id notafter=\"152089200000\">America/Kentucky/Louisville</id>\n"
-                + "<id notafter=\"972802800000\">America/Kentucky/Monticello</id>\n"
-                + "<id notafter=\"1130652000000\">America/Indiana/Indianapolis</id>\n"
-                + "<id notafter=\"1194159600000\">America/Indiana/Vincennes</id>\n"
-                + "<id notafter=\"1173600000000\">America/Indiana/Winamac</id>\n"
-                + "<id notafter=\"183535200000\">America/Indiana/Marengo</id>\n"
-                + "<id notafter=\"247042800000\">America/Indiana/Petersburg</id>\n"
-                + "<id notafter=\"89186400000\">America/Indiana/Vevay</id>\n"
+                + "<id notafter=\"167814000000\" repl=\"America/New_York\">America/Detroit</id>\n"
+                + "<id notafter=\"152089200000\" repl=\"America/New_York\">America/Kentucky/Louisville</id>\n"
+                + "<id notafter=\"972802800000\" repl=\"America/New_York\">America/Kentucky/Monticello</id>\n"
+                + "<id notafter=\"1130652000000\" repl=\"America/New_York\">America/Indiana/Indianapolis</id>\n"
+                + "<id notafter=\"1194159600000\" repl=\"America/New_York\">America/Indiana/Vincennes</id>\n"
+                + "<id notafter=\"1173600000000\" repl=\"America/New_York\">America/Indiana/Winamac</id>\n"
+                + "<id notafter=\"183535200000\" repl=\"America/New_York\">America/Indiana/Marengo</id>\n"
+                + "<id notafter=\"247042800000\" repl=\"America/New_York\">America/Indiana/Petersburg</id>\n"
+                + "<id notafter=\"89186400000\" repl=\"America/New_York\">America/Indiana/Vevay</id>\n"
                 + "<id>America/Chicago</id>\n"
-                + "<id notafter=\"688546800000\">America/Indiana/Knox</id>\n"
-                + "<id notafter=\"104918400000\">America/Menominee</id>\n"
-                + "<id notafter=\"720000000000\">America/North_Dakota/Center</id>\n"
-                + "<id notafter=\"1067155200000\">America/North_Dakota/New_Salem</id>\n"
-                + "<id notafter=\"1143964800000\">America/Indiana/Tell_City</id>\n"
-                + "<id notafter=\"1289116800000\">America/North_Dakota/Beulah</id>\n"
+                + "<id notafter=\"688546800000\" repl=\"America/Chicago\">America/Indiana/Knox</id>\n"
+                + "<id notafter=\"104918400000\" repl=\"America/Chicago\">America/Menominee</id>\n"
+                + "<id notafter=\"720000000000\" repl=\"America/Chicago\">America/North_Dakota/Center</id>\n"
+                + "<id notafter=\"1067155200000\" repl=\"America/Chicago\">America/North_Dakota/New_Salem</id>\n"
+                + "<id notafter=\"1143964800000\" repl=\"America/Chicago\">America/Indiana/Tell_City</id>\n"
+                + "<id notafter=\"1289116800000\" repl=\"America/Chicago\">America/North_Dakota/Beulah</id>\n"
                 + "<id>America/Denver</id>\n"
-                + "<id notafter=\"129114000000\">America/Boise</id>\n"
                 + "<id>America/Phoenix</id>\n"
+                + "<id notafter=\"129114000000\" repl=\"America/Phoenix\">America/Boise</id>\n"
                 + "<id>America/Los_Angeles</id>\n"
                 + "<id>America/Anchorage</id>\n"
-                + "<id notafter=\"436359600000\">America/Juneau</id>\n"
-                + "<id notafter=\"436356000000\">America/Yakutat</id>\n"
-                + "<id notafter=\"436363200000\">America/Nome</id>\n"
-                + "<id notafter=\"1547978400000\">America/Metlakatla</id>\n"
-                + "<id notafter=\"341402400000\">America/Sitka</id>\n"
+                + "<id notafter=\"436359600000\" repl=\"America/Anchorage\">America/Juneau</id>\n"
+                + "<id notafter=\"436356000000\" repl=\"America/Anchorage\">America/Yakutat</id>\n"
+                + "<id notafter=\"436363200000\" repl=\"America/Anchorage\">America/Nome</id>\n"
+                + "<id notafter=\"1547978400000\" repl=\"America/Anchorage\">America/Metlakatla</id>\n"
+                + "<id notafter=\"341402400000\" repl=\"America/Anchorage\">America/Sitka</id>\n"
                 + "<id>Pacific/Honolulu</id>\n"
                 + "<id>America/Adak</id>\n";
         String[] expectedLines = expectedOutput.split("\\n");

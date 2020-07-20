@@ -25,6 +25,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -60,6 +62,10 @@ final class TzLookupFile {
     private static final String ZONE_SHOW_IN_PICKER_ATTRIBUTE = "picker";
     // The time when the zone stops being distinct from another of the country's zones (inclusive).
     private static final String ZONE_NOT_USED_AFTER_ATTRIBUTE = "notafter";
+    // The zone ID used in place of this one starting from the "notafter" time (when present).
+    private static final String ZONE_NOT_USED_REPLACEMENT_ID_ATTRIBUTE = "repl";
+    // Other IDs associated with this ID, e.g. legacy or more modern alternatives.
+    private static final String ZONE_ALTERNATIVE_IDS_ATTRIBUTE = "alts";
 
 
     // Short encodings for boolean attributes.
@@ -71,20 +77,17 @@ final class TzLookupFile {
         /*
          * The required XML structure is:
          * <timezones ianaversion="2017b">
-         *   <countryzones>
-         *     <country code="us" default="America/New_York" everutc="n">
-         *       <!-- -5:00 -->
-         *       <id notafter="1234">America/New_York"</id>
-         *       ...
-         *       <!-- -8:00 -->
-         *       <id picker="n">America/Los_Angeles</id>
-         *       ...
-         *     </country>
-         *     <country code="gb" default="Europe/London" defaultBoost="y" everutc="y">
-         *       <!-- 0:00 -->
-         *       <id>Europe/London</id>
-         *     </country>
-         *   </countryzones>
+         *  <countryzones>
+         *   <country code="us" default="America/New_York" everutc="n">
+         *    <id>America/New_York"</id>
+         *    <id notafter="1234" repl="America/New_York" alts="US/Michigan">America/Detroit"</id>
+         *    ...
+         *    <id picker="n">America/Los_Angeles</id>
+         *   </country>
+         *   <country code="gb" default="Europe/London" defaultBoost="y" everutc="y">
+         *    <id alts="Europe/Belfast,GB,GB-Eire">Europe/London</id>
+         *   </country>
+         *  </countryzones>
          * </timezones>
          */
 
@@ -212,24 +215,40 @@ final class TzLookupFile {
         private final String olsonId;
         private final boolean showInPicker;
         private final Instant notUsedAfterInclusive;
+        private final String notAfterReplacementId;
+        private final List<String> alternativeZoneIds;
 
-        TimeZoneMapping(String olsonId, boolean showInPicker, Instant notUsedAfterInclusive) {
-            this.olsonId = olsonId;
+        TimeZoneMapping(String olsonId, boolean showInPicker, Instant notUsedAfterInclusive,
+                String notAfterReplacementId, List<String> alternativeZoneIds) {
+            this.olsonId = Objects.requireNonNull(olsonId);
             this.showInPicker = showInPicker;
+            if ((notUsedAfterInclusive == null) != (notAfterReplacementId == null)) {
+                throw new IllegalArgumentException(
+                        "Supply both notUsedAfterInclusive and notAfterReplacementId or neither");
+            }
             this.notUsedAfterInclusive = notUsedAfterInclusive;
+            this.notAfterReplacementId = notAfterReplacementId;
+            this.alternativeZoneIds = Objects.requireNonNull(alternativeZoneIds);
         }
 
-        static void writeXml(TimeZoneMapping timeZoneId, XMLStreamWriter writer)
+        static void writeXml(TimeZoneMapping timeZoneMapping, XMLStreamWriter writer)
                 throws XMLStreamException {
             writer.writeStartElement(ZONE_ID_ELEMENT);
-            if (!timeZoneId.showInPicker) {
+            if (!timeZoneMapping.showInPicker) {
                 writer.writeAttribute(ZONE_SHOW_IN_PICKER_ATTRIBUTE, encodeBooleanAttribute(false));
             }
-            if (timeZoneId.notUsedAfterInclusive != null) {
+            if (timeZoneMapping.notUsedAfterInclusive != null) {
                 writer.writeAttribute(ZONE_NOT_USED_AFTER_ATTRIBUTE,
-                        encodeLongAttribute(timeZoneId.notUsedAfterInclusive.toEpochMilli()));
+                        encodeLongAttribute(timeZoneMapping.notUsedAfterInclusive.toEpochMilli()));
+                writer.writeAttribute(ZONE_NOT_USED_REPLACEMENT_ID_ATTRIBUTE,
+                        timeZoneMapping.notAfterReplacementId);
             }
-            writer.writeCharacters(timeZoneId.olsonId);
+            if (!timeZoneMapping.alternativeZoneIds.isEmpty()) {
+                String alternativeZoneIdsString =
+                        String.join(",", timeZoneMapping.alternativeZoneIds);
+                writer.writeAttribute(ZONE_ALTERNATIVE_IDS_ATTRIBUTE, alternativeZoneIdsString);
+            }
+            writer.writeCharacters(timeZoneMapping.olsonId);
             writer.writeEndElement();
         }
     }
