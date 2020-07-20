@@ -29,8 +29,8 @@ java_library_host {
 
     srcs: ["src/main/java/**/*.java"],
     static_libs: [
-        "icu4j",
         "countryzonesprotos",
+        "icu4j",
         "libprotobuf-java-full",
         "tztools_common",
     ],
