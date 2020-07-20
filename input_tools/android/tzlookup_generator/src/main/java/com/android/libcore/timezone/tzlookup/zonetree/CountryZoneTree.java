@@ -510,27 +510,44 @@ public final class CountryZoneTree {
                 }
 
                 Instant endInstant = node.getEndInstant();
+                String replacementTimeZoneId = findReplacementTimeZoneId(node);
                 if (!node.isLeaf()) {
                     ZoneInfo primaryZone = node.getPrimaryZoneInfo();
-                    addZoneEntryIfMissing(endInstant, primaryZone);
+                    addZoneEntryIfMissing(endInstant, replacementTimeZoneId, primaryZone);
                 } else {
                     // In some rare cases (e.g. Canada: Swift_Current and Creston) zones have agreed
                     // completely since 1970 so some leaves may have multiple zones. So, attempt to
                     // add all zones for leaves, not just the primary.
                     for (ZoneInfo zoneInfo : node.getZoneInfos()) {
-                        addZoneEntryIfMissing(endInstant, zoneInfo);
+                        addZoneEntryIfMissing(endInstant, replacementTimeZoneId, zoneInfo);
                     }
                 }
             }
 
-            private void addZoneEntryIfMissing(Instant endInstant, ZoneInfo zoneInfo) {
+            /**
+             * Find the time zone that the node ultimately "merges" into, i.e. the one it is
+             * effectively replaced by.
+             */
+            private String findReplacementTimeZoneId(ZoneNode node) {
+                if (node.getParent().isRoot()) {
+                    return null;
+                }
+                do {
+                    node = node.getParent();
+                } while (!node.getParent().isRoot());
+                return node.primaryZoneInfo.getZoneId();
+            }
+
+            private void addZoneEntryIfMissing(
+                    Instant endInstant, String replacementTimeZoneId, ZoneInfo zoneInfo) {
                 String zoneId = zoneInfo.getZoneId();
                 if (!notAfterCutOff.isAfter(endInstant)) {
                     // notAfterCutOff <= endInstant
                     endInstant = null;
+                    replacementTimeZoneId = null;
                 }
                 if (!zoneUsage.hasEntry(zoneId)) {
-                    zoneUsage.addEntry(zoneId, endInstant);
+                    zoneUsage.addEntry(zoneId, endInstant, replacementTimeZoneId);
                 }
             }
 
