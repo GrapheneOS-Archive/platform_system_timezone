@@ -226,6 +226,7 @@ public class ZoneInfoTestHelper {
         private Integer indexOffsetOverride;
         private Integer dataOffsetOverride;
         private Integer zoneTabOffsetOverride;
+        private Integer finalOffsetOverride;
 
         public TzDataBuilder() {}
 
@@ -247,6 +248,11 @@ public class ZoneInfoTestHelper {
 
         public TzDataBuilder setZoneTabOffsetOverride(int zoneTabOffset) {
             this.zoneTabOffsetOverride = zoneTabOffset;
+            return this;
+        }
+
+        public TzDataBuilder setFinalOffsetOverride(int finalOffset) {
+            this.finalOffsetOverride = finalOffset;
             return this;
         }
 
@@ -290,6 +296,8 @@ public class ZoneInfoTestHelper {
             writeInt(baos, 0);
             int zoneTabOffsetOffset = baos.size();
             writeInt(baos, 0);
+            int finalOffsetOffset = baos.size();
+            writeInt(baos, 0);
 
             // Construct the data section in advance, so we know the offsets.
             ByteArrayOutputStream dataBytes = new ByteArrayOutputStream();
@@ -328,6 +336,8 @@ public class ZoneInfoTestHelper {
             byte[] zoneTabBytes = zoneTab.getBytes(StandardCharsets.US_ASCII);
             writeByteArray(baos, zoneTabBytes);
 
+            int finalOffset = baos.size();
+
             byte[] bytes = baos.toByteArray();
             setInt(bytes, indexOffsetOffset,
                     indexOffsetOverride != null ? indexOffsetOverride : indexOffset);
@@ -335,6 +345,8 @@ public class ZoneInfoTestHelper {
                     dataOffsetOverride != null ? dataOffsetOverride : dataOffset);
             setInt(bytes, zoneTabOffsetOffset,
                     zoneTabOffsetOverride != null ? zoneTabOffsetOverride : zoneTabOffset);
+            setInt(bytes, finalOffsetOffset,
+                    finalOffsetOverride != null ? finalOffsetOverride : finalOffset);
             return bytes;
         }
 

@@ -72,15 +72,30 @@ def WriteSetupFile(zic_input_file):
   for line in open(zic_input_file):
     fields = line.split()
     if fields:
-      if fields[0] == 'Link':
-        links.append('%s %s %s' % (fields[0], fields[1], fields[2]))
-        zones.append(fields[2])
-      elif fields[0] == 'Zone':
-        zones.append(fields[1])
-  zones.sort()
+      line_type = fields[0]
+      if line_type == 'Link':
+        # Each "Link" line requires the creation of a link from an old tz ID to
+        # a new tz ID, and implies the existence of a zone with the old tz ID.
+        #
+        # IANA terminology:
+        # TARGET = the new tz ID, LINK-NAME = the old tz ID
+        target = fields[1]
+        link_name = fields[2]
+        links.append('Link %s %s' % (target, link_name))
+        zones.append('Zone %s' % link_name)
+      elif line_type == 'Zone':
+        # Each "Zone" line indicates the existence of a tz ID.
+        #
+        # IANA terminology:
+        # NAME is the tz ID, other fields like STDOFF, RULES, FORMAT,[UNTIL] are
+        # ignored.
+        name = fields[1]
+        zones.append('Zone %s' % name)
 
   zone_compactor_setup_file = '%s/setup' % tmp_dir
   setup = open(zone_compactor_setup_file, 'w')
+
+  # Ordering requirement from ZoneCompactor: Links must come first.
   for link in sorted(set(links)):
     setup.write('%s\n' % link)
   for zone in sorted(set(zones)):
