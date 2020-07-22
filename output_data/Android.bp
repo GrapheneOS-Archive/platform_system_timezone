@@ -55,7 +55,7 @@ prebuilt_etc {
 }
 
 // tzdata packaged into a jar for use in robolectric
-java_genrule {
+java_genrule_host {
     name: "robolectric_tzdata",
     out: ["robolectric_tzdata.jar"],
     tools: ["soong_zip"],
