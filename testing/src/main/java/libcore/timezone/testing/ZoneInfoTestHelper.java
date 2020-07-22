@@ -222,10 +222,8 @@ public class ZoneInfoTestHelper {
         // A list is used in preference to a Map to allow simulation of badly ordered / duplicate
         // IDs.
         private List<ZicDatum> zicData = new ArrayList<>();
-        private String zoneTab;
         private Integer indexOffsetOverride;
         private Integer dataOffsetOverride;
-        private Integer zoneTabOffsetOverride;
         private Integer finalOffsetOverride;
 
         public TzDataBuilder() {}
@@ -246,11 +244,6 @@ public class ZoneInfoTestHelper {
             return this;
         }
 
-        public TzDataBuilder setZoneTabOffsetOverride(int zoneTabOffset) {
-            this.zoneTabOffsetOverride = zoneTabOffset;
-            return this;
-        }
-
         public TzDataBuilder setFinalOffsetOverride(int finalOffset) {
             this.finalOffsetOverride = finalOffset;
             return this;
@@ -265,15 +258,9 @@ public class ZoneInfoTestHelper {
             return this;
         }
 
-        public TzDataBuilder setZoneTab(String zoneTab) {
-            this.zoneTab = zoneTab;
-            return this;
-        }
-
         public TzDataBuilder initializeToValid() {
             setHeaderMagic("tzdata9999a");
             addZicData("Europe/Elbonia", new ZicDataBuilder().initializeToValid().build());
-            setZoneTab("ZoneTab data");
             return this;
         }
 
@@ -293,8 +280,6 @@ public class ZoneInfoTestHelper {
             int indexOffsetOffset = baos.size();
             writeInt(baos, 0);
             int dataOffsetOffset = baos.size();
-            writeInt(baos, 0);
-            int zoneTabOffsetOffset = baos.size();
             writeInt(baos, 0);
             int finalOffsetOffset = baos.size();
             writeInt(baos, 0);
@@ -331,11 +316,6 @@ public class ZoneInfoTestHelper {
             int dataOffset = baos.size();
             writeByteArray(baos, dataBytes.toByteArray());
 
-            // Write the zoneTab section.
-            int zoneTabOffset = baos.size();
-            byte[] zoneTabBytes = zoneTab.getBytes(StandardCharsets.US_ASCII);
-            writeByteArray(baos, zoneTabBytes);
-
             int finalOffset = baos.size();
 
             byte[] bytes = baos.toByteArray();
@@ -343,8 +323,6 @@ public class ZoneInfoTestHelper {
                     indexOffsetOverride != null ? indexOffsetOverride : indexOffset);
             setInt(bytes, dataOffsetOffset,
                     dataOffsetOverride != null ? dataOffsetOverride : dataOffset);
-            setInt(bytes, zoneTabOffsetOffset,
-                    zoneTabOffsetOverride != null ? zoneTabOffsetOverride : zoneTabOffset);
             setInt(bytes, finalOffsetOffset,
                     finalOffsetOverride != null ? finalOffsetOverride : finalOffset);
             return bytes;
