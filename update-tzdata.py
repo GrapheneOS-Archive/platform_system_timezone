@@ -181,14 +181,13 @@ def BuildTzdata(zic_binary_file, extracted_iana_data_dir, iana_data_version):
   tzdatautil.InvokeSoong(android_build_top, ['zone_compactor'])
 
   # Create args for ZoneCompactor
-  zone_tab_file = '%s/zone.tab' % extracted_iana_data_dir
   header_string = 'tzdata%s' % iana_data_version
 
   print('Executing ZoneCompactor...')
   command = '%s/bin/zone_compactor' % android_host_out
   iana_output_data_dir = '%s/iana' % timezone_output_data_dir
-  subprocess.check_call([command, zone_compactor_setup_file, zic_output_dir, zone_tab_file,
-                         iana_output_data_dir, header_string])
+  subprocess.check_call([command, zone_compactor_setup_file, zic_output_dir, iana_output_data_dir,
+                         header_string])
 
 
 def BuildTzlookup(iana_data_dir):
