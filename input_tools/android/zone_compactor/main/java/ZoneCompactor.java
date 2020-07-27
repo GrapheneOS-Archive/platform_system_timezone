@@ -125,7 +125,7 @@ public class ZoneCompactor {
     // tzdata_version
     f.write(toAscii(new byte[12], version));
 
-    // Write dummy values for the offsets, and remember where we need to seek back to later
+    // Write placeholder values for the offsets, and remember where we need to seek back to later
     // when we have the real values.
     int index_offset_offset = (int) f.getFilePointer();
     f.writeInt(0);
