@@ -122,13 +122,13 @@ public final class TzLookupGenerator {
             List<CountryZonesFile.Country> countriesIn = countryZonesIn.getCountriesList();
             List<String> countriesInIsos = CountryZonesFileSupport.extractIsoCodes(countriesIn);
 
-            // Sanity check the countryzones file only contains lower-case country codes. The output
-            // file uses them and the on-device code assumes lower case.
+            // Confidence check the countryzones file only contains lower-case country codes. The
+            // output file uses them and the on-device code assumes lower case.
             if (!Utils.allLowerCaseAscii(countriesInIsos)) {
                 throw errors.addFatalAndHalt(
                         "Non-lowercase country ISO codes found in: " + countriesInIsos);
             }
-            // Sanity check the countryzones file doesn't contain duplicate country entries.
+            // Confidence check the countryzones file doesn't contain duplicate country entries.
             if (!Utils.allUnique(countriesInIsos)) {
                 throw errors.addFatalAndHalt(
                         "Duplicate input country entries found: " + countriesInIsos);
