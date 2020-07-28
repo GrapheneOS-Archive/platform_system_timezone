@@ -1,0 +1,27 @@
+// Generated file DO NOT EDIT
+// Run download-tzbb-files.sh
+name: "tzbb_data"
+description:
+    "Assorted files downloaded from https://github.com/evansiroky/timezone-boundary-builder/"
+
+third_party {
+  url {
+    type: HOMEPAGE
+    value: "https://github.com/evansiroky/timezone-boundary-builder/"
+  }
+  url {
+    type: OTHER
+    value: "DATA_LICENSE downloaded from https://raw.githubusercontent.com/evansiroky/timezone-boundary-builder/master/DATA_LICENSE on Tue 28 Jul 2020 04:22:37 PM BST, SHA1=f2faea4cad68e2f549e9a3fb88f75c04447373da"
+  }
+  url {
+    type: OTHER
+    value: "input-data.zip downloaded from https://github.com/evansiroky/timezone-boundary-builder/releases/download/2020a/input-data.zip on Tue 28 Jul 2020 04:22:42 PM BST, SHA1=31be10353f74dd1b1623f26101f759ac375ef1d1"
+  }
+  url {
+    type: OTHER
+    value: "timezones.geojson.zip downloaded from https://github.com/evansiroky/timezone-boundary-builder/releases/download/2020a/timezones.geojson.zip on Tue 28 Jul 2020 04:22:44 PM BST, SHA1=861e414ff9272f2704b8b88d56b6778f87635b05"
+  }
+  version: "2020a"
+  last_upgrade_date { year: 2020 month: 7 day: 28 }
+  license_type: RESTRICTED
+}
