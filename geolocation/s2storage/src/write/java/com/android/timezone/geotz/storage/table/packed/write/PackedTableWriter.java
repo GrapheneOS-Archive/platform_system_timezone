@@ -49,6 +49,8 @@ public final class PackedTableWriter implements AutoCloseable {
 
     private int mEntryCount = 0;
 
+    private boolean mIsOpen = true;
+
     private PackedTableWriter(OutputStream blockDataOutputStream, int entrySizeByteCount,
             int keySizeBits, boolean signedValue) {
         mBlockDataOutputStream = new TypedOutputStream(blockDataOutputStream);
@@ -109,6 +111,8 @@ public final class PackedTableWriter implements AutoCloseable {
      * same key.
      */
     public void addEntry(int key, long value) throws IOException {
+        checkIsOpen();
+
         if (key < mLastKeyAdded) {
             throw new IllegalArgumentException("Entries must be added in key order."
                     + " lastKeyAdded=" + mLastKeyAdded + ", key=" + key);
@@ -143,8 +147,20 @@ public final class PackedTableWriter implements AutoCloseable {
         return mEntryCount;
     }
 
+    /** Returns {@code true} unless {@link #close()} has been called. */
+    public boolean isOpen() {
+        return mIsOpen;
+    }
+
     @Override
     public void close() throws IOException {
         mBlockDataOutputStream.close();
+        mIsOpen = false;
+    }
+
+    private void checkIsOpen() {
+        if (!mIsOpen) {
+            throw new IllegalStateException("closed");
+        }
     }
 }
