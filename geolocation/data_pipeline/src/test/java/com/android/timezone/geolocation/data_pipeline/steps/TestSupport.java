@@ -43,36 +43,44 @@ public final class TestSupport {
 
         Files.createDirectories(targetDir);
 
-        return copyResourceAndLicense(
-                baseClass, TEST_DATA_RESOURCE_DIR + testResource, targetDir);
+        return copyResourceAndLicense(baseClass, TEST_DATA_RESOURCE_DIR + testResource, targetDir);
+    }
+
+    public static Path copyTestResourceWithoutLicense(
+            Class<?> baseClass, String testResource, Path targetDir)
+            throws IOException {
+
+        Files.createDirectories(targetDir);
+
+        return copyResource(baseClass, TEST_DATA_RESOURCE_DIR + testResource, targetDir);
     }
 
     private static Path copyResourceAndLicense(Class<?> baseClass,
             String relativeResourcePath, Path targetDir) throws IOException {
 
-        String fileName = relativeResourcePath;
         String dirName = "";
         if (relativeResourcePath.contains("/")) {
-            fileName = relativeResourcePath.substring(relativeResourcePath.lastIndexOf('/') + 1);
             dirName = relativeResourcePath.substring(0, relativeResourcePath.lastIndexOf('/'));
         }
-        Path targetResourceFile = targetDir.resolve(fileName);
-        copyResource(baseClass, relativeResourcePath, targetResourceFile);
+        copyResource(baseClass, dirName + "/" + LICENSE_FILE_NAME, targetDir);
 
-        Path targetLicenseFile = targetDir.resolve(LICENSE_FILE_NAME);
-        copyResource(baseClass, dirName + "/" + LICENSE_FILE_NAME, targetLicenseFile);
-
-        return targetResourceFile;
+        return copyResource(baseClass, relativeResourcePath, targetDir);
     }
 
-    private static void copyResource(Class<?> baseClass, String relativeResourcePath, Path target)
-            throws IOException {
+    private static Path copyResource(Class<?> baseClass, String relativeResourcePath,
+            Path targetDir) throws IOException {
+        String fileName = relativeResourcePath;
+        if (relativeResourcePath.contains("/")) {
+            fileName = relativeResourcePath.substring(relativeResourcePath.lastIndexOf('/') + 1);
+        }
+        Path targetResourceFile = targetDir.resolve(fileName);
         try (InputStream inputStream = baseClass.getResourceAsStream(relativeResourcePath)) {
             if (inputStream == null) {
                 fail("resource=" + relativeResourcePath + " not found");
             }
-            Files.copy(inputStream, target, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(inputStream, targetResourceFile, StandardCopyOption.REPLACE_EXISTING);
         }
+        return targetResourceFile;
     }
 
     public static Path createTempDir(Class<?> testClass) throws IOException {

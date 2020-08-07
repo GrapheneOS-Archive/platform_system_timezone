@@ -22,11 +22,10 @@ if [ -z ${ANDROID_BUILD_TOP} ]; then
   exit 1
 fi
 
-SCRIPT_PATH=$(realpath $0)
-
-LOCAL_GEOLOCATION_DIR=$(dirname ${SCRIPT_PATH})
-DATA_PIPELINE_DIR=${LOCAL_GEOLOCATION_DIR}/data_pipeline
-TZBB_DATA_DIR=${LOCAL_GEOLOCATION_DIR}/tzbb_data
+SYSTEM_TIMEZONE_DIR=$(realpath ${ANDROID_BUILD_TOP}/system/timezone)
+GEOLOCATION_DIR=${SYSTEM_TIMEZONE_DIR}/geolocation
+DATA_PIPELINE_DIR=${GEOLOCATION_DIR}/data_pipeline
+TZBB_DATA_DIR=${GEOLOCATION_DIR}/tzbb_data
 WORKING_DIR_ROOT=${DATA_PIPELINE_DIR}/output
 
 #
@@ -62,7 +61,7 @@ if [ -d ${WORKING_DIR_ROOT} ]; then
   fi
 fi
 
-MAX_STEP_ID=5
+MAX_STEP_ID=7
 if (( ${SKIP_TO_STEP} > ${MAX_STEP_ID} )); then
   echo Cannot skip to step ${SKIP_TO_STEP}
   exit 1
@@ -75,25 +74,35 @@ STEP1_CMD="${STEP1_TARGET} ${JAVA_ARGS}"
 STEP1_THREAD_COUNT=10
 STEP1_WORKING_DIR=${WORKING_DIR_ROOT}/tzs2polygons
 
-STEP2_TARGET=geotz_tzs2polygons_to_tzs2cellunions
+STEP2_TARGET=geotz_canonicalize_tzs2polygons
 STEP2_CMD="${STEP2_TARGET} ${JAVA_ARGS}"
-STEP2_THREAD_COUNT=5
-STEP2_WORKING_DIR=${WORKING_DIR_ROOT}/tzs2cellunions_l${S2_LEVEL}
+STEP2_TZIDS_FILE=${SYSTEM_TIMEZONE_DIR}/output_data/android/tzids.prototxt
+STEP2_REPLACEMENT_THREADHOLD=2020-01-01T00:00:00.00Z
+STEP2_WORKING_DIR=${WORKING_DIR_ROOT}/canonicalized_tzs2polygons
 
-STEP3_TARGET=geotz_tzs2cellunions_to_tzs2ranges
+STEP3_TARGET=geotz_tzs2polygons_to_tzs2cellunions
 STEP3_CMD="${STEP3_TARGET} ${JAVA_ARGS}"
-STEP3_THREAD_COUNT=10
-STEP3_WORKING_DIR=${WORKING_DIR_ROOT}/tzs2ranges_l${S2_LEVEL}
+STEP3_THREAD_COUNT=5
+STEP3_WORKING_DIR=${WORKING_DIR_ROOT}/tzs2cellunions_l${S2_LEVEL}
 
-STEP4_TARGET=geotz_mergetzs2ranges
+STEP4_TARGET=geotz_tzs2cellunions_to_tzs2ranges
 STEP4_CMD="${STEP4_TARGET} ${JAVA_ARGS}"
-STEP4_THREAD_COUNT=5
-STEP4_WORKING_DIR=${WORKING_DIR_ROOT}/mergedtzs2ranges_l${S2_LEVEL}
-STEP4_OUTPUT_FILE=${STEP4_WORKING_DIR}/mergedtzs2ranges${S2_LEVEL}.prototxt
+STEP4_THREAD_COUNT=10
+STEP4_WORKING_DIR=${WORKING_DIR_ROOT}/tzs2ranges_l${S2_LEVEL}
 
-STEP5_TARGET=geotz_createtzs2fileinput
+STEP5_TARGET=geotz_mergetzs2ranges
 STEP5_CMD="${STEP5_TARGET} ${JAVA_ARGS}"
-STEP5_OUTPUT_FILE=${WORKING_DIR_ROOT}/result/tzs2fileinput${S2_LEVEL}.prototxt
+STEP5_THREAD_COUNT=5
+STEP5_WORKING_DIR=${WORKING_DIR_ROOT}/mergedtzs2ranges_l${S2_LEVEL}
+STEP5_OUTPUT_FILE=${STEP5_WORKING_DIR}/mergedtzs2ranges${S2_LEVEL}.prototxt
+
+STEP6_TARGET=geotz_createtzs2fileinput
+STEP6_CMD="${STEP6_TARGET} ${JAVA_ARGS}"
+STEP6_OUTPUT_FILE=${WORKING_DIR_ROOT}/tzs2fileinput/tzs2fileinput${S2_LEVEL}.prototxt
+
+STEP7_TARGET=geotz_createtzs2file
+STEP7_CMD="${STEP7_TARGET} ${JAVA_ARGS}"
+STEP7_OUTPUT_FILE=${WORKING_DIR_ROOT}/result/tzs2_${S2_LEVEL}.dat
 
 BUILD_TARGETS=(\
   ${STEP1_TARGET} \
@@ -101,6 +110,8 @@ BUILD_TARGETS=(\
   ${STEP3_TARGET} \
   ${STEP4_TARGET} \
   ${STEP5_TARGET} \
+  ${STEP6_TARGET} \
+  ${STEP7_TARGET} \
 )
 
 echo ${0} starting at $(date --iso-8601=seconds)
@@ -163,8 +174,8 @@ if (( ${SKIP_TO_STEP} <= 2 )); then
   LOG_FILE=${WORKING_DIR_ROOT}/step2.log
   echo Logging to ${LOG_FILE} ...
   {
-    ${STEP2_CMD} ${STEP1_WORKING_DIR} ${STEP2_THREAD_COUNT} \
-        ${STEP2_WORKING_DIR} ${S2_LEVEL}
+    ${STEP2_CMD} ${STEP1_WORKING_DIR} ${STEP2_TZIDS_FILE} \
+        ${STEP2_REPLACEMENT_THREADHOLD} ${STEP2_WORKING_DIR}
   } &> ${LOG_FILE}
 else
   echo Skipping...
@@ -194,7 +205,7 @@ if (( ${SKIP_TO_STEP} <= 4 )); then
   echo Logging to ${LOG_FILE} ...
   {
     ${STEP4_CMD} ${STEP3_WORKING_DIR} ${STEP4_THREAD_COUNT} \
-        ${STEP4_WORKING_DIR} ${STEP4_OUTPUT_FILE}
+        ${STEP4_WORKING_DIR} ${S2_LEVEL}
   } &> ${LOG_FILE}
 else
   echo Skipping...
@@ -204,15 +215,44 @@ echo Completed step 4
 # Step 5
 echo Starting step 5
 if (( ${SKIP_TO_STEP} <= 5 )); then
+  mkdir -p ${STEP5_WORKING_DIR}
   LOG_FILE=${WORKING_DIR_ROOT}/step5.log
   echo Logging to ${LOG_FILE} ...
   {
-    ${STEP5_CMD} ${STEP4_OUTPUT_FILE} ${STEP5_OUTPUT_FILE}
+    ${STEP5_CMD} ${STEP4_WORKING_DIR} ${STEP5_THREAD_COUNT} \
+        ${STEP5_WORKING_DIR} ${STEP5_OUTPUT_FILE}
   } &> ${LOG_FILE}
 else
   echo Skipping...
 fi
 echo Completed step 5
 
-echo Output file: ${STEP5_OUTPUT_FILE}
+# Step 6
+echo Starting step 6
+if (( ${SKIP_TO_STEP} <= 6 )); then
+  LOG_FILE=${WORKING_DIR_ROOT}/step6.log
+  echo Logging to ${LOG_FILE} ...
+  {
+    ${STEP6_CMD} ${STEP5_OUTPUT_FILE} ${STEP6_OUTPUT_FILE}
+  } 2>&1 > ${LOG_FILE}
+else
+  echo Skipping...
+fi
+echo Completed step 6
+
+# Step 7
+echo Starting step 7
+if (( ${SKIP_TO_STEP} <= 7 )); then
+  LOG_FILE=${WORKING_DIR_ROOT}/step7.log
+  echo Logging to ${LOG_FILE} ...
+  mkdir -p $(dirname ${STEP7_OUTPUT_FILE})
+  {
+    ${STEP7_CMD} ${STEP6_OUTPUT_FILE} ${S2_LEVEL} ${STEP7_OUTPUT_FILE}
+  } 2>&1 > ${LOG_FILE}
+else
+  echo Skipping...
+fi
+echo Completed step 7
+
+echo Output file: ${STEP7_OUTPUT_FILE}
 echo ${0} completed at $(date --iso-8601=seconds)

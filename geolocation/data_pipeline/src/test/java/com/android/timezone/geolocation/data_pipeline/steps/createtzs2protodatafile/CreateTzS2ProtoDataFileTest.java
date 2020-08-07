@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/** Tests for {@link CreateTzS2ProtoDataFileTest}. */
+/** Tests for {@link CreateTzS2ProtoDataFile}. */
 public final class CreateTzS2ProtoDataFileTest {
 
     private Path mTempDirPath;

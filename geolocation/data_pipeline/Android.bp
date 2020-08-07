@@ -33,6 +33,8 @@ java_library_host {
         "geotz_s2storage_tools_protos",
         "libprotobuf-java-full",
         "s2-geometry-library-java",
+        "tzids",
+        "tztools_common",
     ],
 }
 
@@ -48,6 +50,16 @@ java_binary_host {
 
 // Step 2 of the OSM time zone geolocation reference data pipeline.
 //
+// Reads TzS2Polygon proto files and writes out TzS2Polygon proto files with canonical time zone
+// IDs, combining multiple input files into output files where necessary.
+java_binary_host {
+    name: "geotz_canonicalize_tzs2polygons",
+    main_class: "com.android.timezone.geolocation.data_pipeline.steps.CanonicalizeTzS2Polygons",
+    static_libs: ["geotz_data_pipeline"],
+}
+
+// Step 3 of the OSM time zone geolocation reference data pipeline.
+//
 // Converts TzS2Polygon proto files to TsS2CellUnion proto files at a maximum S2 level.
 java_binary_host {
     name: "geotz_tzs2polygons_to_tzs2cellunions",
@@ -55,7 +67,7 @@ java_binary_host {
     static_libs: ["geotz_data_pipeline"],
 }
 
-// Step 3 of the OSM time zone geolocation reference data pipeline.
+// Step 4 of the OSM time zone geolocation reference data pipeline.
 //
 // Converts TsS2CellUnion proto files to (single time zone) TzS2Ranges proto files.
 java_binary_host {
@@ -64,7 +76,7 @@ java_binary_host {
     static_libs: ["geotz_data_pipeline"],
 }
 
-// Step 4 of the OSM time zone geolocation reference data pipeline.
+// Step 5 of the OSM time zone geolocation reference data pipeline.
 //
 // Merges multiple, single time zone TzS2Ranges proto files into one, multiple time zone TzS2Ranges
 // proto file
@@ -74,7 +86,7 @@ java_binary_host {
     static_libs: ["geotz_data_pipeline"],
 }
 
-// Step 5 of the OSM time zone geolocation reference data pipeline.
+// Step 6 of the OSM time zone geolocation reference data pipeline.
 //
 // Converts the one, multiple time zone TzS2Ranges proto file to the file format required by the
 // geotz_createtzs2file tool.
