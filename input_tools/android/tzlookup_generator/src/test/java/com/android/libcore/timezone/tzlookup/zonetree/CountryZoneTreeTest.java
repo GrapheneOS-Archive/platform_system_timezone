@@ -23,7 +23,7 @@ import org.junit.Test;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import static com.android.libcore.timezone.tzlookup.proto.CountryZonesFile.Country;
+import static com.android.libcore.timezone.countryzones.proto.CountryZonesFile.Country;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
