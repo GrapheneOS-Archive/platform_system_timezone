@@ -144,7 +144,8 @@ def BuildZic(iana_tools_dir):
   iana_zic_data_version = GetIanaVersion(iana_zic_data_tar_file)
 
   print('Found IANA zic release %s/%s in %s/%s ...' \
-      % (iana_zic_code_version, iana_zic_data_version, iana_zic_code_tar_file, iana_zic_data_tar_file))
+      % (iana_zic_code_version, iana_zic_data_version, iana_zic_code_tar_file,
+         iana_zic_data_tar_file))
 
   zic_build_dir = '%s/zic' % tmp_dir
   ExtractTarFile(iana_zic_code_tar_file, zic_build_dir)
@@ -190,18 +191,19 @@ def BuildTzdata(zic_binary_file, extracted_iana_data_dir, iana_data_version):
                          header_string])
 
 
-def BuildTzlookup(iana_data_dir):
+def BuildTzlookupAndTzAliases(iana_data_dir, tzalias_dest_dir):
   countryzones_source_file = '%s/android/countryzones.txt' % timezone_input_data_dir
   tzlookup_dest_file = '%s/android/tzlookup.xml' % timezone_output_data_dir
+  tzaliases_dest_file = '%s/tzaliases.txt' % tzalias_dest_dir
 
-  print('Calling TzLookupGenerator to create tzlookup.xml...')
+  print('Calling TzLookupGenerator to create tzlookup.xml / tzaliases.txt...')
   tzdatautil.InvokeSoong(android_build_top, ['tzlookup_generator'])
 
   zone_tab_file = '%s/zone.tab' % iana_data_dir
   backward_file = '%s/backward' % iana_data_dir
   command = '%s/bin/tzlookup_generator' % android_host_out
   subprocess.check_call([command, countryzones_source_file, zone_tab_file, backward_file,
-                         tzlookup_dest_file])
+                         tzlookup_dest_file, tzaliases_dest_file])
 
 
 def BuildTelephonylookup():
@@ -250,6 +252,7 @@ def UpdateTestFiles():
 def main():
   print('Source data file structure: %s' % timezone_input_data_dir)
   print('Source tools file structure: %s' % timezone_input_tools_dir)
+  print('Intermediate / working dir: %s' % tmp_dir)
   print('Output data file structure: %s' % timezone_output_data_dir)
 
   iana_input_data_dir = '%s/iana' % timezone_input_data_dir
@@ -268,7 +271,11 @@ def main():
   iana_data_dir = '%s/iana_data' % tmp_dir
   ExtractTarFile(iana_data_tar_file, iana_data_dir)
   BuildTzdata(zic_binary_file, iana_data_dir, iana_data_version)
-  BuildTzlookup(iana_data_dir)
+
+  tzaliases_out_dir = '%s/android_intermediates' % tmp_dir
+  os.mkdir(tzaliases_out_dir)
+  BuildTzlookupAndTzAliases(iana_data_dir, tzaliases_out_dir)
+
   BuildTelephonylookup()
 
   # Create a distro file and version file from the output from prior stages.

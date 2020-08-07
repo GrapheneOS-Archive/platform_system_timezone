@@ -21,7 +21,19 @@ java_library_host {
         include_dirs: ["external/protobuf/src"],
     },
 
-    srcs: ["src/main/proto/**/*.proto"],
+    srcs: ["src/main/proto/**/country_zones_file.proto"],
+}
+
+// Proto library
+java_library_host {
+    name: "tzaliasesprotos",
+
+    proto: {
+        type: "full",
+        include_dirs: ["external/protobuf/src"],
+    },
+
+    srcs: ["src/main/proto/**/tz_aliases_file.proto"],
 }
 
 java_library_host {
@@ -32,6 +44,7 @@ java_library_host {
         "countryzonesprotos",
         "icu4j",
         "libprotobuf-java-full",
+        "tzaliasesprotos",
         "tztools_common",
     ],
 }
