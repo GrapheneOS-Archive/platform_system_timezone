@@ -15,8 +15,8 @@
  */
 package com.android.libcore.timezone.tzlookup.zonetree;
 
-import com.android.libcore.timezone.tzlookup.proto.CountryZonesFile;
-import com.android.libcore.timezone.tzlookup.proto.CountryZonesFile.Country;
+import com.android.libcore.timezone.countryzones.proto.CountryZonesFile;
+import com.android.libcore.timezone.countryzones.proto.CountryZonesFile.Country;
 import com.android.libcore.timezone.tzlookup.zonetree.ZoneOffsetPeriod.ZonePeriodsKey;
 import com.ibm.icu.text.TimeZoneNames;
 import com.ibm.icu.util.BasicTimeZone;
