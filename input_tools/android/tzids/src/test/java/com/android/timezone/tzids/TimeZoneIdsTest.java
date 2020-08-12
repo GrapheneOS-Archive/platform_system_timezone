@@ -18,6 +18,7 @@ package com.android.timezone.tzids;
 
 import static java.time.ZoneOffset.UTC;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import com.android.timezone.tzids.proto.TzIdsProto;
 import org.junit.Test;
@@ -112,6 +113,36 @@ public final class TimeZoneIdsTest {
             assertEquals(expectedMap,
                     tzIds.getCountryIdMap("us", Instant.ofEpochMilli(Long.MAX_VALUE)));
         }
+    }
+
+    @Test
+    public void getCountryCodeForZoneId() {
+        TzIdsProto.TimeZoneIds.Builder tzIdsBuilder = TzIdsProto.TimeZoneIds.newBuilder();
+
+        TzIdsProto.CountryMapping gb = TzIdsProto.CountryMapping.newBuilder()
+                .setIsoCode("gb")
+                .addTimeZoneIds("Europe/London")
+                .addTimeZoneLinks(createLink("GB", "Europe/London"))
+                .build();
+        tzIdsBuilder.addCountryMappings(gb);
+
+        Instant boiseFrom = LocalDateTime.of(1974, Month.FEBRUARY, 3, 9, 0).toInstant(UTC);
+        TzIdsProto.CountryMapping us = TzIdsProto.CountryMapping.newBuilder()
+                .setIsoCode("us")
+                .addTimeZoneIds("America/Phoenix")
+                .addTimeZoneLinks(createLink("US/Arizona", "America/Phoenix"))
+                .addTimeZoneReplacements(
+                        createReplacement("America/Boise", "America/Phoenix", boiseFrom))
+                .build();
+        tzIdsBuilder.addCountryMappings(us);
+
+        TimeZoneIds tzIds = new TimeZoneIds(tzIdsBuilder.build());
+        assertNull(tzIds.getCountryCodeForZoneId("FooBar"));
+        assertEquals("gb", tzIds.getCountryCodeForZoneId("GB"));
+        assertEquals("gb", tzIds.getCountryCodeForZoneId("Europe/London"));
+        assertEquals("us", tzIds.getCountryCodeForZoneId("America/Phoenix"));
+        assertEquals("us", tzIds.getCountryCodeForZoneId("US/Arizona"));
+        assertEquals("us", tzIds.getCountryCodeForZoneId("America/Boise"));
     }
 
     private static TzIdsProto.TimeZoneLink createLink(
