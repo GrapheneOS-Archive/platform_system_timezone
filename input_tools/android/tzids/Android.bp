@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2020 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 // Proto library
 java_library_host {
-    name: "countryzones_protos",
+    name: "tzids_protos",
 
     proto: {
         type: "full",
@@ -25,36 +25,18 @@ java_library_host {
 }
 
 java_library_host {
-    name: "tzlookup",
-
+    name: "tzids",
     srcs: ["src/main/java/**/*.java"],
-    static_libs: [
-        "countryzones_protos",
-        "icu4j",
-        "tzids",
-        "tztools_common",
-    ],
-}
-
-// The tzlookup_generator host tool.
-java_binary_host {
-    name: "tzlookup_generator",
-
-    main_class: "com.android.libcore.timezone.tzlookup.TzLookupGenerator",
-    srcs: ["src/main/java/**/*.java"],
-    static_libs: [
-        "tzlookup",
-    ],
+    static_libs: ["tzids_protos"],
 }
 
 java_test_host {
-    name: "tzlookup_tests",
+    name: "tzids_tests",
 
     srcs: ["src/test/java/**/*.java"],
     static_libs: [
         "junit",
-        "tzlookup",
-        "tztools_common_testing",
+        "tzids",
     ],
     test_suites: ["general-tests"],
 }

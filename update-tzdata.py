@@ -191,19 +191,19 @@ def BuildTzdata(zic_binary_file, extracted_iana_data_dir, iana_data_version):
                          header_string])
 
 
-def BuildTzlookupAndTzAliases(iana_data_dir, tzalias_dest_dir):
+def BuildTzlookupAndTzIds(iana_data_dir):
   countryzones_source_file = '%s/android/countryzones.txt' % timezone_input_data_dir
   tzlookup_dest_file = '%s/android/tzlookup.xml' % timezone_output_data_dir
-  tzaliases_dest_file = '%s/tzaliases.txt' % tzalias_dest_dir
+  tzids_dest_file = '%s/android/tzids.prototxt' % timezone_output_data_dir
 
-  print('Calling TzLookupGenerator to create tzlookup.xml / tzaliases.txt...')
+  print('Calling TzLookupGenerator to create tzlookup.xml / tzids.prototxt...')
   tzdatautil.InvokeSoong(android_build_top, ['tzlookup_generator'])
 
   zone_tab_file = '%s/zone.tab' % iana_data_dir
   backward_file = '%s/backward' % iana_data_dir
   command = '%s/bin/tzlookup_generator' % android_host_out
   subprocess.check_call([command, countryzones_source_file, zone_tab_file, backward_file,
-                         tzlookup_dest_file, tzaliases_dest_file])
+                         tzlookup_dest_file, tzids_dest_file])
 
 
 def BuildTelephonylookup():
@@ -272,9 +272,7 @@ def main():
   ExtractTarFile(iana_data_tar_file, iana_data_dir)
   BuildTzdata(zic_binary_file, iana_data_dir, iana_data_version)
 
-  tzaliases_out_dir = '%s/android_intermediates' % tmp_dir
-  os.mkdir(tzaliases_out_dir)
-  BuildTzlookupAndTzAliases(iana_data_dir, tzaliases_out_dir)
+  BuildTzlookupAndTzIds(iana_data_dir)
 
   BuildTelephonylookup()
 
