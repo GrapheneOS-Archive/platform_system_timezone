@@ -104,6 +104,33 @@ public class TimeZoneIds {
     }
 
     /**
+     * Returns the country code associated with the supplied {@code zoneId} or {@code null} if it
+     * is not found.
+     */
+    public String getCountryCodeForZoneId(String zoneId) {
+        for (TzIdsProto.CountryMapping countryMapping
+                : mTimeZoneIdsProto.getCountryMappingsList()) {
+            if (countryMapping.getTimeZoneIdsList().contains(zoneId)) {
+                return countryMapping.getIsoCode();
+            }
+
+            for (TzIdsProto.TimeZoneLink timeZoneLink : countryMapping.getTimeZoneLinksList()) {
+                if (timeZoneLink.getAlternativeId().equals(zoneId)) {
+                    return countryMapping.getIsoCode();
+                }
+            }
+
+            for (TzIdsProto.TimeZoneReplacement timeZoneReplacement
+                    : countryMapping.getTimeZoneReplacementsList()) {
+                if (timeZoneReplacement.getReplacedId().equals(zoneId)) {
+                    return countryMapping.getIsoCode();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns a country mapping for TZDB time zone IDs on or after the specified time.
      * The {@link Map} returned contains entries that link Olson IDs to themselves, or to preferred
      * Olson IDs. The {@code replacementThreshold} is used to identify which "replacements" should
