@@ -16,7 +16,8 @@
 
 package com.android.timezone.geolocation.data_pipeline.steps;
 
-import com.android.timezone.geolocation.data_pipeline.steps.LicenseSupport.License;
+import com.android.timezone.geolocation.common.LicenseSupport;
+import com.android.timezone.geolocation.common.LicenseSupport.License;
 import com.android.timezone.geolocation.data_pipeline.steps.Types.ProtoStorageFormat;
 import com.android.timezone.geolocation.data_pipeline.steps.Types.TzS2Range;
 import com.android.timezone.geolocation.data_pipeline.steps.Types.TzS2Ranges;

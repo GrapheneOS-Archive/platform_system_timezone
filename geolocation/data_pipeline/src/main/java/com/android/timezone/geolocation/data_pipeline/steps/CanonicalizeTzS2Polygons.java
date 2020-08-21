@@ -17,11 +17,11 @@
 package com.android.timezone.geolocation.data_pipeline.steps;
 
 import com.android.libcore.timezone.util.Errors;
+import com.android.timezone.geolocation.common.LicenseSupport;
 import com.android.timezone.geolocation.data_pipeline.steps.Types.ProtoStorageFormat;
 import com.android.timezone.geolocation.data_pipeline.steps.Types.TzS2Polygons;
 import com.android.timezone.tzids.TimeZoneIds;
 
-import com.google.common.geometry.S2Cap;
 import com.google.common.geometry.S2Polygon;
 
 import java.io.File;

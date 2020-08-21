@@ -16,7 +16,7 @@
 
 package com.android.timezone.geolocation.data_pipeline.steps;
 
-import static com.android.timezone.geolocation.data_pipeline.steps.LicenseSupport.LICENSE_FILE_NAME;
+import static com.android.timezone.geolocation.common.LicenseSupport.LICENSE_FILE_NAME;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 

@@ -18,7 +18,7 @@ package com.android.timezone.geolocation.data_pipeline.steps;
 
 import static java.util.stream.Collectors.toList;
 
-import com.android.timezone.geolocation.data_pipeline.steps.LicenseSupport.License;
+import com.android.timezone.geolocation.common.LicenseSupport.License;
 import com.android.timezone.geolocation.data_pipeline.steps.proto.S2Protos;
 import com.google.common.geometry.S2CellId;
 import com.google.common.geometry.S2CellUnion;

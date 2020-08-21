@@ -16,6 +16,7 @@
 
 package com.android.timezone.geotz.tools;
 
+import com.android.timezone.geolocation.common.LicenseSupport;
 import com.android.timezone.geotz.storage.tzs2range.TzS2Range;
 import com.android.timezone.geotz.storage.tzs2range.TzS2RangeFileFormat;
 import com.android.timezone.geotz.storage.tzs2range.write.TzS2RangeFileWriter;
@@ -40,6 +41,10 @@ public final class CreateTzS2File {
         File inputFile = new File(args[0]);
         int s2Level = Integer.parseInt(args[1]);
         File outputFile = new File(args[2]);
+
+        // The input file is expected to be associated with a LICENSE file. Copy it to the output
+        // directory.
+        LicenseSupport.copyLicenseFile(inputFile.getParentFile(), outputFile.getParentFile());
 
         GeotzProtos.TimeZones timeZonesInput;
         try (FileReader reader = new FileReader(inputFile)) {

@@ -18,6 +18,7 @@ java_library_host {
         "src/java/**/*.java",
     ],
     static_libs: [
+        "geotz_common",
         "geotz_s2storage_tools_protos",
         "geotz_s2storage_rw",
         "libprotobuf-java-full",

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.timezone.geolocation.data_pipeline.steps;
+package com.android.timezone.geolocation.common;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /** Utilities to help with LICENSE files and associated headers. */
-class LicenseSupport {
+public class LicenseSupport {
 
     /**
      * The standard header to be put in files generated from OpenStreetMap data obtained from
@@ -90,7 +90,7 @@ class LicenseSupport {
         }
         File licenseOutputFile = new File(outputDir, LICENSE_FILE_NAME);
         if (licenseOutputFile.exists()) {
-            System.out.println(licenseOutputFile + " exists");
+            System.out.println(licenseOutputFile + " already exists: checking content");
             // Just do a basic check for equality.
             checkFilesIdentical(licenseFileInput, licenseOutputFile);
         } else {

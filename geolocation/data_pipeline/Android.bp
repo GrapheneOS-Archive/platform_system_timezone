@@ -28,6 +28,7 @@ java_library_host {
     name: "geotz_data_pipeline",
     srcs: ["src/main/java/**/*.java"],
     static_libs: [
+        "geotz_common",
         "geotz_data_pipeline_protos",
         "geotz_geojson",
         "geotz_s2storage_tools_protos",
