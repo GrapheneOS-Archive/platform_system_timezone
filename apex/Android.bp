@@ -57,5 +57,6 @@ apex {
         "apex_telephonylookup.xml",
         "apex_tzdata",
         "apex_icu_tzdata.dat",
+        "apex_tzs2.dat",
     ],
 }

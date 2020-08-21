@@ -26,7 +26,8 @@ SYSTEM_TIMEZONE_DIR=$(realpath ${ANDROID_BUILD_TOP}/system/timezone)
 GEOLOCATION_DIR=${SYSTEM_TIMEZONE_DIR}/geolocation
 DATA_PIPELINE_DIR=${GEOLOCATION_DIR}/data_pipeline
 TZBB_DATA_DIR=${GEOLOCATION_DIR}/tzbb_data
-WORKING_DIR_ROOT=${DATA_PIPELINE_DIR}/output
+WORKING_DIR_ROOT=${DATA_PIPELINE_DIR}/working_dir
+OUTPUT_DATA_DIR=${GEOLOCATION_DIR}/output_data/odbl
 
 #
 # Hardcoded values that can be changed for debugging / dev to speed things up.
@@ -57,6 +58,7 @@ if [ -d ${WORKING_DIR_ROOT} ]; then
   echo Working dir ${WORKING_DIR_ROOT} exists...
   if (( ${ALLOW_WORKING_DIR_ROOT_EXISTS} == 0 )); then
     echo Halting...
+    echo Remove or move ${WORKING_DIR_ROOT} and try again.
     exit 1
   fi
 fi
@@ -102,7 +104,7 @@ STEP6_OUTPUT_FILE=${WORKING_DIR_ROOT}/tzs2fileinput/tzs2fileinput${S2_LEVEL}.pro
 
 STEP7_TARGET=geotz_createtzs2file
 STEP7_CMD="${STEP7_TARGET} ${JAVA_ARGS}"
-STEP7_OUTPUT_FILE=${WORKING_DIR_ROOT}/result/tzs2_${S2_LEVEL}.dat
+STEP7_OUTPUT_FILE=${OUTPUT_DATA_DIR}/tzs2.dat
 
 BUILD_TARGETS=(\
   ${STEP1_TARGET} \
@@ -254,5 +256,6 @@ else
 fi
 echo Completed step 7
 
-echo Output file: ${STEP7_OUTPUT_FILE}
+echo Output files can be found in ${OUTPUT_DATA_DIR}
+
 echo ${0} completed at $(date --iso-8601=seconds)
