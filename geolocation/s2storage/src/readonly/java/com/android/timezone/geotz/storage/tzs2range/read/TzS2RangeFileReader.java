@@ -148,7 +148,8 @@ public final class TzS2RangeFileReader implements AutoCloseable {
         }
     }
 
-    /** Finds an {@link Entry} associated with a range covering {@code cellId}.
+    /**
+     * Finds an {@link Entry} associated with a range covering {@code cellId}.
      * Returns {@code null} if no range exists. Throws {@link IllegalArgumentException} if
      * {@code cellId} is not the correct S2 level for the file. See {@link #getS2Level()}.
      */
