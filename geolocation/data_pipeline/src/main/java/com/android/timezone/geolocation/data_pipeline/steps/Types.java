@@ -590,6 +590,11 @@ public final class Types {
         if (files == null) {
             return Collections.emptyList();
         }
+
+        // Sort the results as listFiles() isn't deterministic, which can lead to variations
+        // in output that (for example) cause tests to break occasionally.
+        Arrays.sort(files);
+
         return Arrays.asList(files);
     }
 }
