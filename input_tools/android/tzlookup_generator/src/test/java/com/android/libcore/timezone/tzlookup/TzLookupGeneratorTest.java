@@ -645,26 +645,26 @@ public class TzLookupGeneratorTest {
                 + "<id notafter=\"1130652000000\" repl=\"America/New_York\">America/Indiana/Indianapolis</id>\n"
                 + "<id notafter=\"1194159600000\" repl=\"America/New_York\">America/Indiana/Vincennes</id>\n"
                 + "<id notafter=\"1173600000000\" repl=\"America/New_York\">America/Indiana/Winamac</id>\n"
-                + "<id notafter=\"183535200000\" repl=\"America/New_York\">America/Indiana/Marengo</id>\n"
-                + "<id notafter=\"247042800000\" repl=\"America/New_York\">America/Indiana/Petersburg</id>\n"
-                + "<id notafter=\"89186400000\" repl=\"America/New_York\">America/Indiana/Vevay</id>\n"
+                + "<id notafter=\"183535200000\" repl=\"America/Indiana/Indianapolis\">America/Indiana/Marengo</id>\n"
+                + "<id notafter=\"247042800000\" repl=\"America/Indiana/Vincennes\">America/Indiana/Petersburg</id>\n"
+                + "<id notafter=\"89186400000\" repl=\"America/Indiana/Indianapolis\">America/Indiana/Vevay</id>\n"
                 + "<id>America/Chicago</id>\n"
-                + "<id notafter=\"688546800000\" repl=\"America/Chicago\">America/Indiana/Knox</id>\n"
+                + "<id notafter=\"688546800000\" repl=\"America/Indiana/Tell_City\">America/Indiana/Knox</id>\n"
                 + "<id notafter=\"104918400000\" repl=\"America/Chicago\">America/Menominee</id>\n"
                 + "<id notafter=\"720000000000\" repl=\"America/Chicago\">America/North_Dakota/Center</id>\n"
                 + "<id notafter=\"1067155200000\" repl=\"America/Chicago\">America/North_Dakota/New_Salem</id>\n"
                 + "<id notafter=\"1143964800000\" repl=\"America/Chicago\">America/Indiana/Tell_City</id>\n"
                 + "<id notafter=\"1289116800000\" repl=\"America/Chicago\">America/North_Dakota/Beulah</id>\n"
                 + "<id>America/Denver</id>\n"
+                + "<id notafter=\"129114000000\" repl=\"America/Denver\">America/Boise</id>\n"
                 + "<id>America/Phoenix</id>\n"
-                + "<id notafter=\"129114000000\" repl=\"America/Phoenix\">America/Boise</id>\n"
                 + "<id>America/Los_Angeles</id>\n"
                 + "<id>America/Anchorage</id>\n"
                 + "<id notafter=\"436359600000\" repl=\"America/Anchorage\">America/Juneau</id>\n"
-                + "<id notafter=\"436356000000\" repl=\"America/Anchorage\">America/Yakutat</id>\n"
+                + "<id notafter=\"436356000000\" repl=\"America/Juneau\">America/Yakutat</id>\n"
                 + "<id notafter=\"436363200000\" repl=\"America/Anchorage\">America/Nome</id>\n"
                 + "<id notafter=\"1547978400000\" repl=\"America/Anchorage\">America/Metlakatla</id>\n"
-                + "<id notafter=\"341402400000\" repl=\"America/Anchorage\">America/Sitka</id>\n"
+                + "<id notafter=\"341402400000\" repl=\"America/Juneau\">America/Sitka</id>\n"
                 + "<id>Pacific/Honolulu</id>\n"
                 + "<id>America/Adak</id>\n";
         String[] expectedTzLookupXmlLines = expectedTzLookupOutput.split("\\n");
@@ -693,21 +693,21 @@ public class TzLookupGeneratorTest {
         addReplacement(b, 1130652000000L, "America/New_York", "America/Indiana/Indianapolis");
         addReplacement(b, 1194159600000L, "America/New_York", "America/Indiana/Vincennes");
         addReplacement(b, 1173600000000L, "America/New_York", "America/Indiana/Winamac");
-        addReplacement(b, 183535200000L, "America/New_York", "America/Indiana/Marengo");
-        addReplacement(b, 247042800000L, "America/New_York", "America/Indiana/Petersburg");
-        addReplacement(b, 89186400000L, "America/New_York", "America/Indiana/Vevay");
-        addReplacement(b, 688546800000L, "America/Chicago", "America/Indiana/Knox");
+        addReplacement(b, 183535200000L, "America/Indiana/Indianapolis", "America/Indiana/Marengo");
+        addReplacement(b, 247042800000L, "America/Indiana/Vincennes", "America/Indiana/Petersburg");
+        addReplacement(b, 89186400000L, "America/Indiana/Indianapolis", "America/Indiana/Vevay");
+        addReplacement(b, 688546800000L, "America/Indiana/Tell_City", "America/Indiana/Knox");
         addReplacement(b, 104918400000L, "America/Chicago", "America/Menominee");
         addReplacement(b, 720000000000L, "America/Chicago", "America/North_Dakota/Center");
         addReplacement(b, 1067155200000L, "America/Chicago", "America/North_Dakota/New_Salem");
         addReplacement(b, 1143964800000L, "America/Chicago", "America/Indiana/Tell_City");
         addReplacement(b, 1289116800000L, "America/Chicago", "America/North_Dakota/Beulah");
-        addReplacement(b, 129114000000L, "America/Phoenix", "America/Boise");
+        addReplacement(b, 129114000000L, "America/Denver", "America/Boise");
         addReplacement(b, 436359600000L, "America/Anchorage", "America/Juneau");
-        addReplacement(b, 436356000000L, "America/Anchorage", "America/Yakutat");
+        addReplacement(b, 436356000000L, "America/Juneau", "America/Yakutat");
         addReplacement(b, 436363200000L, "America/Anchorage", "America/Nome");
         addReplacement(b, 1547978400000L, "America/Anchorage", "America/Metlakatla");
-        addReplacement(b, 341402400000L, "America/Anchorage", "America/Sitka");;
+        addReplacement(b, 341402400000L, "America/Juneau", "America/Sitka");;
 
         tzIdsBuilder.addCountryMappings(b);
         assertEquals(tzIdsBuilder.build(), outputData.timeZoneIds);
