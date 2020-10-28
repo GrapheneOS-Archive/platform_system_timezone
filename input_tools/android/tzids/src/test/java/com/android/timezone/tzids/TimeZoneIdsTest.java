@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import com.android.timezone.tzids.proto.TzIdsProto;
+
 import org.junit.Test;
 
 import java.time.Instant;
@@ -62,54 +63,53 @@ public final class TimeZoneIdsTest {
     public void getCountryIdMap_replacements() throws Exception {
         TzIdsProto.TimeZoneIds.Builder tzIdsBuilder = TzIdsProto.TimeZoneIds.newBuilder();
 
-        // A much-simplified version of the US time zone IDs.
-        Instant boiseFrom = LocalDateTime.of(1974, Month.FEBRUARY, 3, 9, 0).toInstant(UTC);
-        Instant dakotaFrom = LocalDateTime.of(1992, Month.OCTOBER, 25, 8, 0).toInstant(UTC);
+        // A much-simplified version of the US time zone IDs with a chain of replacements.
+        Instant knoxFrom = LocalDateTime.of(1991, Month.OCTOBER, 27, 7, 0).toInstant(UTC);
+        Instant tellCityFrom = LocalDateTime.of(2006, Month.APRIL, 2, 8, 0).toInstant(UTC);
         TzIdsProto.CountryMapping us = TzIdsProto.CountryMapping.newBuilder()
                 .setIsoCode("us")
-                .addTimeZoneIds("America/Phoenix")
                 .addTimeZoneIds("America/Chicago")
                 .addTimeZoneReplacements(
-                        createReplacement("America/Boise", "America/Phoenix", boiseFrom))
+                        createReplacement(
+                                "America/Indiana/Tell_City", "America/Chicago", tellCityFrom))
                 .addTimeZoneReplacements(
                         createReplacement(
-                                "America/North_Dakota/Center", "America/Chicago", dakotaFrom))
+                                "America/Indiana/Knox", "America/Indiana/Tell_City", knoxFrom))
                 .build();
         tzIdsBuilder.addCountryMappings(us);
 
         TimeZoneIds tzIds = new TimeZoneIds(tzIdsBuilder.build());
 
         Map<String, String> baseExpectedMap = new HashMap<>();
-        baseExpectedMap.put("America/Phoenix", "America/Phoenix");
         baseExpectedMap.put("America/Chicago", "America/Chicago");
 
-        // Before all replacements in effect.
+        // Before all replacements are in effect.
         {
             Map<String, String> expectedMap = new HashMap<>(baseExpectedMap);
-            expectedMap.put("America/Boise", "America/Boise");
-            expectedMap.put("America/North_Dakota/Center", "America/North_Dakota/Center");
+            expectedMap.put("America/Indiana/Tell_City", "America/Indiana/Tell_City");
+            expectedMap.put("America/Indiana/Knox", "America/Indiana/Knox");
 
             assertEquals(expectedMap, tzIds.getCountryIdMap("us", Instant.EPOCH));
-            assertEquals(expectedMap, tzIds.getCountryIdMap("us", boiseFrom.minusMillis(1)));
+            assertEquals(expectedMap, tzIds.getCountryIdMap("us", knoxFrom.minusMillis(1)));
         }
 
-        // One replacement in effect.
+        // One replacement is in effect.
         {
             Map<String, String> expectedMap = new HashMap<>(baseExpectedMap);
-            expectedMap.put("America/Boise", "America/Phoenix");
-            expectedMap.put("America/North_Dakota/Center", "America/North_Dakota/Center");
+            expectedMap.put("America/Indiana/Knox", "America/Indiana/Tell_City");
+            expectedMap.put("America/Indiana/Tell_City", "America/Indiana/Tell_City");
 
-            assertEquals(expectedMap, tzIds.getCountryIdMap("us", boiseFrom));
-            assertEquals(expectedMap, tzIds.getCountryIdMap("us", dakotaFrom.minusMillis(1)));
+            assertEquals(expectedMap, tzIds.getCountryIdMap("us", knoxFrom));
+            assertEquals(expectedMap, tzIds.getCountryIdMap("us", tellCityFrom.minusMillis(1)));
         }
 
-        // All replacements in effect.
+        // All replacements are in effect.
         {
             Map<String, String> expectedMap = new HashMap<>(baseExpectedMap);
-            expectedMap.put("America/Boise", "America/Phoenix");
-            expectedMap.put("America/North_Dakota/Center", "America/Chicago");
+            expectedMap.put("America/Indiana/Knox", "America/Chicago");
+            expectedMap.put("America/Indiana/Tell_City", "America/Chicago");
 
-            assertEquals(expectedMap, tzIds.getCountryIdMap("us", dakotaFrom));
+            assertEquals(expectedMap, tzIds.getCountryIdMap("us", tellCityFrom));
             assertEquals(expectedMap,
                     tzIds.getCountryIdMap("us", Instant.ofEpochMilli(Long.MAX_VALUE)));
         }

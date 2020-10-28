@@ -170,18 +170,50 @@ public class TimeZoneIds {
                 .stream()
                 .collect(toMap(x -> x.getAlternativeId(), x -> x.getPreferredId())));
 
-        // Handle replacements: either add the replacementId or replacedId depending on the
-        // replacementThreshold.
-        putAllSafely(tzIdMap, countryMapping.getTimeZoneReplacementsList()
+        // Handle replacements: replacements are zone IDs that are recognized but potentially no
+        // longer used. Each replacement has a time when it comes into effect, and it may link to
+        // another replacement or a "top level" time zone ID. Below, the replacementThreshold is
+        // used to work out which replacements are in use and map each replacedId to a zone ID. It
+        // is ok if a zone maps to itself, i.e. when a replacement is in the future.
+
+        // Create a lookup of replacements by replacedId to make it easier to traverse the linked
+        // list formed by replacements referring to other replacements.
+        Map<String, TzIdsProto.TimeZoneReplacement> replacementLookupMap =
+                countryMapping.getTimeZoneReplacementsList()
+                        .stream()
+                        .collect(toMap(x -> x.getReplacedId(), Function.identity()));
+
+        // For each replacement in the replacement list, work out what the replacedId should map to
+        // before the replacementThreshold.
+        Map<String, String> replacementsAtThreshold = countryMapping.getTimeZoneReplacementsList()
                 .stream()
-                .collect(toMap(x -> x.getReplacedId(), x -> {
-                    if (x.getFromMillis() <= replacementThreshold.toEpochMilli()) {
-                        return x.getReplacementId();
-                    } else {
-                        return x.getReplacedId();
-                    }
-                })));
+                .collect(toMap(x -> x.getReplacedId(),
+                        x -> traverseReplacementList(x, replacementLookupMap, replacementThreshold)
+                ));
+        putAllSafely(tzIdMap, replacementsAtThreshold);
         return tzIdMap;
+    }
+
+    /**
+     * Returns the replacement ID for {@code start} by following the replacement links until there
+     * are no more replacements or the replacement happens after {@code replacementThreshold}.
+     */
+    private static String traverseReplacementList(TzIdsProto.TimeZoneReplacement start,
+            Map<String, TzIdsProto.TimeZoneReplacement> replacementLookupMap,
+            Instant replacementThreshold) {
+        TzIdsProto.TimeZoneReplacement current = start;
+        while(current.getFromMillis() <= replacementThreshold.toEpochMilli()) {
+            TzIdsProto.TimeZoneReplacement next =
+                    replacementLookupMap.get(current.getReplacementId());
+            if (next == null) {
+                // No more links to follow - use the replacement ID.
+                return current.getReplacementId();
+            }
+            current = next;
+        }
+        // There were more links that could be followed, but we stopped following
+        // because of the replacementThreshold.
+        return current.getReplacedId();
     }
 
     /**
