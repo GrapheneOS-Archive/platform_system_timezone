@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -510,7 +511,7 @@ public final class CountryZoneTree {
                 }
 
                 Instant endInstant = node.getEndInstant();
-                String replacementTimeZoneId = findReplacementTimeZoneId(node);
+                String replacementTimeZoneId = getReplacementTimeZoneIdOrNull(node);
                 if (!node.isLeaf()) {
                     ZoneInfo primaryZone = node.getPrimaryZoneInfo();
                     addZoneEntryIfMissing(endInstant, replacementTimeZoneId, primaryZone);
@@ -525,22 +526,34 @@ public final class CountryZoneTree {
             }
 
             /**
-             * Find the time zone that the node ultimately "merges" into, i.e. the one it is
-             * effectively replaced by.
+             * Takes a {@link ZoneNode} and if the parent node has a different primary zone ID, then
+             * this method returns that zone ID. {@code null} is returned otherwise.
              */
-            private String findReplacementTimeZoneId(ZoneNode node) {
-                if (node.getParent().isRoot()) {
+            private String getReplacementTimeZoneIdOrNull(ZoneNode node) {
+                if (node.isRoot()) {
+                    // There is no parent node, so there can be no replacement ID.
                     return null;
                 }
-                do {
-                    node = node.getParent();
-                } while (!node.getParent().isRoot());
-                return node.primaryZoneInfo.getZoneId();
+
+                String zoneId = node.primaryZoneInfo.getZoneId();
+                String replacementId = node.getParent().primaryZoneInfo.getZoneId();
+                if (Objects.equals(zoneId, replacementId)) {
+                    // Often, the parent node will have the same primary zone ID. A zone ID cannot
+                    // replace itself. Since we're traversing the tree "preorder" this is fine - if
+                    // there is a replacement later in time it will already have been found.
+                    return null;
+                }
+                return replacementId;
             }
 
             private void addZoneEntryIfMissing(
                     Instant endInstant, String replacementTimeZoneId, ZoneInfo zoneInfo) {
                 String zoneId = zoneInfo.getZoneId();
+
+                if (Objects.equals(zoneId, replacementTimeZoneId)) {
+                    throw new IllegalStateException(zoneId + " cannot replace itself. Cycle!");
+                }
+
                 if (!notAfterCutOff.isAfter(endInstant)) {
                     // notAfterCutOff <= endInstant
                     endInstant = null;
