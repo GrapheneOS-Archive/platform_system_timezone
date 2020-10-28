@@ -94,37 +94,37 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Argentina/Salta"
-    replacementId: "America/Argentina/Buenos_Aires"
+    replacementId: "America/Argentina/Mendoza"
     fromMillis: 1096171200000
   }
   timeZoneReplacements {
     replacedId: "America/Argentina/San_Juan"
-    replacementId: "America/Argentina/Buenos_Aires"
+    replacementId: "America/Argentina/Salta"
     fromMillis: 1090728000000
   }
   timeZoneReplacements {
     replacedId: "America/Argentina/Jujuy"
-    replacementId: "America/Argentina/Buenos_Aires"
+    replacementId: "America/Argentina/Salta"
     fromMillis: 687931200000
   }
   timeZoneReplacements {
     replacedId: "America/Argentina/Catamarca"
-    replacementId: "America/Argentina/Buenos_Aires"
+    replacementId: "America/Argentina/Salta"
     fromMillis: 1087704000000
   }
   timeZoneReplacements {
     replacedId: "America/Argentina/La_Rioja"
-    replacementId: "America/Argentina/Buenos_Aires"
+    replacementId: "America/Argentina/Catamarca"
     fromMillis: 687931200000
   }
   timeZoneReplacements {
     replacedId: "America/Argentina/Rio_Gallegos"
-    replacementId: "America/Argentina/Buenos_Aires"
+    replacementId: "America/Argentina/La_Rioja"
     fromMillis: 673588800000
   }
   timeZoneReplacements {
     replacedId: "America/Argentina/Ushuaia"
-    replacementId: "America/Argentina/Buenos_Aires"
+    replacementId: "America/Argentina/Salta"
     fromMillis: 1087704000000
   }
 }
@@ -209,7 +209,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "Australia/Currie"
-    replacementId: "Australia/Sydney"
+    replacementId: "Australia/Hobart"
     fromMillis: 37728000000
   }
   timeZoneReplacements {
@@ -333,32 +333,32 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Santarem"
-    replacementId: "America/Sao_Paulo"
+    replacementId: "America/Recife"
     fromMillis: 1214280000000
   }
   timeZoneReplacements {
     replacedId: "America/Recife"
-    replacementId: "America/Sao_Paulo"
+    replacementId: "America/Bahia"
     fromMillis: 1330221600000
   }
   timeZoneReplacements {
     replacedId: "America/Fortaleza"
-    replacementId: "America/Sao_Paulo"
+    replacementId: "America/Recife"
     fromMillis: 972180000000
   }
   timeZoneReplacements {
     replacedId: "America/Belem"
-    replacementId: "America/Sao_Paulo"
+    replacementId: "America/Recife"
     fromMillis: 1013911200000
   }
   timeZoneReplacements {
     replacedId: "America/Maceio"
-    replacementId: "America/Sao_Paulo"
+    replacementId: "America/Fortaleza"
     fromMillis: 824004000000
   }
   timeZoneReplacements {
     replacedId: "America/Araguaina"
-    replacementId: "America/Sao_Paulo"
+    replacementId: "America/Bahia"
     fromMillis: 1361066400000
   }
   timeZoneReplacements {
@@ -368,7 +368,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Campo_Grande"
-    replacementId: "America/Manaus"
+    replacementId: "America/Cuiaba"
     fromMillis: 1076814000000
   }
   timeZoneReplacements {
@@ -490,17 +490,17 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Nipigon"
-    replacementId: "America/Toronto"
+    replacementId: "America/Thunder_Bay"
     fromMillis: 89186400000
   }
   timeZoneReplacements {
     replacedId: "America/Pangnirtung"
-    replacementId: "America/Toronto"
+    replacementId: "America/Iqaluit"
     fromMillis: 796806000000
   }
   timeZoneReplacements {
     replacedId: "America/Swift_Current"
-    replacementId: "America/Winnipeg"
+    replacementId: "America/Regina"
     fromMillis: 73472400000
   }
   timeZoneReplacements {
@@ -510,7 +510,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Rainy_River"
-    replacementId: "America/Winnipeg"
+    replacementId: "America/Rankin_Inlet"
     fromMillis: 986112000000
   }
   timeZoneReplacements {
@@ -525,22 +525,22 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Dawson_Creek"
-    replacementId: "America/Edmonton"
+    replacementId: "America/Whitehorse"
     fromMillis: 1604214000000
   }
   timeZoneReplacements {
     replacedId: "America/Creston"
-    replacementId: "America/Edmonton"
+    replacementId: "America/Dawson_Creek"
     fromMillis: 84013200000
   }
   timeZoneReplacements {
     replacedId: "America/Fort_Nelson"
-    replacementId: "America/Edmonton"
+    replacementId: "America/Dawson_Creek"
     fromMillis: 1425808800000
   }
   timeZoneReplacements {
     replacedId: "America/Inuvik"
-    replacementId: "America/Edmonton"
+    replacementId: "America/Yellowknife"
     fromMillis: 294228000000
   }
   timeZoneReplacements {
@@ -550,7 +550,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Dawson"
-    replacementId: "America/Edmonton"
+    replacementId: "America/Whitehorse"
     fromMillis: 120646800000
   }
 }
@@ -1497,7 +1497,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "Asia/Khandyga"
-    replacementId: "Asia/Chita"
+    replacementId: "Asia/Yakutsk"
     fromMillis: 1315832400000
   }
   timeZoneReplacements {
@@ -1517,7 +1517,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "Europe/Astrakhan"
-    replacementId: "Europe/Saratov"
+    replacementId: "Europe/Ulyanovsk"
     fromMillis: 701823600000
   }
 }
@@ -1704,7 +1704,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "Europe/Uzhgorod"
-    replacementId: "Europe/Kiev"
+    replacementId: "Europe/Zaporozhye"
     fromMillis: 686091600000
   }
 }
@@ -1830,7 +1830,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Indiana/Petersburg"
-    replacementId: "America/New_York"
+    replacementId: "America/Indiana/Vincennes"
     fromMillis: 247042800000
   }
   timeZoneReplacements {
@@ -1840,12 +1840,12 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Indiana/Vevay"
-    replacementId: "America/New_York"
+    replacementId: "America/Indiana/Indianapolis"
     fromMillis: 89186400000
   }
   timeZoneReplacements {
     replacedId: "America/Indiana/Marengo"
-    replacementId: "America/New_York"
+    replacementId: "America/Indiana/Indianapolis"
     fromMillis: 183535200000
   }
   timeZoneReplacements {
@@ -1860,7 +1860,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Indiana/Knox"
-    replacementId: "America/Chicago"
+    replacementId: "America/Indiana/Tell_City"
     fromMillis: 688546800000
   }
   timeZoneReplacements {
@@ -1880,7 +1880,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Boise"
-    replacementId: "America/Phoenix"
+    replacementId: "America/Denver"
     fromMillis: 129114000000
   }
   timeZoneReplacements {
@@ -1890,7 +1890,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Sitka"
-    replacementId: "America/Anchorage"
+    replacementId: "America/Juneau"
     fromMillis: 341402400000
   }
   timeZoneReplacements {
@@ -1905,7 +1905,7 @@ countryMappings {
   }
   timeZoneReplacements {
     replacedId: "America/Yakutat"
-    replacementId: "America/Anchorage"
+    replacementId: "America/Juneau"
     fromMillis: 436356000000
   }
 }
