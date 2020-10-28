@@ -45,7 +45,7 @@ message CountryMapping {
 
     // Replacements for time zones where the replaced time zone is not identical to the replacement
     // before some point in time. After that point in time, the two zones have been judged as
-    // equivalent. e.g. "America/Boise" has the same rules as "America/Phoenix" after Sun, 03 Feb
+    // equivalent. e.g. "America/Boise" has the same rules as "America/Denver" after Sun, 03 Feb
     // 1974, so the two can be considered equivalent today, but not for dates before that.
     repeated TimeZoneReplacement timeZoneReplacements = 4;
 }
