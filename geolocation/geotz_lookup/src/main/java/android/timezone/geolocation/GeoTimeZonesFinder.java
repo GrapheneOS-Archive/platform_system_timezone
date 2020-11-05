@@ -35,8 +35,8 @@ public abstract class GeoTimeZonesFinder implements Closeable {
      * @throws IOException in the unlikely event of errors when reading underlying file(s)
      */
     // @NonNull
-    public static GeoTimeZonesFinder create() throws IOException {
-        return GeoTimeZonesFinderImpl.create(new File("/apex/com.android.tzdata/etc/geo/tzs2.dat"));
+    public static GeoTimeZonesFinder create(File file) throws IOException {
+        return GeoTimeZonesFinderImpl.create(file);
     }
 
     /**

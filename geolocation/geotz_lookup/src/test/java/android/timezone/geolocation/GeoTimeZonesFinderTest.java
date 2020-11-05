@@ -20,13 +20,38 @@ import static org.junit.Assert.fail;
 
 import android.timezone.geolocation.GeoTimeZonesFinder.LocationToken;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 
 /** Device-side confidence checks for {@link GeoTimeZonesFinder}. */
 public class GeoTimeZonesFinderTest {
+
+    private File mGeoDataFile;
+
+    @Before
+    public void setUp() throws Exception {
+        // Extract the tzs2.dat resource as a file so it can be used by the GeoTimeZonesFinder.
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("tzs2.dat");
+        Path geoDataPath = Files.createTempFile("GeoTimeZonesFinderTest", ".dat");
+        Files.copy(inputStream, geoDataPath, StandardCopyOption.REPLACE_EXISTING);
+        mGeoDataFile = geoDataPath.toFile();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        if (mGeoDataFile != null) {
+            mGeoDataFile.delete();
+        }
+    }
 
     @Test
     public void sampleLookups() throws Exception {
@@ -96,7 +121,6 @@ public class GeoTimeZonesFinderTest {
     }
 
     private GeoTimeZonesFinder getGeoTimeZonesFinderForTest() throws IOException {
-        // This will only work on device, as the method hard-codes the tzs2.dat file location.
-        return GeoTimeZonesFinder.create();
+        return GeoTimeZonesFinder.create(mGeoDataFile);
     }
 }

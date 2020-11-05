@@ -44,5 +44,6 @@ android_test {
         "geotz_lookup-device",
         "junit",
     ],
+    java_resources: [":tzs2.dat-resources"],
     test_suites: ["general-tests"],
 }
