@@ -20,6 +20,9 @@ java_library {
     srcs: [
         "src/readonly/java/**/*.java",
     ],
+    apex_available: [
+        "com.android.geotz",
+    ],
 }
 
 // Library for read/write access to TZ S2 data files.

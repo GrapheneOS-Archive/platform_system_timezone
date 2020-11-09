@@ -25,6 +25,9 @@ java_library {
     static_libs: [
         "geotz_lookup",
     ],
+    apex_available: [
+        "com.android.geotz",
+    ],
 }
 
 // Device side tests for offlinelocationtimezoneprovider.

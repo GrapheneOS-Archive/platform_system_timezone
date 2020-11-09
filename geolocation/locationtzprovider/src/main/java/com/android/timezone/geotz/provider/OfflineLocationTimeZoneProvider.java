@@ -38,6 +38,9 @@ import java.io.PrintWriter;
  * changes. No location state is retained when the provider is disabled.
  *
  * <p>See {@link OfflineLocationTimeZoneDelegate} for implementation details.
+ *
+ * <p>The provider is configured via a "offlineltzprovider.properties" resource file. See
+ * {@link EnvironmentImpl} for details.
  */
 final class OfflineLocationTimeZoneProvider extends LocationTimeZoneProviderBase {
 

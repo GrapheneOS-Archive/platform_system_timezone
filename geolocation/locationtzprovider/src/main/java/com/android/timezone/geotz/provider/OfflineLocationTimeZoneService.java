@@ -26,7 +26,14 @@ import java.io.FileDescriptor;
 import java.io.PrintWriter;
 
 /**
- * The service that provides the {@link OfflineLocationTimeZoneProvider}.
+ * The service that provides the {@link OfflineLocationTimeZoneProvider}. An instance of this
+ * service is discovered via configuration in an {@code AndroidManifest.xml}.
+ *
+ * <p>See {@link com.android.server.location.timezone.LocationTimeZoneManagerService} for the server
+ * component that binds to it and how it is discovered.
+ *
+ * <p>See {@link com.android.server.ServiceWatcher} for how to control how the service is treated
+ * and how the server resolves to a single service if there are multiple available.
  */
 public final class OfflineLocationTimeZoneService extends Service {
 

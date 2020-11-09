@@ -23,6 +23,9 @@ java_library {
     ],
     host_supported: true,
     jarjar_rules: "jarjar-rules.txt",
+    apex_available: [
+        "com.android.geotz",
+    ],
 }
 
 // Device side tests for the geotz_lookup code.
