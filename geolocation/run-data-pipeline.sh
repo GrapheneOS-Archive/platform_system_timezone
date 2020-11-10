@@ -136,13 +136,14 @@ fi
 ZIPPED_BOUNDARY_FILE=${TZBB_DATA_DIR}/timezones.geojson.zip
 echo Starting step 0
 if (( ${SKIP_TO_STEP} <= 0 )); then
-  echo Unpacking ${ZIPPED_BOUNDARY_FILE} to ${WORKING_DIR_ROOT}...
-  unzip -o ${TZBB_DATA_DIR}/timezones.geojson.zip -d ${WORKING_DIR_ROOT}
+  mkdir ${WORKING_DIR_ROOT}/dist
+  echo Unpacking ${ZIPPED_BOUNDARY_FILE} to ${WORKING_DIR_ROOT}/dist/...
+  unzip -o ${TZBB_DATA_DIR}/timezones.geojson.zip -d ${WORKING_DIR_ROOT}/dist/
 
   # Ensure there's a LICENSE next to the boundary file. It will be copied
   # alongside data by subsequent steps.
-  echo Copying LICENSE file to ${WORKING_DIR_ROOT}/dist
-  cp ${TZBB_DATA_DIR}/LICENSE ${WORKING_DIR_ROOT}/dist
+  echo Copying LICENSE file to ${WORKING_DIR_ROOT}/dist/
+  cp ${TZBB_DATA_DIR}/LICENSE ${WORKING_DIR_ROOT}/dist/
 else
   echo Skipping...
 fi
