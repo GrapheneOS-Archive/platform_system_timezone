@@ -24,7 +24,8 @@ import com.android.timezone.geolocation.data_pipeline.steps.Types.TzS2CellUnion;
 import com.android.timezone.geolocation.data_pipeline.steps.Types.TzS2Range;
 import com.android.timezone.geolocation.data_pipeline.steps.Types.TzS2Ranges;
 import com.android.timezone.geolocation.data_pipeline.util.NamedFuture;
-import com.android.timezone.geolocation.data_pipeline.util.StopWatch;
+
+import com.google.common.base.Stopwatch;
 import com.google.common.geometry.S2CellId;
 import com.google.common.geometry.S2CellUnion;
 
@@ -147,7 +148,7 @@ public final class TzS2CellUnionsToTzS2Ranges {
     }
 
     private static TzS2Ranges createTzS2Ranges(TzS2CellUnion tzS2CellUnion, int s2Level) {
-        StopWatch stopWatch = new StopWatch();
+        Stopwatch stopwatch = Stopwatch.createStarted();
 
         String tzId = tzS2CellUnion.tzId;
         List<String> tzIds = Collections.singletonList(tzId);
@@ -184,8 +185,8 @@ public final class TzS2CellUnionsToTzS2Ranges {
 
         // Sorting the ranges is not necessary. As the input is sorted , it will already be sorted.
 
-        System.out.println("Created " + ranges.size() + " S2Ranges for " + tzId
-                + " in " + stopWatch.reportElapsed() + "...");
+        System.out.printf("Created %s S2Ranges for %s in %s...\n",
+                ranges.size(), tzId, stopwatch.elapsed());
         return new TzS2Ranges(ranges);
     }
 

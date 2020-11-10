@@ -32,6 +32,7 @@ java_library_host {
         "geotz_data_pipeline_protos",
         "geotz_geojson",
         "geotz_s2storage_tools_protos",
+        "guava",
         "libprotobuf-java-full",
         "s2-geometry-library-java",
         "tzids",

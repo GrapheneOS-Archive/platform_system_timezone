@@ -23,7 +23,8 @@ import com.android.timezone.geolocation.data_pipeline.steps.Types.ProtoStorageFo
 import com.android.timezone.geolocation.data_pipeline.steps.Types.TzS2CellUnion;
 import com.android.timezone.geolocation.data_pipeline.steps.Types.TzS2Polygons;
 import com.android.timezone.geolocation.data_pipeline.util.NamedFuture;
-import com.android.timezone.geolocation.data_pipeline.util.StopWatch;
+
+import com.google.common.base.Stopwatch;
 import com.google.common.geometry.S2CellId;
 import com.google.common.geometry.S2CellUnion;
 import com.google.common.geometry.S2Polygon;
@@ -148,7 +149,7 @@ public final class TzS2PolygonsToTzS2CellUnions {
     }
 
     private static TzS2CellUnion createTzS2CellUnion(TzS2Polygons tzPolygons, int maxS2Level) {
-        StopWatch stopWatch = new StopWatch();
+        Stopwatch stopwatch = Stopwatch.createStarted();
 
         S2RegionCoverer s2RegionCovererQuad = new S2RegionCoverer();
         s2RegionCovererQuad.setMinLevel(1);
@@ -169,10 +170,8 @@ public final class TzS2PolygonsToTzS2CellUnions {
         }
         S2CellUnion combinedCellUnion = new S2CellUnion();
         combinedCellUnion.initFromCellIds(cellIds);
-        System.out.println("Created S2CellUnion for " + tzId
-                + " containing " + cellIds.size() + " cells"
-                + " at level " + maxS2Level
-                + " in " + stopWatch.reportElapsed() + "...");
+        System.out.printf("Created S2CellUnion for %s containing %s cells at level %S in %s...\n",
+                tzId, cellIds.size(), maxS2Level, stopwatch.elapsed());
         return new TzS2CellUnion(tzId, combinedCellUnion);
     }
 }
