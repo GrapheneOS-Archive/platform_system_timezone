@@ -59,7 +59,7 @@ public class GeonamesComparison {
 
     private static final int KNOWN_DIFFERENCE_S2_LEVEL = 16;
     private static final boolean DBG = false;
-    private static final boolean PRINT_CONFIRMED_KNOWN_DIFFERENCES = false;
+    private static final boolean OUTPUT_CONFIRMED_KNOWN_DIFFERENCES = false;
     private static final boolean OUTPUT_AMBIGUOUS_RESULT_INFO = false;
 
     /**
@@ -164,13 +164,14 @@ public class GeonamesComparison {
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(outputFile),
                 StandardCharsets.UTF_8)) {
             for (KnownDifferenceMismatch knownDifferenceMismatch : knownDifferenceMismatches) {
-                writer.append("Reference Data:\n");
+                writer.append("Recorded known difference:\n");
                 KnownDifference referenceDataKnownDifference =
                         knownDifferenceMismatch.getReferenceDataKnownDifference();
                 writer.append(referenceDataKnownDifference.toProtoText());
                 writer.append("\n\n");
                 writer.append("Actual:\n");
                 writer.append(knownDifferenceMismatch.getActualKnownDifference().toProtoText());
+                writer.append("\n\n===========================\n");
             }
         }
     }
@@ -197,7 +198,6 @@ public class GeonamesComparison {
 
         Map<TestCaseId, Types.KnownDifference> mutableKnownDifferencesMap = new HashMap<>();
         List<Types.KnownDifference> newKnownDifferences = new ArrayList<>();
-        List<Types.KnownDifference> fixedKnownDifferences = new ArrayList<>();
         List<Types.KnownDifference> confirmedKnownDifferences = new ArrayList<>();
         List<KnownDifferenceMismatch> incorrectKnownDifferences = new ArrayList<>();
         List<CityResult> multipleIdAndroidResults = new ArrayList<>();
@@ -222,32 +222,27 @@ public class GeonamesComparison {
                 multipleIdAndroidResults.add(new CityResult(city, androidResult));
             }
 
-            if (!geonamesResult.intersects(androidResult)) {
-                // Check the actual meets expectations.
-                if (preexistingKnownDifference == null) {
+            // Check the actual meets expectations.
+            if (preexistingKnownDifference == null) {
+                if (!geonamesResult.intersects(androidResult)) {
                     // Not a known difference: Report it!
                     Types.KnownDifference newKnownDifference = createNewKnownDifference(
                             testCaseId, geonamesResult, androidResult);
                     newKnownDifferences.add(newKnownDifference);
-                } else {
-                    Result knownDifferenceActualResult =
-                            preexistingKnownDifference.getActualResult();
-                    Result knownDifferenceReferenceDataResult =
-                            preexistingKnownDifference.getReferenceDataResult();
-                    if (knownDifferenceActualResult.equals(androidResult)
-                            && knownDifferenceReferenceDataResult.equals(geonamesResult)) {
-                        confirmedKnownDifferences.add(preexistingKnownDifference);
-                    } else {
-                        // There is a known difference, but it doesn't match: Report it!
-                        KnownDifferenceMismatch mismatch = new KnownDifferenceMismatch(
-                                preexistingKnownDifference, geonamesResult, androidResult);
-                        incorrectKnownDifferences.add(mismatch);
-                    }
                 }
             } else {
-                if (preexistingKnownDifference != null) {
-                    // There is a known difference, but it may have been fixed: Report it!
-                    fixedKnownDifferences.add(preexistingKnownDifference);
+                Result knownDifferenceActualResult =
+                        preexistingKnownDifference.getActualResult();
+                Result knownDifferenceReferenceDataResult =
+                        preexistingKnownDifference.getReferenceDataResult();
+                if (knownDifferenceActualResult.equals(androidResult)
+                        && knownDifferenceReferenceDataResult.equals(geonamesResult)) {
+                    confirmedKnownDifferences.add(preexistingKnownDifference);
+                } else {
+                    // There is a known difference, but it doesn't match: Report it!
+                    KnownDifferenceMismatch mismatch = new KnownDifferenceMismatch(
+                            preexistingKnownDifference, geonamesResult, androidResult);
+                    incorrectKnownDifferences.add(mismatch);
                 }
             }
         }
@@ -273,14 +268,7 @@ public class GeonamesComparison {
                 System.out.println();
             }
 
-            if (incorrectKnownDifferences.size() > 0) {
-                File outputFile = new File(outputDir, "fixed_diffs.prototxt");
-                outputKnownDifferences(outputFile, fixedKnownDifferences);
-                System.out.println("Fixed known differences: " + outputFile + " (remove these)");
-                System.out.println();
-            }
-
-            if (PRINT_CONFIRMED_KNOWN_DIFFERENCES && confirmedKnownDifferences.size() > 0) {
+            if (OUTPUT_CONFIRMED_KNOWN_DIFFERENCES && confirmedKnownDifferences.size() > 0) {
                 File outputFile = new File(outputDir, "confirmed_diffs.prototxt");
                 outputKnownDifferences(outputFile, confirmedKnownDifferences);
                 System.out.println(
@@ -288,6 +276,8 @@ public class GeonamesComparison {
                 System.out.println();
             }
 
+            // Whatever is left in the mutableKnownDifferencesMap are test cases that no longer
+            // exist.
             if (mutableKnownDifferencesMap.size() > 0) {
                 File outputFile = new File(outputDir, "missing_diffs.prototxt");
                 outputKnownDifferences(outputFile,

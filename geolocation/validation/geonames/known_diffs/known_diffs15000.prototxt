@@ -1,19 +1,4 @@
 knownDifferences {
-  cityName: "North Battleford"
-  s2CellId: 5982473892088774656
-  referenceDataResult {
-    isoCountryCodes: "ca"
-    zoneIds: "America/Regina"
-  }
-  actualResult {
-    isoCountryCodes: "ca"
-    zoneIds: "America/Winnipeg"
-  }
-  comment: "Add a comment here"
-  type: "UNKNOWN"
-  bugUri: "http://b/bugId"
-}
-knownDifferences {
   cityName: "L\303\251vis"
   s2CellId: 5528333079304732672
   referenceDataResult {

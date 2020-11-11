@@ -14,36 +14,6 @@ knownDifferences {
   bugUri: "http://b/bugId"
 }
 knownDifferences {
-  cityName: "Eston"
-  s2CellId: 5985803244973064192
-  referenceDataResult {
-    isoCountryCodes: "ca"
-    zoneIds: "America/Regina"
-  }
-  actualResult {
-    isoCountryCodes: "ca"
-    zoneIds: "America/Winnipeg"
-  }
-  comment: "Add a comment here"
-  type: "UNKNOWN"
-  bugUri: "http://b/bugId"
-}
-knownDifferences {
-  cityName: "Gull Lake"
-  s2CellId: 5985665765754273792
-  referenceDataResult {
-    isoCountryCodes: "ca"
-    zoneIds: "America/Regina"
-  }
-  actualResult {
-    isoCountryCodes: "ca"
-    zoneIds: "America/Winnipeg"
-  }
-  comment: "Add a comment here"
-  type: "UNKNOWN"
-  bugUri: "http://b/bugId"
-}
-knownDifferences {
   cityName: "Upper Liard"
   s2CellId: 6051535508603928576
   referenceDataResult {
