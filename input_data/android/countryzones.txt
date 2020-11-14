@@ -25,7 +25,7 @@
 # a time zone for an Android device.
 
 # ianaVersion: The version of the IANA rules this file matches.
-ianaVersion:"2020c"
+ianaVersion:"2020d"
 
 # countries:
 #
