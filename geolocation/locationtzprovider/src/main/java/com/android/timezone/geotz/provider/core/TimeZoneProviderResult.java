@@ -116,7 +116,8 @@ public final class TimeZoneProviderResult {
     public String toString() {
         return "TimeZoneProviderResult{"
                 + "mResultType=" + mType
-                + ", mSuggestion=" + mSuggestion;
+                + ", mSuggestion=" + mSuggestion
+                + '}';
     }
 
     @Override

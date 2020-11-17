@@ -15,18 +15,26 @@
  */
 package com.android.timezone.geotz.provider;
 
-import static com.android.timezone.geotz.provider.core.LogUtils.formatDelayMillis;
+import static android.location.LocationRequest.QUALITY_BALANCED_POWER_ACCURACY;
+import static android.location.LocationRequest.QUALITY_HIGH_ACCURACY;
+import static android.os.PowerManager.PARTIAL_WAKE_LOCK;
+
+import static com.android.timezone.geotz.provider.core.LogUtils.LOG_TAG;
 import static com.android.timezone.geotz.provider.core.LogUtils.formatElapsedRealtimeMillis;
-import static com.android.timezone.geotz.provider.core.LogUtils.logWarn;
-import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_HIGH;
+import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_ACTIVE;
+import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_PASSIVE;
+
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 import android.content.Context;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationRequest;
+import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
@@ -34,8 +42,8 @@ import androidx.annotation.Nullable;
 
 import com.android.timezone.geotz.lookup.GeoTimeZonesFinder;
 import com.android.timezone.geotz.provider.core.Cancellable;
+import com.android.timezone.geotz.provider.core.Environment;
 import com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate;
-import com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.ListenModeEnum;
 import com.android.timezone.geotz.provider.core.TimeZoneProviderResult;
 
 import java.io.File;
@@ -44,16 +52,14 @@ import java.io.InputStream;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Consumer;
 
 /**
- * The real implementation of {@link OfflineLocationTimeZoneDelegate.Environment}.
+ * The real implementation of {@link Environment}.
  */
-class EnvironmentImpl implements OfflineLocationTimeZoneDelegate.Environment {
-
-    // TODO(b/152746105): Make this configurable and consider the value.
-    /** The maximum allowed age of locations received. */
-    private static final long MAX_LAST_LOCATION_AGE_NANOS = Duration.ofMinutes(15).toNanos();
+class EnvironmentImpl implements Environment {
 
     private static final String RESOURCE_CONFIG_PROPERTIES = "offlineltzprovider.properties";
     private static final String CONFIG_KEY_GEODATA_PATH = "geodata.path";
@@ -65,13 +71,22 @@ class EnvironmentImpl implements OfflineLocationTimeZoneDelegate.Environment {
     @NonNull
     private final Consumer<TimeZoneProviderResult> mResultConsumer;
     @NonNull
+    private final HandlerExecutor mExecutor;
+    @NonNull
     private final File mGeoDataFile;
+    @NonNull
+    private final PowerManager.WakeLock mWakeLock;
 
     EnvironmentImpl(@NonNull Context context,
             @NonNull Consumer<TimeZoneProviderResult> resultConsumer) {
         mLocationManager = context.getSystemService(LocationManager.class);
+
+        PowerManager powerManager = context.getSystemService(PowerManager.class);
+        mWakeLock = powerManager.newWakeLock(PARTIAL_WAKE_LOCK, LOG_TAG);
+
         mResultConsumer = Objects.requireNonNull(resultConsumer);
         mHandler = new Handler(Looper.getMainLooper());
+        mExecutor = new HandlerExecutor(mHandler);
 
         Properties configProperties = loadConfigProperties(getClass().getClassLoader());
         mGeoDataFile = new File(configProperties.getProperty(CONFIG_KEY_GEODATA_PATH));
@@ -95,8 +110,10 @@ class EnvironmentImpl implements OfflineLocationTimeZoneDelegate.Environment {
 
     @Override
     @NonNull
-    public <T> Cancellable startTimeout(@Nullable Consumer<T> callback, @NonNull T callbackToken,
-            long delayMillis) {
+    public <T> Cancellable requestDelayedCallback(
+            @NonNull Consumer<T> callback, @Nullable T callbackToken, @NonNull Duration delay) {
+        Objects.requireNonNull(callback);
+        Objects.requireNonNull(delay);
 
         // Deliberate use of an anonymous class as the equality of lambdas is not well defined but
         // instance equality is required for the remove call.
@@ -107,102 +124,146 @@ class EnvironmentImpl implements OfflineLocationTimeZoneDelegate.Environment {
             }
         };
 
-        Cancellable cancellable = new Cancellable() {
-            /** Recorded for debugging: provides identity and start time. */
-            final String mStartElapsedRealTime =
-                    formatElapsedRealtimeMillis(SystemClock.elapsedRealtime());
-            /** Recorded for debugging. */
-            final String mDelay = formatDelayMillis(delayMillis);
-            boolean mCancelled = false;
-
+        String identifier = delay + "@" + formatElapsedRealtimeMillis(elapsedRealtimeMillis());
+        Cancellable cancellable = new BaseCancellable(identifier) {
             @Override
-            public void cancel() {
-                if (!mCancelled) {
-                    mHandler.removeCallbacks(runnable);
-                    mCancelled = true;
-                }
-            }
-
-            @Override
-            public String toString() {
-                return "{"
-                        + "mStartElapsedRealTime=" + mStartElapsedRealTime
-                        + ", mDelay=" + mDelay
-                        + ", mCancelled=" + mCancelled
-                        + '}';
+            public void onCancel() {
+                mHandler.removeCallbacks(runnable);
             }
         };
 
-        mHandler.postDelayed(runnable, delayMillis);
+        mHandler.postDelayed(runnable, delay.toMillis());
         return cancellable;
     }
 
     @Override
     @NonNull
-    public Cancellable startLocationListening(
-            @ListenModeEnum int listeningMode, @NonNull Consumer<Location> locationConsumer) {
-        // Deliberate use of an anonymous class as the equality of lambdas is not well defined.
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(@NonNull Location location) {
-                if (isLocationTooOld(location)) {
-                    // Old locations are filtered.
-                    String badLocationDebugInfo = "Old location received: onLocationReceived()"
-                            + ", location=" + location;
-                    logWarn(badLocationDebugInfo);
+    public Cancellable startPassiveLocationListening(@NonNull Duration duration,
+            @NonNull Consumer<LocationListeningResult> listeningResultConsumer,
+            @NonNull Consumer<Duration> passiveListeningCompletedCallback) {
+        Objects.requireNonNull(duration);
+        Objects.requireNonNull(listeningResultConsumer);
 
-                    return;
+        try {
+            // Keep a wakelock while we call requestLocationUpdates() so we can calculate a fairly
+            // accurate (upper bound) of how long the device has been passively listening.
+            acquireWakeLock();
+            long startElapsedRealtimeMillis = elapsedRealtimeMillis();
+
+            // Deliberate use of an anonymous class as the equality of lambdas is not well defined.
+            LocationListener locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    LocationListeningResult result = new LocationListeningResult(
+                            LOCATION_LISTEN_MODE_PASSIVE,
+                            duration, startElapsedRealtimeMillis,
+                            elapsedRealtimeMillis(),
+                            location);
+                    listeningResultConsumer.accept(result);
                 }
+            };
 
-                locationConsumer.accept(location);
-            }
-        };
+            // A value that tries to ensure we will get some updates while listening.
+            long minUpdateInterval = duration.dividedBy(3).toMillis();
 
-        Cancellable locationListenerCancellable = new Cancellable() {
-            /** Recorded for debugging: provides identity and start time. */
-            private final String mStartElapsedRealtime =
-                    formatElapsedRealtimeMillis(SystemClock.elapsedRealtime());
-            private boolean mCancelled = false;
+            // Using the passive provider means we will potentially see GPS-originated locations
+            // in addition to just "fused" locationprovider updates.
+            // We don't use the setDurationMillis() since we handle our own timeout below, which
+            // provides an explicit callback when listening stops.
+            LocationRequest locationRequest = new LocationRequest.Builder(minUpdateInterval)
+                    .setMinUpdateDistanceMeters(0)
+                    .setMinUpdateIntervalMillis(minUpdateInterval)
+                    .setDurationMillis(Long.MAX_VALUE  /* indefinite updates, until cancelled */)
+                    .setMaxUpdates(Integer.MAX_VALUE /* indefinite updates, until cancelled */)
+                    .setQuality(QUALITY_BALANCED_POWER_ACCURACY) /* try not to be power hungry */
+                    .setMaxUpdateDelayMillis(0 /* no batching */)
+                    .build();
 
-            @Override
-            public void cancel() {
-                if (!mCancelled) {
+            mLocationManager.requestLocationUpdates(
+                    LocationManager.PASSIVE_PROVIDER, locationRequest, mExecutor, locationListener);
+
+            String callbackIdentifier = "passive:" + duration + "@"
+                    + formatElapsedRealtimeMillis(elapsedRealtimeMillis());
+            Consumer<String> timeoutCallback = token -> {
+                // When the timeout triggers we must cancel the location listening.
+                mLocationManager.removeUpdates(locationListener);
+
+                // Also calculate the amount of time the device was actually listening. Because
+                // passive listening doesn't prevent sleep, we calculate the actual time, not the
+                // time we asked for. This is done under a partial wake lock to ensure we don't
+                // sleep in the middle and get misleading values.
+                try {
+                    acquireWakeLock();
+                    Duration timeElapsed =
+                            Duration.ofMillis(elapsedRealtimeMillis() - startElapsedRealtimeMillis);
+                    passiveListeningCompletedCallback.accept(timeElapsed);
+                } finally {
+                    releaseWakeLock();
+                }
+            };
+            Cancellable timeoutCancellable =
+                    requestDelayedCallback(timeoutCallback, callbackIdentifier, duration);
+
+            return new BaseCancellable(callbackIdentifier) {
+                @Override
+                public void onCancel() {
+                    timeoutCancellable.cancel();
                     mLocationManager.removeUpdates(locationListener);
-                    mCancelled = true;
                 }
-            }
+            };
+        } finally {
+            releaseWakeLock();
+        }
+    }
 
+    @NonNull
+    @Override
+    public Cancellable startActiveGetCurrentLocation(@NonNull Duration duration,
+            @NonNull Consumer<LocationListeningResult> locationResultConsumer) {
+        CancellationSignal cancellationSignal = new CancellationSignal();
+        String identifier = "active:"  + duration + "@"
+                + formatElapsedRealtimeMillis(elapsedRealtimeMillis());
+        Cancellable locationListenerCancellable = new BaseCancellable(identifier) {
             @Override
-            public String toString() {
-                return "{"
-                        + "mStartElapsedRealtime=" + mStartElapsedRealtime
-                        + ", mCancelled=" + mCancelled
-                        + '}';
+            protected void onCancel() {
+                cancellationSignal.cancel();
             }
         };
 
-        // TODO(b/152746105): Make this configurable and consider the value.
-        final long minTimeMs = 5 * 60 * 1000;
-        final int minDistanceM = 250;
+        long intervalMillis = 0; // Not used
+        long durationMillis = duration.toMillis();
+        LocationRequest locationRequest = new LocationRequest.Builder(intervalMillis)
+                .setDurationMillis(durationMillis)
+                .setQuality(QUALITY_HIGH_ACCURACY /* try to force GPS on when it's needed */)
+                .setMaxUpdateDelayMillis(0 /* no batching */)
+                .build();
 
-        Criteria criteria = new Criteria();
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setSpeedRequired(false);
+        try {
+            // Keep a wakelock while we call getCurrentLocation() so we can calculate a fairly
+            // accurate (upper bound) of how long the device has been actively listening when we
+            // get a result.
+            acquireWakeLock();
+            long startElapsedRealtimeMillis = elapsedRealtimeMillis();
+            Consumer<Location> locationConsumer = location -> {
+                LocationListeningResult result = new LocationListeningResult(
+                        LOCATION_LISTEN_MODE_ACTIVE,
+                        duration,
+                        startElapsedRealtimeMillis,
+                        elapsedRealtimeMillis(),
+                        location);
+                // TODO Add a metric to record the time spent active listening. http://b/152746105
+                //  result.getEstimatedTimeListening();
 
-        // TODO(b/152746105): Make this configurable and consider the value.
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        if (listeningMode == LOCATION_LISTEN_MODE_HIGH) {
-            criteria.setPowerRequirement(Criteria.POWER_HIGH);
-        } else {
-            criteria.setPowerRequirement(Criteria.POWER_MEDIUM);
+                locationResultConsumer.accept(result);
+            };
+
+            mLocationManager.getCurrentLocation(
+                    LocationManager.FUSED_PROVIDER, locationRequest, cancellationSignal, mExecutor,
+                    locationConsumer);
+            return locationListenerCancellable;
+        } finally {
+            releaseWakeLock();
         }
-        criteria.setCostAllowed(false);
-
-        // TODO(b/152746105): Move to a different API that explicitly uses the fused provider.
-        mLocationManager.requestLocationUpdates(
-            minTimeMs, minDistanceM, criteria, locationListener, mHandler.getLooper());
-        return locationListenerCancellable;
     }
 
     @Override
@@ -217,16 +278,60 @@ class EnvironmentImpl implements OfflineLocationTimeZoneDelegate.Environment {
     }
 
     @Override
+    public void acquireWakeLock() {
+        mWakeLock.acquire();
+    }
+
+    @Override
+    public void releaseWakeLock() {
+        mWakeLock.release();
+    }
+
+    @Override
     public long elapsedRealtimeMillis() {
         return SystemClock.elapsedRealtime();
     }
 
-    private static boolean isLocationTooOld(@NonNull Location location) {
-        return getElapsedRealtimeAgeNanos(location) > MAX_LAST_LOCATION_AGE_NANOS;
+    private static class HandlerExecutor implements Executor {
+        private final Handler mHandler;
+
+        public HandlerExecutor(@NonNull Handler handler) {
+            mHandler = Objects.requireNonNull(handler);
+        }
+
+        @Override
+        public void execute(Runnable command) {
+            if (!mHandler.post(command)) {
+                throw new RejectedExecutionException(mHandler + " is shutting down");
+            }
+        }
     }
 
-    private static long getElapsedRealtimeAgeNanos(@NonNull Location location) {
-        // location.getElapsedRealtimeAgeNanos() is hidden
-        return SystemClock.elapsedRealtimeNanos() - location.getElapsedRealtimeNanos();
+    private static abstract class BaseCancellable implements Cancellable {
+        final String mIdentifier;
+        boolean mCancelled = false;
+
+        BaseCancellable(String identifier) {
+            mIdentifier = identifier;
+        }
+
+        @Override
+        public void cancel() {
+            if (!mCancelled) {
+                mCancelled = true;
+                onCancel();
+            }
+        }
+
+        protected abstract void onCancel();
+
+        @Override
+        public String toString() {
+            return "{"
+                    + "mIdentifier=" + mIdentifier
+                    + ", mCancelled=" + mCancelled
+                    + '}';
+        }
+
     }
 }

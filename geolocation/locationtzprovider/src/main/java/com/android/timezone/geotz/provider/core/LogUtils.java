@@ -41,11 +41,6 @@ public final class LogUtils {
         return Duration.ofMillis(elapsedRealtimeMillis).toString();
     }
 
-    /** Formats the supplied delay for debug output. */
-    public static String formatDelayMillis(long delayMillis) {
-        return Duration.ofMillis(delayMillis).toString();
-    }
-
     /** Logs at debug level when debug logging is enabled via {@link #DBG}. */
     public static void logDebug(@NonNull String msg) {
         if (DBG) {

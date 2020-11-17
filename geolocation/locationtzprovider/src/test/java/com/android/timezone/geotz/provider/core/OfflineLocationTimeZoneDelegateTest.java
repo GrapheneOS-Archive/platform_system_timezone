@@ -15,11 +15,20 @@
  */
 package com.android.timezone.geotz.provider.core;
 
+import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_ACTIVE;
+import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_PASSIVE;
+import static com.android.timezone.geotz.provider.core.TimeZoneProviderResult.RESULT_TYPE_SUGGESTION;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 import android.location.Location;
 
@@ -27,93 +36,192 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.timezone.geotz.lookup.GeoTimeZonesFinder;
+import com.android.timezone.geotz.provider.core.Environment.LocationListeningResult;
+import com.android.timezone.geotz.provider.core.LocationListeningAccountant.ListeningInstruction;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /** Tests for {@link OfflineLocationTimeZoneDelegate}. */
 public class OfflineLocationTimeZoneDelegateTest {
 
     private FakeEnvironment mTestEnvironment;
     private FakeGeoTimeZonesFinder mTestGeoTimeZoneFinder;
-
+    private FakeLocationListeningAccountant mTestLocationListeningAccountant;
     private OfflineLocationTimeZoneDelegate mDelegate;
 
     @Before
     public void setUp() {
         mTestEnvironment = new FakeEnvironment();
         mTestGeoTimeZoneFinder = mTestEnvironment.mFakeGeoTimeZonesFinder;
-        mDelegate = new OfflineLocationTimeZoneDelegate(mTestEnvironment);
+        mTestLocationListeningAccountant = new FakeLocationListeningAccountant();
+        mDelegate = new OfflineLocationTimeZoneDelegate(
+                mTestEnvironment, mTestLocationListeningAccountant);
     }
 
     @Test
     public void locationFoundImmediately() throws Exception {
+        // Prime the accountant with instructions.
+        ListeningInstruction activeInstruction = new ListeningInstruction(
+                LOCATION_LISTEN_MODE_ACTIVE, Duration.ofSeconds(15));
+        ListeningInstruction passiveInstruction = new ListeningInstruction(
+                LOCATION_LISTEN_MODE_PASSIVE, Duration.ofSeconds(25));
+        mTestLocationListeningAccountant.addInstruction(activeInstruction)
+                .addInstruction(passiveInstruction);
+
+        // Prime the time zone finder with answers.
         double latDegrees = 1.0;
         double lngDegrees = 1.0;
         List<String> timeZoneIds = Arrays.asList("Europe/London");
         mTestGeoTimeZoneFinder.setTimeZonesForLocation(latDegrees, lngDegrees, timeZoneIds);
 
+        // Start of the test
+
         assertEquals(Mode.MODE_STOPPED, mDelegate.getCurrentModeEnumForTests());
         mTestEnvironment.assertIsNotListening();
-        mTestEnvironment.assertNoTimeoutSet();
+        mTestEnvironment.assertNoActiveTimeouts();
 
         mDelegate.onBind();
         assertEquals(Mode.MODE_STOPPED, mDelegate.getCurrentModeEnumForTests());
         mTestEnvironment.assertIsNotListening();
-        mTestEnvironment.assertNoTimeoutSet();
+        mTestEnvironment.assertNoActiveTimeouts();
 
-        final int initializationTimeoutMillis = 20000;
-        mDelegate.onStartUpdates(initializationTimeoutMillis);
+        // The provider should have started an initialization timeout and followed the first
+        // instruction from the accountant.
+        final Duration initializationTimeout = Duration.ofSeconds(20);
+        mDelegate.onStartUpdates(initializationTimeout);
+        FakeEnvironment.TestTimeoutState<?> initializationTimeoutState =
+                mTestEnvironment.getActiveTimeoutState(0);
+        initializationTimeoutState.assertDelay(initializationTimeout);
         assertEquals(Mode.MODE_STARTED, mDelegate.getCurrentModeEnumForTests());
-        mTestEnvironment.assertIsListening(
-                OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_HIGH);
-        mTestEnvironment.assertTimeoutSet(initializationTimeoutMillis);
+        mTestEnvironment.assertIsLocationListening(
+                activeInstruction.listenMode, activeInstruction.duration);
 
-        Location location = new Location("test provider");
-        location.setLatitude(latDegrees);
-        location.setLongitude(1.0);
-        mTestEnvironment.simulateCurrentLocationDetected(location);
+        // Simulate the passage of time and a location being detected within the listening
+        // duration.
+        Duration timeUntilLocationFound = Duration.ofSeconds(5);
+        assertTrue(activeInstruction.duration.compareTo(timeUntilLocationFound) > 0);
+        mTestEnvironment.simulateTimePassing(timeUntilLocationFound)
+                .simulateLocationKnown(latDegrees, lngDegrees);
 
-        mTestEnvironment.assertSuggestionResult(timeZoneIds);
+        // Check the location was used to report a time zone / initialization timeout has been
+        // cancelled.
+        mTestEnvironment.assertSuggestionResultReported(timeZoneIds);
         assertEquals(Mode.MODE_STARTED, mDelegate.getCurrentModeEnumForTests());
-        mTestEnvironment.assertIsListening(
-                OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_LOW);
-        mTestEnvironment.assertTimeoutSet(
-                OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_LOW_TIMEOUT_MILLIS);
+        initializationTimeoutState.assertCancelled();
+
+        // Unused active listening budget should be returned to the accountant. The amount is
+        // dependent on how long the active listening result takes.
+        Duration maximumReturned = activeInstruction.duration.minus(timeUntilLocationFound);
+        mTestLocationListeningAccountant.assertActiveBudgetReturned(
+                amount -> amount.compareTo(maximumReturned) <= 0);
+
+        // Check the provider has moved onto the next instruction.
+        mTestEnvironment.assertIsLocationListening(
+                passiveInstruction.listenMode, passiveInstruction.duration);
     }
 
-    private static class FakeEnvironment implements OfflineLocationTimeZoneDelegate.Environment {
+    @Test
+    public void locationNotFoundImmediately() throws Exception {
+        // Prime the accountant with instructions.
+        ListeningInstruction activeInstruction = new ListeningInstruction(
+                LOCATION_LISTEN_MODE_ACTIVE, Duration.ofSeconds(15));
+        ListeningInstruction passiveInstruction = new ListeningInstruction(
+                LOCATION_LISTEN_MODE_PASSIVE, Duration.ofSeconds(25));
+        mTestLocationListeningAccountant.addInstruction(activeInstruction)
+                .addInstruction(passiveInstruction);
 
-        private FakeGeoTimeZonesFinder mFakeGeoTimeZonesFinder = new FakeGeoTimeZonesFinder();
+        // Start of the test
+
+        assertEquals(Mode.MODE_STOPPED, mDelegate.getCurrentModeEnumForTests());
+        mTestEnvironment.assertIsNotListening();
+        mTestEnvironment.assertNoActiveTimeouts();
+
+        mDelegate.onBind();
+        assertEquals(Mode.MODE_STOPPED, mDelegate.getCurrentModeEnumForTests());
+        mTestEnvironment.assertIsNotListening();
+        mTestEnvironment.assertNoActiveTimeouts();
+
+        // The provider should have started an initialization timeout and followed the first
+        // instruction from the accountant.
+        final Duration initializationTimeout = Duration.ofSeconds(20);
+        mDelegate.onStartUpdates(initializationTimeout);
+        FakeEnvironment.TestTimeoutState<?> initializationTimeoutState =
+                mTestEnvironment.getActiveTimeoutState(0);
+        initializationTimeoutState.assertDelay(initializationTimeout);
+        assertEquals(Mode.MODE_STARTED, mDelegate.getCurrentModeEnumForTests());
+        mTestEnvironment.assertIsLocationListening(
+                activeInstruction.listenMode, activeInstruction.duration);
+
+        // Simulate the passage of time and the location not being detected.
+        mTestEnvironment.simulateTimePassing(activeInstruction.duration)
+                .simulateActiveLocationNotKnown();
+        mTestLocationListeningAccountant.assertActiveBudgetReturned(x -> x.equals(Duration.ZERO));
+
+        // activeInstruction.duration < initialization timeout, so no report should have been made
+        // yet.
+        assertTrue(activeInstruction.duration.compareTo(initializationTimeout) < 0);
+        initializationTimeoutState.assertNotCancelled();
+
+        // Check the provider has moved onto the next instruction.
+        mTestEnvironment.assertIsLocationListening(
+                passiveInstruction.listenMode, passiveInstruction.duration);
+    }
+
+    private static class FakeEnvironment implements Environment {
+
+        private final FakeGeoTimeZonesFinder mFakeGeoTimeZonesFinder = new FakeGeoTimeZonesFinder();
         private long mElapsedRealtimeMillis;
-        private TestLocationListenerState mLocationListeningState;
-        private TestTimeoutState<?> mTimeoutState;
-        private TimeZoneProviderResult mLastResult;
+        private PassiveLocationListenerState mPassiveLocationListeningState;
+        private ActiveLocationListenerState mActiveLocationListeningState;
+        private final List<TestTimeoutState<?>> mTimeouts = new ArrayList<>();
+        private TimeZoneProviderResult mLastResultReported;
 
         @NonNull
         @Override
-        public <T> Cancellable startTimeout(@NonNull Consumer<T> callback,
-                @Nullable T callbackToken, @NonNull long delayMillis) {
-            assertNull(mTimeoutState);
-            mTimeoutState = new TestTimeoutState<T>(callback, callbackToken, delayMillis);
-            return mTimeoutState;
+        public <T> Cancellable requestDelayedCallback(@NonNull Consumer<T> callback,
+                @Nullable T callbackToken, @NonNull Duration delay) {
+            TestTimeoutState<T> timeoutState =
+                    new TestTimeoutState<>(callback, callbackToken, delay);
+            mTimeouts.add(timeoutState);
+            return timeoutState;
         }
 
         @NonNull
         @Override
-        public Cancellable startLocationListening(int listeningMode,
-                @NonNull Consumer<Location> locationListener) {
-            assertNull(mLocationListeningState);
-            mLocationListeningState = new TestLocationListenerState(listeningMode, locationListener);
-            return mLocationListeningState;
+        public Cancellable startPassiveLocationListening(@NonNull Duration duration,
+                @NonNull Consumer<LocationListeningResult> locationResultConsumer,
+                @NonNull Consumer<Duration> passiveListeningCompletedCallback) {
+            assertNull(mPassiveLocationListeningState);
+            assertNull(mActiveLocationListeningState);
+
+            mPassiveLocationListeningState = new PassiveLocationListenerState(
+                    duration, locationResultConsumer, passiveListeningCompletedCallback);
+            return mPassiveLocationListeningState;
+        }
+
+        @NonNull
+        @Override
+        public Cancellable startActiveGetCurrentLocation(@NonNull Duration duration,
+                @NonNull Consumer<LocationListeningResult> locationResultConsumer) {
+            assertNull(mPassiveLocationListeningState);
+            assertNull(mActiveLocationListeningState);
+
+            mActiveLocationListeningState = new ActiveLocationListenerState(
+                    duration, locationResultConsumer);
+            return mActiveLocationListeningState;
         }
 
         @NonNull
@@ -125,7 +233,17 @@ public class OfflineLocationTimeZoneDelegateTest {
         @Override
         public void reportTimeZoneProviderResult(@NonNull TimeZoneProviderResult result) {
             assertNotNull(result);
-            mLastResult = result;
+            mLastResultReported = result;
+        }
+
+        @Override
+        public void acquireWakeLock() {
+            // No-op in tests.
+        }
+
+        @Override
+        public void releaseWakeLock() {
+            // No-op in tests.
         }
 
         @Override
@@ -133,50 +251,157 @@ public class OfflineLocationTimeZoneDelegateTest {
             return mElapsedRealtimeMillis++;
         }
 
-        public void simulateCurrentLocationDetected(Location location) {
-            assertNotNull(mLocationListeningState);
-            mLocationListeningState.mLocationListener.accept(location);
+        FakeEnvironment simulatePassiveLocationListeningEnding() {
+            assertNotNull(mPassiveLocationListeningState);
+            mPassiveLocationListeningState.simulateListeningEnded();
+            return this;
         }
 
-        public void assertIsListening(int locationListenMode) {
-            assertNotNull(mLocationListeningState);
-            assertEquals(locationListenMode, mLocationListeningState.mListeningMode);
+        FakeEnvironment simulateActiveLocationNotKnown() {
+            assertNotNull(mActiveLocationListeningState);
+            mActiveLocationListeningState.simulateLocationNotKnown();
+            return this;
         }
 
-        public void assertIsNotListening() {
-            assertNull(mLocationListeningState);
+        FakeEnvironment simulateLocationKnown(double latDegrees, double lngDegrees) {
+            Location location = new Location("test");
+            location.setLatitude(latDegrees);
+            location.setLongitude(lngDegrees);
+
+            location.setElapsedRealtimeNanos(MILLISECONDS.toNanos(mElapsedRealtimeMillis));
+            if (mPassiveLocationListeningState != null) {
+                mPassiveLocationListeningState.simulateLocationKnown(location);
+            } else if (mActiveLocationListeningState != null) {
+                mActiveLocationListeningState.simulateLocationKnown(location);
+
+                // The active location listening is cancelled as soon as a location is known.
+                mActiveLocationListeningState = null;
+            } else {
+                fail("No listening started.");
+            }
+            return this;
         }
 
-        public void assertNoTimeoutSet() {
-            assertNull(mTimeoutState);
+        FakeEnvironment assertIsLocationListening(
+                int expectedLocationListenMode, Duration expectedDuration) {
+            if (expectedLocationListenMode == LOCATION_LISTEN_MODE_ACTIVE) {
+                assertNull(mPassiveLocationListeningState);
+                assertNotNull(mActiveLocationListeningState);
+                assertEquals(expectedDuration, mActiveLocationListeningState.duration);
+            } else {
+                assertNull(mActiveLocationListeningState);
+                assertNotNull(mPassiveLocationListeningState);
+                assertEquals(expectedDuration, mPassiveLocationListeningState.duration);
+            }
+            return this;
         }
 
-        public void assertTimeoutSet(long expectedTimeoutMillis) {
-            assertNotNull(mTimeoutState);
-            assertEquals(expectedTimeoutMillis, mTimeoutState.mDelayMillis);
+        FakeEnvironment assertIsNotListening() {
+            assertNull(mPassiveLocationListeningState);
+            assertNull(mActiveLocationListeningState);
+            return this;
         }
 
-        public void assertSuggestionResult(List<String> expectedTimeZoneIds) {
-            assertNotNull(mLastResult);
-            assertEquals(TimeZoneProviderResult.RESULT_TYPE_SUGGESTION, mLastResult.getType());
-            assertEquals(expectedTimeZoneIds, mLastResult.getSuggestion().getTimeZoneIds());
+        FakeEnvironment assertNoActiveTimeouts() {
+            assertTrue(mTimeouts.isEmpty());
+            return this;
         }
 
-        private class TestLocationListenerState extends TestCancellable {
-            final int mListeningMode;
-            final Consumer<Location> mLocationListener;
+        TestTimeoutState<?> getActiveTimeoutState(int index) {
+            return mTimeouts.get(index);
+        }
 
-            private TestLocationListenerState(
-                    int listeningMode, Consumer<Location> locationListener) {
-                mListeningMode = listeningMode;
+        FakeEnvironment assertNoResultReported() {
+            assertNull(mLastResultReported);
+            return this;
+        }
+
+        FakeEnvironment assertSuggestionResultReported(List<String> expectedTimeZoneIds) {
+            assertNotNull(mLastResultReported);
+            assertEquals(RESULT_TYPE_SUGGESTION, mLastResultReported.getType());
+            assertEquals(expectedTimeZoneIds, mLastResultReported.getSuggestion().getTimeZoneIds());
+            return this;
+        }
+
+        FakeEnvironment simulateTimePassing(Duration duration) {
+            mElapsedRealtimeMillis += duration.toMillis();
+            return this;
+        }
+
+        private class PassiveLocationListenerState extends TestCancellable {
+            public final Duration duration;
+            public final long startElapsedRealtimeMillis;
+            private final Consumer<LocationListeningResult> mLocationListener;
+            private final Consumer<Duration> mListeningCompletedCallback;
+
+            PassiveLocationListenerState(
+                    Duration duration, Consumer<LocationListeningResult> locationListener,
+                    Consumer<Duration> listeningCompletedCallback) {
+                this.duration = duration;
+                this.startElapsedRealtimeMillis = elapsedRealtimeMillis();
+                mLocationListener = locationListener;
+                mListeningCompletedCallback = listeningCompletedCallback;
+            }
+
+            @Override
+            public void cancel() {
+                super.cancel();
+                assertSame(this, mPassiveLocationListeningState);
+                mPassiveLocationListeningState = null;
+            }
+
+            void simulateListeningEnded() {
+                mListeningCompletedCallback.accept(duration);
+            }
+
+            void simulateLocationKnown(Location location) {
+                LocationListeningResult locationListeningResult = new LocationListeningResult(
+                        LOCATION_LISTEN_MODE_PASSIVE,
+                        duration,
+                        startElapsedRealtimeMillis,
+                        NANOSECONDS.toMillis(location.getElapsedRealtimeNanos()),
+                        location);
+                mLocationListener.accept(locationListeningResult);
+            }
+        }
+
+        private class ActiveLocationListenerState extends TestCancellable {
+            public final Duration duration;
+            public final long startElapsedRealtimeMillis;
+            private final Consumer<LocationListeningResult> mLocationListener;
+
+            ActiveLocationListenerState(
+                    Duration duration, Consumer<LocationListeningResult> locationListener) {
+                this.duration = duration;
+                this.startElapsedRealtimeMillis = elapsedRealtimeMillis();
                 mLocationListener = locationListener;
             }
 
             @Override
             public void cancel() {
                 super.cancel();
-                assertSame(this, mLocationListeningState);
-                mLocationListeningState = null;
+                assertSame(this, mActiveLocationListeningState);
+                mActiveLocationListeningState = null;
+            }
+
+            void simulateLocationNotKnown() {
+                LocationListeningResult locationListeningResult = new LocationListeningResult(
+                        LOCATION_LISTEN_MODE_ACTIVE,
+                        duration,
+                        startElapsedRealtimeMillis,
+                        elapsedRealtimeMillis(),
+                        null /* location */);
+                mLocationListener.accept(locationListeningResult);
+            }
+
+            void simulateLocationKnown(Location location) {
+                LocationListeningResult locationListeningResult = new LocationListeningResult(
+                        LOCATION_LISTEN_MODE_ACTIVE,
+                        duration,
+                        startElapsedRealtimeMillis,
+                        NANOSECONDS.toMillis(location.getElapsedRealtimeNanos()),
+                        location);
+                mLocationListener.accept(locationListeningResult);
             }
         }
 
@@ -184,19 +409,22 @@ public class OfflineLocationTimeZoneDelegateTest {
 
             private final Consumer<T> mCallback;
             private final T mCallbackToken;
-            private final long mDelayMillis;
+            private final Duration mDelay;
 
-            public TestTimeoutState(Consumer<T> callback, T callbackToken, long delayMillis) {
+            TestTimeoutState(Consumer<T> callback, T callbackToken, Duration delay) {
                 mCallback = callback;
                 mCallbackToken = callbackToken;
-                mDelayMillis = delayMillis;
+                mDelay = delay;
             }
 
             @Override
             public void cancel() {
                 super.cancel();
-                assertSame(this, mTimeoutState);
-                mTimeoutState = null;
+                assertTrue(mTimeouts.remove(this));
+            }
+
+            void assertDelay(Duration expected) {
+                assertEquals(expected, mDelay);
             }
         }
 
@@ -210,8 +438,16 @@ public class OfflineLocationTimeZoneDelegateTest {
                 mCancelled = true;
             }
 
-            public boolean isCancelled() {
+            boolean isCancelled() {
                 return mCancelled;
+            }
+
+            void assertCancelled() {
+                assertTrue(mCancelled);
+            }
+
+            void assertNotCancelled() {
+                assertFalse(mCancelled);
             }
         }
     }
@@ -225,7 +461,7 @@ public class OfflineLocationTimeZoneDelegateTest {
             private final double mLngDegrees;
             private final double mLatDegrees;
 
-            public FakeLocationToken(double latDegrees, double lngDegrees) {
+            FakeLocationToken(double latDegrees, double lngDegrees) {
                 mLatDegrees = latDegrees;
                 mLngDegrees = lngDegrees;
             }
@@ -286,12 +522,12 @@ public class OfflineLocationTimeZoneDelegateTest {
             // No-op in the fake
         }
 
-        public void setTimeZonesForLocation(
+        void setTimeZonesForLocation(
                 double latDegrees, double lngDegrees, List<String> timeZoneIds) {
             mTimeZoneLookup.put(new FakeLocationToken(latDegrees, lngDegrees), timeZoneIds);
         }
 
-        public void setFailureMode(boolean fail) {
+        void setFailureMode(boolean fail) {
             mFailureMode = fail;
         }
 
@@ -299,6 +535,44 @@ public class OfflineLocationTimeZoneDelegateTest {
             if (mFailureMode) {
                 throw new IOException("Faked lookup failure");
             }
+        }
+    }
+
+    /**
+     * A fake for tests that returns pre-determined instructions and records any deposits.
+     */
+    private static class FakeLocationListeningAccountant implements LocationListeningAccountant {
+        // A queue of instructions.
+        private final LinkedList<ListeningInstruction> mListeningInstructions = new LinkedList<>();
+        private long mBalanceReturned;
+        private long mAccruedPassive;
+
+        @Override
+        public void depositActiveListeningAmount(@NonNull Duration amount) {
+            mBalanceReturned += amount.toMillis();
+        }
+
+        @Override
+        public void accrueActiveListeningBudget(@NonNull Duration timeInPassiveMode) {
+            mAccruedPassive += timeInPassiveMode.toMillis();
+        }
+
+        @NonNull
+        @Override
+        public ListeningInstruction getNextListeningInstruction(long elapsedRealtimeMillis,
+                @Nullable LocationListeningResult lastLocationListeningResult) {
+            return mListeningInstructions.removeFirst();
+        }
+
+        FakeLocationListeningAccountant addInstruction(ListeningInstruction listeningInstruction) {
+            mListeningInstructions.addLast(listeningInstruction);
+            return this;
+        }
+
+        FakeLocationListeningAccountant assertActiveBudgetReturned(
+                Predicate<Duration> expectedReturned) {
+            assertTrue(expectedReturned.test(Duration.ofMillis(mBalanceReturned)));
+            return this;
         }
     }
 }

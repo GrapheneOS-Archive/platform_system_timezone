@@ -21,12 +21,13 @@ import android.service.timezone.TimeZoneProviderService;
 
 import androidx.annotation.NonNull;
 
+import com.android.timezone.geotz.provider.core.Environment;
 import com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate;
-import com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.Environment;
 import com.android.timezone.geotz.provider.core.TimeZoneProviderResult;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
+import java.time.Duration;
 
 /**
  * A Location Time Zone Provider implementation that uses only Android public SDK APIs and on-device
@@ -54,12 +55,12 @@ public final class OfflineLocationTimeZoneProviderService extends TimeZoneProvid
         Context attributionContext = createAttributionContext(ATTRIBUTION_TAG);
         Environment environment = new EnvironmentImpl(
                 attributionContext, this::reportTimeZoneProviderEvent);
-        mDelegate = new OfflineLocationTimeZoneDelegate(environment);
+        mDelegate = OfflineLocationTimeZoneDelegate.create(environment);
     }
 
     @Override
     public void onStartUpdates(long initializationTimeoutMillis) {
-        mDelegate.onStartUpdates(initializationTimeoutMillis);
+        mDelegate.onStartUpdates(Duration.ofMillis(initializationTimeoutMillis));
     }
 
     private void reportTimeZoneProviderEvent(
