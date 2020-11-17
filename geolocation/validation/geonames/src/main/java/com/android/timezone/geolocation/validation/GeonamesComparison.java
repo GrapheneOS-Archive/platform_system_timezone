@@ -195,7 +195,6 @@ public class GeonamesComparison {
     static class KnownDifferencesRegistry {
 
         Map<TestCaseId, KnownDifference> knownDifferences = new HashMap<>();
-
         Map<TestCaseId, Types.KnownDifference> mutableKnownDifferencesMap = new HashMap<>();
         List<Types.KnownDifference> newKnownDifferences = new ArrayList<>();
         List<Types.KnownDifference> confirmedKnownDifferences = new ArrayList<>();
@@ -205,8 +204,23 @@ public class GeonamesComparison {
         void addKnownDifferences(File knownDifferencesFile) throws IOException {
             Map<TestCaseId, KnownDifference> knownDifferencesMap =
                     KnownDifferences.load(knownDifferencesFile).buildIdMap();
-            knownDifferences.putAll(knownDifferencesMap);
-            mutableKnownDifferencesMap.putAll(knownDifferencesMap);
+            Map<TestCaseId, KnownDifference> dupes =
+                    putAllNoDupes(knownDifferences, knownDifferencesMap);
+            for (TestCaseId dupeKey : dupes.keySet()) {
+                logWarn("Duplicated key in file " + knownDifferencesFile + ": " + dupeKey);
+            }
+            putAllNoDupes(mutableKnownDifferencesMap, knownDifferencesMap);
+
+        }
+
+        private static <K, V> Map<K, V> putAllNoDupes(Map<K, V> target, Map<K, V> source) {
+            Map<K, V> dupes = new HashMap<>();
+            for (Map.Entry<K, V> entry : source.entrySet()) {
+                if (target.putIfAbsent(entry.getKey(), entry.getValue()) != null) {
+                    dupes.put(entry.getKey(), entry.getValue());
+                }
+            }
+            return dupes;
         }
 
         void recordResult(TestCaseId testCaseId,

@@ -17,7 +17,9 @@
 # Fail fast on any error.
 set -e
 
-CITY_SIZES=(500 1000 15000)
+# Ordered in reverse so duplicate known issues are reported against the smaller
+# city file.
+CITY_SIZES=(15000 5000 1000 500)
 EXTERNAL_GEONAMES_DIR=${ANDROID_BUILD_TOP}/external/geonames
 SYSTEM_TIMEZONE_DIR=${ANDROID_BUILD_TOP}/system/timezone
 KNOWN_DIFFS_DIR=${SYSTEM_TIMEZONE_DIR}/geolocation/validation/geonames/known_diffs
@@ -25,7 +27,7 @@ TMP_DIR=$(mktemp -d -t geonames-XXXXXXXXXX)
 COMPARISON_CMD=geotz_geonames_comparison
 
 if (( $# < 1 )); then
-  echo "Usage: ${0} [500|1000|15000]"
+  echo "Usage: ${0} [500|1000|5000|15000]"
   echo
   echo "  The number determines the geonames file to use (500 means <= 500 population)"
   echo "  500 is generally fine: This includes 1,000 and 15,000 population too."
