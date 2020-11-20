@@ -17,7 +17,6 @@
 package com.android.timezone.geotz.provider;
 
 import android.content.Context;
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
@@ -47,11 +46,11 @@ final class OfflineLocationTimeZoneProvider extends LocationTimeZoneProviderBase
     @NonNull
     private final OfflineLocationTimeZoneDelegate mDelegate;
 
-    OfflineLocationTimeZoneProvider(@NonNull Context context, @NonNull Bundle metaData) {
+    OfflineLocationTimeZoneProvider(@NonNull Context context) {
         super(context, LogUtils.LOG_TAG);
         Context attributionContext = context.createAttributionContext(ATTRIBUTION_TAG);
         Environment environment = new EnvironmentImpl(
-                attributionContext, this::reportLocationTimeZoneEvent, metaData);
+                attributionContext, this::reportLocationTimeZoneEvent);
         mDelegate = new OfflineLocationTimeZoneDelegate(environment);
     }
 

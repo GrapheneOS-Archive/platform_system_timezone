@@ -25,7 +25,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -41,8 +40,10 @@ import com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.function.Consumer;
 
 /**
@@ -50,11 +51,12 @@ import java.util.function.Consumer;
  */
 class EnvironmentImpl implements OfflineLocationTimeZoneDelegate.Environment {
 
-    private static final String META_DATA_KEY_GEO_FILE_LOCATION = "geoFileLocation";
-
     // TODO(b/152746105): Make this configurable and consider the value.
     /** The maximum allowed age of locations received. */
     private static final long MAX_LAST_LOCATION_AGE_NANOS = Duration.ofMinutes(15).toNanos();
+
+    private static final String RESOURCE_CONFIG_PROPERTIES = "offlineltzprovider.properties";
+    private static final String CONFIG_KEY_GEODATA_PATH = "geodata.path";
 
     @NonNull
     private final LocationManager mLocationManager;
@@ -67,12 +69,29 @@ class EnvironmentImpl implements OfflineLocationTimeZoneDelegate.Environment {
 
     EnvironmentImpl(
             @NonNull Context context,
-            @NonNull Consumer<LocationTimeZoneEventUnbundled> eventConsumer,
-            @NonNull Bundle metaData) {
+            @NonNull Consumer<LocationTimeZoneEventUnbundled> eventConsumer) {
         mLocationManager = context.getSystemService(LocationManager.class);
         mEventConsumer = Objects.requireNonNull(eventConsumer);
         mHandler = new Handler(Looper.getMainLooper());
-        mGeoDataFile = new File(metaData.getString(META_DATA_KEY_GEO_FILE_LOCATION));
+
+        Properties configProperties = loadConfigProperties(getClass().getClassLoader());
+        mGeoDataFile = new File(configProperties.getProperty(CONFIG_KEY_GEODATA_PATH));
+    }
+
+    private static Properties loadConfigProperties(ClassLoader classLoader) {
+        Properties configProperties = new Properties();
+        try (InputStream configStream =
+                classLoader.getResourceAsStream(RESOURCE_CONFIG_PROPERTIES)) {
+            if (configStream == null) {
+                throw new IllegalStateException("Unable to find config properties"
+                        + " resource=" + RESOURCE_CONFIG_PROPERTIES);
+            }
+            configProperties.load(configStream);
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to load config properties from"
+                    + " resource=" + RESOURCE_CONFIG_PROPERTIES, e);
+        }
+        return configProperties;
     }
 
     @Override
