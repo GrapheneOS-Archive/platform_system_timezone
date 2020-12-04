@@ -15,6 +15,8 @@
  */
 package android.timezone.geolocation;
 
+import androidx.annotation.NonNull;
+
 import com.android.timezone.geotz.storage.tzs2range.read.TzS2RangeFileReader;
 import com.google.common.geometry.S2CellId;
 import com.google.common.geometry.S2LatLng;
@@ -25,33 +27,32 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import javax.annotation.Nullable;
-
 /**
  * An implementation of {@link GeoTimeZonesFinder} that uses {@link TzS2RangeFileReader}.
  */
-public final class GeoTimeZonesFinderImpl extends GeoTimeZonesFinder {
+final class S2RangeFileBasedGeoTimeZonesFinder extends GeoTimeZonesFinder {
 
-    @Nullable
+    @NonNull
     private final TzS2RangeFileReader mTzS2RangeFileReader;
 
     private final int mS2Level;
 
-    private GeoTimeZonesFinderImpl(TzS2RangeFileReader tzS2RangeFileReader, int s2Level) {
+    private S2RangeFileBasedGeoTimeZonesFinder(
+            @NonNull TzS2RangeFileReader tzS2RangeFileReader, int s2Level) {
         mTzS2RangeFileReader = Objects.requireNonNull(tzS2RangeFileReader);
         mS2Level = s2Level;
     }
 
     /**
-     * Returns a new {@link GeoTimeZonesFinderImpl} using the specified data file.
+     * Returns a new {@link S2RangeFileBasedGeoTimeZonesFinder} using the specified data file.
      *
      * @throws IOException in the event of a problem while reading the underlying file
      */
     // @NonNull
-    public static GeoTimeZonesFinderImpl create(File file) throws IOException {
+    public static S2RangeFileBasedGeoTimeZonesFinder create(File file) throws IOException {
         TzS2RangeFileReader reader = TzS2RangeFileReader.open(file);
         int s2Level = reader.getS2Level();
-        return new GeoTimeZonesFinderImpl(reader, s2Level);
+        return new S2RangeFileBasedGeoTimeZonesFinder(reader, s2Level);
     }
 
     // @NonNull
@@ -81,10 +82,6 @@ public final class GeoTimeZonesFinderImpl extends GeoTimeZonesFinder {
 
     // @NonNull
     private List<String> findTimeZonesForS2CellId(long s2CellId) throws IOException {
-        if (mTzS2RangeFileReader == null) {
-            return Collections.emptyList();
-        }
-
         TzS2RangeFileReader.Entry entry = mTzS2RangeFileReader.findEntryByCellId(s2CellId);
         if (entry == null) {
             return Collections.emptyList();
@@ -100,9 +97,6 @@ public final class GeoTimeZonesFinderImpl extends GeoTimeZonesFinder {
 
     @Override
     public void close() throws IOException {
-        if (mTzS2RangeFileReader == null) {
-            return;
-        }
         mTzS2RangeFileReader.close();
     }
 

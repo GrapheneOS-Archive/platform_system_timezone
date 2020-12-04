@@ -36,7 +36,7 @@ public abstract class GeoTimeZonesFinder implements Closeable {
      */
     // @NonNull
     public static GeoTimeZonesFinder create(File file) throws IOException {
-        return GeoTimeZonesFinderImpl.create(file);
+        return S2RangeFileBasedGeoTimeZonesFinder.create(file);
     }
 
     /**
