@@ -28,8 +28,6 @@ import static com.android.timezone.geotz.provider.core.Mode.prettyPrintListenMod
 
 import android.location.Location;
 import android.os.SystemClock;
-import android.timezone.geolocation.GeoTimeZonesFinder;
-import android.timezone.geolocation.GeoTimeZonesFinder.LocationToken;
 
 import androidx.annotation.GuardedBy;
 import androidx.annotation.IntDef;
@@ -37,6 +35,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.location.timezone.provider.LocationTimeZoneEventUnbundled;
+import com.android.timezone.geotz.lookup.GeoTimeZonesFinder;
+import com.android.timezone.geotz.lookup.GeoTimeZonesFinder.LocationToken;
 
 import java.io.IOException;
 import java.io.PrintWriter;

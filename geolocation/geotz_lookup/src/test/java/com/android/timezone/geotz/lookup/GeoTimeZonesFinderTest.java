@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.timezone.geolocation;
+package com.android.timezone.geotz.lookup;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import android.timezone.geolocation.GeoTimeZonesFinder.LocationToken;
+import com.android.timezone.geotz.lookup.GeoTimeZonesFinder.LocationToken;
 
 import org.junit.After;
 import org.junit.Before;

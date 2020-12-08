@@ -17,14 +17,13 @@ package com.android.timezone.geolocation.validation;
 
 import static java.util.stream.Collectors.toList;
 
-import android.timezone.geolocation.GeoTimeZonesFinder;
-
 import com.android.timezone.geolocation.validation.CitiesFile.City;
 import com.android.timezone.geolocation.validation.Types.KnownDifference;
 import com.android.timezone.geolocation.validation.Types.KnownDifferenceMismatch;
 import com.android.timezone.geolocation.validation.Types.KnownDifferences;
 import com.android.timezone.geolocation.validation.Types.Result;
 import com.android.timezone.geolocation.validation.Types.TestCaseId;
+import com.android.timezone.geotz.lookup.GeoTimeZonesFinder;
 import com.android.timezone.tzids.TimeZoneIds;
 import com.google.common.geometry.S2CellId;
 import com.google.common.geometry.S2LatLng;
@@ -43,8 +42,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.LongFunction;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**

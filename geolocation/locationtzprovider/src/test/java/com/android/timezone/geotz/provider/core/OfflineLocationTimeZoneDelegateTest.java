@@ -22,12 +22,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import android.location.Location;
-import android.timezone.geolocation.GeoTimeZonesFinder;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.location.timezone.provider.LocationTimeZoneEventUnbundled;
+import com.android.timezone.geotz.lookup.GeoTimeZonesFinder;
 
 import org.junit.Before;
 import org.junit.Test;

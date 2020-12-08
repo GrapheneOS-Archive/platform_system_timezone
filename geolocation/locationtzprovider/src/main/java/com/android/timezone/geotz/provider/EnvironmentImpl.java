@@ -28,12 +28,12 @@ import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.timezone.geolocation.GeoTimeZonesFinder;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.location.timezone.provider.LocationTimeZoneEventUnbundled;
+import com.android.timezone.geotz.lookup.GeoTimeZonesFinder;
 import com.android.timezone.geotz.provider.core.Cancellable;
 import com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate;
 import com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.ListenModeEnum;
