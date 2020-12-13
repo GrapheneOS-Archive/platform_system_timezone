@@ -81,7 +81,7 @@ public final class OfflineLocationTimeZoneDelegate {
 
     /** Use when location listen mode is not applicable. */
     @ListenModeEnum
-    public static final int LISTEN_MODE_NA = 0;
+    public static final int LOCATION_LISTEN_MODE_NA = 0;
 
     /** The most power-expensive and aggressive location detection mode. */
     @ListenModeEnum
