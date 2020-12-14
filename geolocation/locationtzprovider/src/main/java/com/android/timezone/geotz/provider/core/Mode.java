@@ -15,7 +15,7 @@
  */
 package com.android.timezone.geotz.provider.core;
 
-import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LISTEN_MODE_NA;
+import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_NA;
 import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_HIGH;
 import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_LOW;
 import static com.android.timezone.geotz.provider.core.LogUtils.formatElapsedRealtimeMillis;
@@ -155,7 +155,7 @@ class Mode {
     private String mTimeoutToken;
 
     Mode(@ModeEnum int modeEnum, @NonNull String entryCause) {
-        this(modeEnum, entryCause, LISTEN_MODE_NA);
+        this(modeEnum, entryCause, LOCATION_LISTEN_MODE_NA);
     }
 
     Mode(@ModeEnum int modeEnum, @NonNull String entryCause,
@@ -268,7 +268,7 @@ class Mode {
     /** Returns a string representation of the {@link ListenModeEnum} value provided. */
     static String prettyPrintListenModeEnum(@ListenModeEnum int listenMode) {
         switch (listenMode) {
-            case LISTEN_MODE_NA:
+            case LOCATION_LISTEN_MODE_NA:
                 return "LISTEN_MODE_NA";
             case LOCATION_LISTEN_MODE_HIGH:
                 return "LOCATION_LISTEN_MODE_HIGH";
@@ -293,7 +293,7 @@ class Mode {
                 throw new IllegalArgumentException();
             }
         } else {
-            if (listenMode != LISTEN_MODE_NA) {
+            if (listenMode != LOCATION_LISTEN_MODE_NA) {
                 throw new IllegalArgumentException();
             }
         }
