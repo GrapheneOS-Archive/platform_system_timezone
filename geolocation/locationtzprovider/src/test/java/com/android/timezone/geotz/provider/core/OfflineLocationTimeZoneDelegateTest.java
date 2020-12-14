@@ -26,7 +26,6 @@ import android.location.Location;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.location.timezone.provider.LocationTimeZoneEventUnbundled;
 import com.android.timezone.geotz.lookup.GeoTimeZonesFinder;
 
 import org.junit.Before;
@@ -62,18 +61,18 @@ public class OfflineLocationTimeZoneDelegateTest {
         List<String> timeZoneIds = Arrays.asList("Europe/London");
         mTestGeoTimeZoneFinder.setTimeZonesForLocation(latDegrees, lngDegrees, timeZoneIds);
 
-        assertEquals(Mode.MODE_DISABLED, mDelegate.getCurrentModeEnumForTests());
+        assertEquals(Mode.MODE_STOPPED, mDelegate.getCurrentModeEnumForTests());
         mTestEnvironment.assertIsNotListening();
         mTestEnvironment.assertNoTimeoutSet();
 
         mDelegate.onBind();
-        assertEquals(Mode.MODE_DISABLED, mDelegate.getCurrentModeEnumForTests());
+        assertEquals(Mode.MODE_STOPPED, mDelegate.getCurrentModeEnumForTests());
         mTestEnvironment.assertIsNotListening();
         mTestEnvironment.assertNoTimeoutSet();
 
         final int initializationTimeoutMillis = 20000;
-        mDelegate.onEnable(initializationTimeoutMillis);
-        assertEquals(Mode.MODE_ENABLED, mDelegate.getCurrentModeEnumForTests());
+        mDelegate.onStartUpdates(initializationTimeoutMillis);
+        assertEquals(Mode.MODE_STARTED, mDelegate.getCurrentModeEnumForTests());
         mTestEnvironment.assertIsListening(
                 OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_HIGH);
         mTestEnvironment.assertTimeoutSet(initializationTimeoutMillis);
@@ -83,8 +82,8 @@ public class OfflineLocationTimeZoneDelegateTest {
         location.setLongitude(1.0);
         mTestEnvironment.simulateCurrentLocationDetected(location);
 
-        mTestEnvironment.assertLocationEventReported(timeZoneIds);
-        assertEquals(Mode.MODE_ENABLED, mDelegate.getCurrentModeEnumForTests());
+        mTestEnvironment.assertSuggestionResult(timeZoneIds);
+        assertEquals(Mode.MODE_STARTED, mDelegate.getCurrentModeEnumForTests());
         mTestEnvironment.assertIsListening(
                 OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_LOW);
         mTestEnvironment.assertTimeoutSet(
@@ -97,7 +96,7 @@ public class OfflineLocationTimeZoneDelegateTest {
         private long mElapsedRealtimeMillis;
         private TestLocationListenerState mLocationListeningState;
         private TestTimeoutState<?> mTimeoutState;
-        private LocationTimeZoneEventUnbundled mLastEvent;
+        private TimeZoneProviderResult mLastResult;
 
         @NonNull
         @Override
@@ -124,9 +123,9 @@ public class OfflineLocationTimeZoneDelegateTest {
         }
 
         @Override
-        public void reportLocationTimeZoneEvent(@NonNull LocationTimeZoneEventUnbundled event) {
-            assertNotNull(event);
-            mLastEvent = event;
+        public void reportTimeZoneProviderResult(@NonNull TimeZoneProviderResult result) {
+            assertNotNull(result);
+            mLastResult = result;
         }
 
         @Override
@@ -157,11 +156,10 @@ public class OfflineLocationTimeZoneDelegateTest {
             assertEquals(expectedTimeoutMillis, mTimeoutState.mDelayMillis);
         }
 
-        public void assertLocationEventReported(List<String> expectedTimeZoneIds) {
-            assertNotNull(mLastEvent);
-            assertEquals(LocationTimeZoneEventUnbundled.EVENT_TYPE_SUCCESS,
-                    mLastEvent.getEventType());
-            assertEquals(expectedTimeZoneIds, mLastEvent.getTimeZoneIds());
+        public void assertSuggestionResult(List<String> expectedTimeZoneIds) {
+            assertNotNull(mLastResult);
+            assertEquals(TimeZoneProviderResult.RESULT_TYPE_SUGGESTION, mLastResult.getType());
+            assertEquals(expectedTimeZoneIds, mLastResult.getSuggestion().getTimeZoneIds());
         }
 
         private class TestLocationListenerState extends TestCancellable {

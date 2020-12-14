@@ -22,19 +22,19 @@ import static com.android.timezone.geotz.provider.core.LogUtils.logDebug;
 import static com.android.timezone.geotz.provider.core.LogUtils.logWarn;
 import static com.android.timezone.geotz.provider.core.Mode.MODE_DESTROYED;
 import static com.android.timezone.geotz.provider.core.Mode.MODE_FAILED;
-import static com.android.timezone.geotz.provider.core.Mode.MODE_DISABLED;
-import static com.android.timezone.geotz.provider.core.Mode.MODE_ENABLED;
+import static com.android.timezone.geotz.provider.core.Mode.MODE_STARTED;
+import static com.android.timezone.geotz.provider.core.Mode.MODE_STOPPED;
 import static com.android.timezone.geotz.provider.core.Mode.prettyPrintListenModeEnum;
 
 import android.location.Location;
 import android.os.SystemClock;
+import android.service.timezone.TimeZoneProviderSuggestion;
 
 import androidx.annotation.GuardedBy;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.location.timezone.provider.LocationTimeZoneEventUnbundled;
 import com.android.timezone.geotz.lookup.GeoTimeZonesFinder;
 import com.android.timezone.geotz.lookup.GeoTimeZonesFinder.LocationToken;
 
@@ -46,9 +46,9 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * A class encapsulating the time zone detection logic for an Offline LocationTimeZoneProvider.
- * It has been decoupled from the Android environment and many API via the {@link Environment}
- * interface to enable easier unit testing.
+ * A class encapsulating the time zone detection logic for an Offline location-based
+ * {@link android.service.timezone.TimeZoneProviderService}. It has been decoupled from the Android
+ * environment and many API via the {@link Environment} interface to enable easier unit testing.
  *
  * <p>The overall goal of this class is to balance power consumption with responsiveness.
  *
@@ -57,19 +57,19 @@ import java.util.function.Consumer;
  * <p>The instance interacts with multiple threads, but state changes occur in a single-threaded
  * manner through the use of a lock object, {@link #mLock}.
  *
- * <p>When first enabled, the current location is requested using {@link
+ * <p>When first started, the current location is requested using {@link
  * Environment#startLocationListening(int, Consumer)} with {@link #LOCATION_LISTEN_MODE_HIGH} and
  * a timeout is requested using {@link Environment#startTimeout(Consumer, Object, long)}.
  *
  * <p>If a valid location is found within the timeout, the time zones for the location are looked up
- * and an {@link LocationTimeZoneEventUnbundled event} is sent via {@link
- * Environment#reportLocationTimeZoneEvent(LocationTimeZoneEventUnbundled)}.
+ * and an {@link TimeZoneProviderResult result} is recorded via {@link
+ * Environment#reportTimeZoneProviderResult(TimeZoneProviderResult)}.
  *
  * <p>If a valid location cannot be found within the timeout, a {@link
- * LocationTimeZoneEventUnbundled#EVENT_TYPE_UNCERTAIN} {@link
- * LocationTimeZoneEventUnbundled event} is sent to the system server.
+ * TimeZoneProviderResult#RESULT_TYPE_UNCERTAIN} {@link TimeZoneProviderResult result} is recorded to the
+ * system server.
  *
- * <p>After an {@link LocationTimeZoneEventUnbundled event} has been sent, the provider restarts
+ * <p>After an {@link TimeZoneProviderResult result} has been sent, the provider restarts
  * location listening with a new timeout but in {@link #LOCATION_LISTEN_MODE_LOW}. If the current
  * location continues to be available it will stay in this mode, extending the timeout, otherwise it
  * will switch to {@link #LOCATION_LISTEN_MODE_HIGH} with a shorter timeout.
@@ -113,7 +113,7 @@ public final class OfflineLocationTimeZoneDelegate {
          */
         @NonNull
         <T> Cancellable startTimeout(@NonNull Consumer<T> callback,
-                @Nullable T callbackToken, @NonNull long delayMillis);
+                @Nullable T callbackToken, long delayMillis);
 
         /**
          * Starts an async location lookup. The location passed to {@code locationListener} will not
@@ -134,7 +134,7 @@ public final class OfflineLocationTimeZoneDelegate {
         /**
          * Used to report location time zone information.
          */
-        void reportLocationTimeZoneEvent(@NonNull LocationTimeZoneEventUnbundled event);
+        void reportTimeZoneProviderResult(@NonNull TimeZoneProviderResult result);
 
         /** See {@link SystemClock#elapsedRealtime()}. */
         long elapsedRealtimeMillis();
@@ -157,16 +157,17 @@ public final class OfflineLocationTimeZoneDelegate {
     private LocationToken mLastLocationToken;
 
     /**
-     * The last location time zone event sent by the provider. Currently used for debugging only.
+     * The last time zone provider result determined by the provider. Currently used for debugging
+     * only.
      */
     @GuardedBy("mLock")
-    private final ReferenceWithHistory<LocationTimeZoneEventUnbundled> mLastLocationTimeZoneEvent =
+    private final ReferenceWithHistory<TimeZoneProviderResult> mLastTimeZoneProviderResult =
             new ReferenceWithHistory<>(10);
 
     public OfflineLocationTimeZoneDelegate(@NonNull Environment environment) {
         mEnvironment = Objects.requireNonNull(environment);
 
-        mCurrentMode.set(Mode.createDisabledMode());
+        mCurrentMode.set(Mode.createStoppedMode());
     }
 
     public void onBind() {
@@ -175,13 +176,13 @@ public final class OfflineLocationTimeZoneDelegate {
 
         synchronized (mLock) {
             Mode currentMode = mCurrentMode.get();
-            if (currentMode.mModeEnum != MODE_DISABLED) {
+            if (currentMode.mModeEnum != MODE_STOPPED) {
                 handleUnexpectedStateTransition(
                         "onBind() called when in unexpected mode=" + currentMode);
                 return;
             }
 
-            Mode newMode = new Mode(MODE_DISABLED, entryCause);
+            Mode newMode = new Mode(MODE_STOPPED, entryCause);
             mCurrentMode.set(newMode);
         }
     }
@@ -194,35 +195,35 @@ public final class OfflineLocationTimeZoneDelegate {
             cancelTimeoutAndLocationCallbacks();
 
             Mode currentMode = mCurrentMode.get();
-            if (currentMode.mModeEnum == MODE_ENABLED) {
-                sendTimeZoneUncertainEventIfNeeded();
+            if (currentMode.mModeEnum == MODE_STARTED) {
+                sendTimeZoneUncertainResultIfNeeded();
             }
             Mode newMode = new Mode(MODE_DESTROYED, entryCause);
             mCurrentMode.set(newMode);
         }
     }
 
-    public void onDisable() {
-        String debugInfo = "onDisable()";
+    public void onStopUpdates() {
+        String debugInfo = "onStopUpdates()";
         logDebug(debugInfo);
 
         synchronized (mLock) {
             Mode currentMode = mCurrentMode.get();
             switch (currentMode.mModeEnum) {
-                case MODE_DISABLED: {
-                    // No-op - the provider is already disabled.
-                    logWarn("Unexpected onDisable() when currentMode=" + currentMode);
+                case MODE_STOPPED: {
+                    // No-op - the provider is already stopped.
+                    logWarn("Unexpected onStopUpdates() when currentMode=" + currentMode);
                     break;
                 }
-                case MODE_ENABLED: {
-                    enterDisabledMode(debugInfo);
+                case MODE_STARTED: {
+                    enterStoppedMode(debugInfo);
                     break;
                 }
                 case MODE_FAILED:
                 case MODE_DESTROYED:
                 default: {
                     handleUnexpectedStateTransition(
-                            "Unexpected onDisable() when currentMode=" + currentMode);
+                            "Unexpected onStopUpdates() when currentMode=" + currentMode);
                     break;
                 }
             }
@@ -230,31 +231,32 @@ public final class OfflineLocationTimeZoneDelegate {
 
     }
 
-    public void onEnable(@NonNull long initializationTimeoutMillis) {
-        String debugInfo = "onEnable(), initializationTimeoutMillis=" + initializationTimeoutMillis;
+    public void onStartUpdates(long initializationTimeoutMillis) {
+        String debugInfo = "onStartUpdates(),"
+                + " initializationTimeoutMillis=" + initializationTimeoutMillis;
         logDebug(debugInfo);
 
         synchronized (mLock) {
             Mode currentMode = mCurrentMode.get();
             switch (currentMode.mModeEnum) {
-                case MODE_DISABLED: {
+                case MODE_STOPPED: {
                     // Always start in the most aggressive location listening mode. The request
                     // contains the time in which the LTZP is given to provide the first
-                    // event, so this is used for the first timeout.
+                    // result, so this is used for the first timeout.
                     enterLocationListeningMode(LOCATION_LISTEN_MODE_HIGH, debugInfo,
                             initializationTimeoutMillis);
                     break;
                 }
-                case MODE_ENABLED: {
-                    // No-op - the provider is already enabled.
-                    logWarn("Unexpected onEnabled() received when in currentMode=" + currentMode);
+                case MODE_STARTED: {
+                    // No-op - the provider is already started.
+                    logWarn("Unexpected onStarted() received when in currentMode=" + currentMode);
                     break;
                 }
                 case MODE_FAILED:
                 case MODE_DESTROYED:
                 default: {
                     handleUnexpectedStateTransition(
-                            "Unexpected onEnabled() received when in currentMode=" + currentMode);
+                            "Unexpected onStarted() received when in currentMode=" + currentMode);
                     break;
                 }
             }
@@ -268,17 +270,13 @@ public final class OfflineLocationTimeZoneDelegate {
                     + formatElapsedRealtimeMillis(mEnvironment.elapsedRealtimeMillis()));
             pw.println("mCurrentMode=" + mCurrentMode);
             pw.println("mLastLocationToken=" + mLastLocationToken);
-            pw.println("mLastLocationTimeZoneEvent=" + mLastLocationTimeZoneEvent);
+            pw.println("mLastTimeZoneProviderResult=" + mLastTimeZoneProviderResult);
             pw.println();
             pw.println("Mode history:");
-            // pw.increaseIndent();
             mCurrentMode.dump(pw);
-            // pw.decreaseIndent();
             pw.println();
-            pw.println("LocationTimeZoneEvent history:");
-            // pw.increaseIndent();
-            mLastLocationTimeZoneEvent.dump(pw);
-            // pw.decreaseIndent();
+            pw.println("TimeZoneProviderResult history:");
+            mLastTimeZoneProviderResult.dump(pw);
         }
     }
 
@@ -289,7 +287,7 @@ public final class OfflineLocationTimeZoneDelegate {
     }
 
     /**
-     * Accepts the current location when in {@link Mode#MODE_ENABLED}.
+     * Accepts the current location when in {@link Mode#MODE_STARTED}.
      */
     private void onLocationReceived(@NonNull Location location) {
         Objects.requireNonNull(location);
@@ -297,7 +295,7 @@ public final class OfflineLocationTimeZoneDelegate {
         synchronized (mLock) {
             Mode currentMode = mCurrentMode.get();
 
-            if (currentMode.mModeEnum != MODE_ENABLED) {
+            if (currentMode.mModeEnum != MODE_STARTED) {
                 // This is not expected to happen.
                 String unexpectedStateDebugInfo = "Unexpected call to onLocationReceived(),"
                         + " location=" + location
@@ -313,7 +311,7 @@ public final class OfflineLocationTimeZoneDelegate {
 
             // A good location has been received.
             try {
-                sendTimeZoneCertainEventIfNeeded(location);
+                sendTimeZoneCertainResultIfNeeded(location);
 
                 // Move to the least aggressive location listening mode.
                 enterLocationListeningMode(LOCATION_LISTEN_MODE_LOW, debugInfo,
@@ -324,7 +322,7 @@ public final class OfflineLocationTimeZoneDelegate {
                         + " previous debugInfo=" + debugInfo;
                 logWarn(lookupFailureDebugInfo, e);
 
-                enterFailedMode(lookupFailureDebugInfo);
+                enterFailedMode(new IOException(lookupFailureDebugInfo, e));
             }
         }
     }
@@ -339,7 +337,7 @@ public final class OfflineLocationTimeZoneDelegate {
 
         synchronized (mLock) {
             Mode currentMode = mCurrentMode.get();
-            if (currentMode.mModeEnum != MODE_ENABLED) {
+            if (currentMode.mModeEnum != MODE_STARTED) {
                 handleUnexpectedCallback("Unexpected timeout for mode=" + currentMode);
                 return;
             }
@@ -350,7 +348,7 @@ public final class OfflineLocationTimeZoneDelegate {
             }
 
             if (currentMode.mListenMode == LOCATION_LISTEN_MODE_HIGH) {
-                sendTimeZoneUncertainEventIfNeeded();
+                sendTimeZoneUncertainResultIfNeeded();
                 enterLocationListeningMode(LOCATION_LISTEN_MODE_LOW, debugInfo,
                         LOCATION_LISTEN_MODE_LOW_TIMEOUT_MILLIS);
             } else {
@@ -361,7 +359,7 @@ public final class OfflineLocationTimeZoneDelegate {
     }
 
     @GuardedBy("mLock")
-    private void sendTimeZoneCertainEventIfNeeded(@NonNull Location location)
+    private void sendTimeZoneCertainResultIfNeeded(@NonNull Location location)
             throws IOException {
         try (GeoTimeZonesFinder geoTimeZonesFinder = mEnvironment.createGeoTimeZoneFinder()) {
             // Convert the location to a LocationToken.
@@ -369,61 +367,59 @@ public final class OfflineLocationTimeZoneDelegate {
                     location.getLatitude(), location.getLongitude());
 
             // If the location token is the same as the last lookup, there is no need to do the
-            // lookup / send another event.
+            // lookup / send another suggestion.
             if (locationToken.equals(mLastLocationToken)) {
                 logDebug("Location token=" + locationToken + " has not changed.");
             } else {
                 List<String> tzIds =
                         geoTimeZonesFinder.findTimeZonesForLocationToken(locationToken);
                 logDebug("tzIds found for location=" + location + ", tzIds=" + tzIds);
-                LocationTimeZoneEventUnbundled event =
-                        new LocationTimeZoneEventUnbundled.Builder()
-                                .setEventType(LocationTimeZoneEventUnbundled.EVENT_TYPE_SUCCESS)
-                                .setTimeZoneIds(tzIds)
-                                .build();
-                reportLocationTimeZoneEventInternal(event, locationToken);
+                TimeZoneProviderSuggestion suggestion = new TimeZoneProviderSuggestion.Builder()
+                        .setTimeZoneIds(tzIds)
+                        .setElapsedRealtimeMillis(mEnvironment.elapsedRealtimeMillis())
+                        .build();
+
+                TimeZoneProviderResult result =
+                        TimeZoneProviderResult.createSuggestion(suggestion);
+                reportTimeZoneProviderResultInternal(result, locationToken);
             }
         }
     }
 
     @GuardedBy("mLock")
-    private void sendTimeZoneUncertainEventIfNeeded() {
-        LocationTimeZoneEventUnbundled lastEvent = mLastLocationTimeZoneEvent.get();
+    private void sendTimeZoneUncertainResultIfNeeded() {
+        TimeZoneProviderResult lastResult = mLastTimeZoneProviderResult.get();
 
-        // If the last event was uncertain, there is no need to send another.
-        if (lastEvent == null ||
-                lastEvent.getEventType() != LocationTimeZoneEventUnbundled.EVENT_TYPE_UNCERTAIN) {
-            LocationTimeZoneEventUnbundled event = new LocationTimeZoneEventUnbundled.Builder()
-                    .setEventType(LocationTimeZoneEventUnbundled.EVENT_TYPE_UNCERTAIN)
-                    .build();
-            reportLocationTimeZoneEventInternal(event, null /* locationToken */);
+        // If the last result was uncertain, there is no need to send another.
+        if (lastResult == null ||
+                lastResult.getType() != TimeZoneProviderResult.RESULT_TYPE_UNCERTAIN) {
+            TimeZoneProviderResult result = TimeZoneProviderResult.createUncertain();
+            reportTimeZoneProviderResultInternal(result, null /* locationToken */);
         } else {
-            logDebug("sendTimeZoneUncertainEventIfNeeded(): Last event=" + lastEvent
+            logDebug("sendTimeZoneUncertainResultIfNeeded(): Last result=" + lastResult
                     + ", no need to sent another.");
         }
     }
 
     @GuardedBy("mLock")
-    private void sendPermanentFailureEvent() {
-        LocationTimeZoneEventUnbundled event = new LocationTimeZoneEventUnbundled.Builder()
-                .setEventType(LocationTimeZoneEventUnbundled.EVENT_TYPE_PERMANENT_FAILURE)
-                .build();
-        reportLocationTimeZoneEventInternal(event, null /* locationToken */);
+    private void sendPermanentFailureResult(@NonNull Throwable cause) {
+        TimeZoneProviderResult result = TimeZoneProviderResult.createPermanentFailure(cause);
+        reportTimeZoneProviderResultInternal(result, null /* locationToken */);
     }
 
     @GuardedBy("mLock")
-    private void reportLocationTimeZoneEventInternal(
-            @NonNull LocationTimeZoneEventUnbundled event,
+    private void reportTimeZoneProviderResultInternal(
+            @NonNull TimeZoneProviderResult result,
             @Nullable LocationToken locationToken) {
-        mLastLocationTimeZoneEvent.set(event);
+        mLastTimeZoneProviderResult.set(result);
         mLastLocationToken = locationToken;
-        mEnvironment.reportLocationTimeZoneEvent(event);
+        mEnvironment.reportTimeZoneProviderResult(result);
     }
 
     @GuardedBy("mLock")
     private void clearLocationState() {
         mLastLocationToken = null;
-        mLastLocationTimeZoneEvent.set(null);
+        mLastTimeZoneProviderResult.set(null);
     }
 
     /** Called when leaving the current mode to cancel all pending asynchronous operations. */
@@ -449,35 +445,36 @@ public final class OfflineLocationTimeZoneDelegate {
     }
 
     @GuardedBy("mLock")
-    private void enterFailedMode(@NonNull String entryCause) {
+    private void enterFailedMode(@NonNull Throwable entryCause) {
         logDebug("Provider entering failed mode, entryCause=" + entryCause);
 
         cancelTimeoutAndLocationCallbacks();
 
-        sendPermanentFailureEvent();
+        sendPermanentFailureResult(entryCause);
 
-        Mode newMode = new Mode(MODE_FAILED, entryCause);
+        String failureReason = entryCause.getMessage();
+        Mode newMode = new Mode(MODE_FAILED, failureReason);
         mCurrentMode.set(newMode);
     }
 
     @GuardedBy("mLock")
-    private void enterDisabledMode(@NonNull String entryCause) {
-        logDebug("Provider entering disabled mode, entryCause=" + entryCause);
+    private void enterStoppedMode(@NonNull String entryCause) {
+        logDebug("Provider entering stopped mode, entryCause=" + entryCause);
 
         cancelTimeoutAndLocationCallbacks();
 
-        // Clear all location-derived state. The provider may be disabled due to the current user
+        // Clear all location-derived state. The provider may be stopped due to the current user
         // changing.
         clearLocationState();
 
-        Mode newMode = new Mode(MODE_DISABLED, entryCause);
+        Mode newMode = new Mode(MODE_STOPPED, entryCause);
         mCurrentMode.set(newMode);
     }
 
     @GuardedBy("mLock")
     private void enterLocationListeningMode(
             @ListenModeEnum int listenMode,
-            @NonNull String entryCause, @NonNull long timeoutMillis) {
+            @NonNull String entryCause, long timeoutMillis) {
         logDebug("Provider entering location listening mode"
                 + ", listenMode=" + prettyPrintListenModeEnum(listenMode)
                 + ", entryCause=" + entryCause);
@@ -485,8 +482,8 @@ public final class OfflineLocationTimeZoneDelegate {
         Mode currentMode = mCurrentMode.get();
         currentMode.cancelTimeout();
 
-        Mode newMode = new Mode(MODE_ENABLED, entryCause, listenMode);
-        if (currentMode.mModeEnum != MODE_ENABLED
+        Mode newMode = new Mode(MODE_STARTED, entryCause, listenMode);
+        if (currentMode.mModeEnum != MODE_STARTED
                 || currentMode.mListenMode != listenMode) {
             currentMode.cancelLocationListening();
             Cancellable locationListenerCancellable =

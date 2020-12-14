@@ -62,7 +62,7 @@ java_library {
     static_libs: [
         "offlinelocationtimezoneprovider",
     ],
-    sdk_version: "current",
+    sdk_version: "system_current",
     apex_available: [
         "com.android.geotz",
     ],

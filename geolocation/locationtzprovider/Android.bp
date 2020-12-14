@@ -17,10 +17,9 @@
 java_library {
     name: "offlinelocationtimezoneprovider",
     srcs: ["src/main/java/**/*.java"],
-    sdk_version: "current",
+    sdk_version: "system_current",
     libs: [
         "androidx.annotation_annotation",
-        "com.android.location.provider",
     ],
     static_libs: [
         "geotz_lookup",
@@ -35,10 +34,7 @@ android_test {
     name: "OfflineLocationTimeZoneProviderTests",
     srcs: ["src/test/java/**/*.java"],
     manifest: "src/test/AndroidManifest.xml",
-    sdk_version: "current",
-    libs: [
-        "com.android.location.provider",
-    ],
+    sdk_version: "system_current",
     static_libs: [
         "androidx.test.runner",
         "junit",
