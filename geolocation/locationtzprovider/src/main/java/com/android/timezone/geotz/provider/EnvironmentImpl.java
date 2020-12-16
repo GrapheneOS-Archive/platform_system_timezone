@@ -32,11 +32,11 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.location.timezone.provider.LocationTimeZoneEventUnbundled;
 import com.android.timezone.geotz.lookup.GeoTimeZonesFinder;
 import com.android.timezone.geotz.provider.core.Cancellable;
 import com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate;
 import com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.ListenModeEnum;
+import com.android.timezone.geotz.provider.core.TimeZoneProviderResult;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,15 +63,14 @@ class EnvironmentImpl implements OfflineLocationTimeZoneDelegate.Environment {
     @NonNull
     private final Handler mHandler;
     @NonNull
-    private final Consumer<LocationTimeZoneEventUnbundled> mEventConsumer;
+    private final Consumer<TimeZoneProviderResult> mResultConsumer;
     @NonNull
     private final File mGeoDataFile;
 
-    EnvironmentImpl(
-            @NonNull Context context,
-            @NonNull Consumer<LocationTimeZoneEventUnbundled> eventConsumer) {
+    EnvironmentImpl(@NonNull Context context,
+            @NonNull Consumer<TimeZoneProviderResult> resultConsumer) {
         mLocationManager = context.getSystemService(LocationManager.class);
-        mEventConsumer = Objects.requireNonNull(eventConsumer);
+        mResultConsumer = Objects.requireNonNull(resultConsumer);
         mHandler = new Handler(Looper.getMainLooper());
 
         Properties configProperties = loadConfigProperties(getClass().getClassLoader());
@@ -97,7 +96,7 @@ class EnvironmentImpl implements OfflineLocationTimeZoneDelegate.Environment {
     @Override
     @NonNull
     public <T> Cancellable startTimeout(@Nullable Consumer<T> callback, @NonNull T callbackToken,
-            @NonNull  long delayMillis) {
+            long delayMillis) {
 
         // Deliberate use of an anonymous class as the equality of lambdas is not well defined but
         // instance equality is required for the remove call.
@@ -213,8 +212,8 @@ class EnvironmentImpl implements OfflineLocationTimeZoneDelegate.Environment {
     }
 
     @Override
-    public void reportLocationTimeZoneEvent(@NonNull LocationTimeZoneEventUnbundled event) {
-        mEventConsumer.accept(event);
+    public void reportTimeZoneProviderResult(@NonNull TimeZoneProviderResult result) {
+        mResultConsumer.accept(result);
     }
 
     @Override
