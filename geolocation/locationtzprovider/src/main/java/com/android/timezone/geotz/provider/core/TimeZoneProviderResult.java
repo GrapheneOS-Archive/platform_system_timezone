@@ -54,9 +54,6 @@ public final class TimeZoneProviderResult {
     private static final TimeZoneProviderResult UNCERTAIN_RESULT =
             new TimeZoneProviderResult(RESULT_TYPE_UNCERTAIN, null, null);
 
-    private static final int RESULT_TYPE_MIN = RESULT_TYPE_PERMANENT_FAILURE;
-    private static final int RESULT_TYPE_MAX = RESULT_TYPE_UNCERTAIN;
-
     @ResultType
     private final int mType;
 
