@@ -1,8 +1,0 @@
-{
-  "presubmit": [
-    {
-      "name" : "telephonylookup_generator_tests",
-      "host" : true
-    }
-  ]
-}
