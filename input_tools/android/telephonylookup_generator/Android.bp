@@ -42,10 +42,12 @@ java_test_host {
     name: "telephonylookup_generator_tests",
 
     srcs: ["src/test/java/**/*.java"],
+    test_options: {
+        unit_test: true,
+    },
     static_libs: [
         "junit",
         "telephonylookup_generator",
         "tztools_common_testing",
     ],
-    test_suites: ["general-tests"],
 }
