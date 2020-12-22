@@ -34,9 +34,11 @@ java_test_host {
     name: "tzids_tests",
 
     srcs: ["src/test/java/**/*.java"],
+    test_options: {
+        unit_test: true,
+    },
     static_libs: [
         "junit",
         "tzids",
     ],
-    test_suites: ["general-tests"],
 }
