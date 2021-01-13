@@ -46,6 +46,13 @@ android_app_certificate {
     certificate: "com.android.tzdata",
 }
 
+module_exports {
+    name: "tzdata-module-test-exports",
+    java_libs: [
+        "tzdata-testing",
+    ],
+}
+
 // The definition for the real (not test) tzdata APEX.
 apex {
     name: "com.android.tzdata",
@@ -59,4 +66,3 @@ apex {
         "apex_icu_tzdata.dat",
     ],
 }
-
