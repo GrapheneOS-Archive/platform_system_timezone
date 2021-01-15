@@ -48,7 +48,6 @@ countryMappings {
 countryMappings {
   isoCode: "ar"
   timeZoneIds: "America/Argentina/Buenos_Aires"
-  timeZoneIds: "America/Argentina/San_Luis"
   timeZoneLinks {
     alternativeId: "America/Buenos_Aires"
     preferredId: "America/Argentina/Buenos_Aires"
@@ -126,6 +125,11 @@ countryMappings {
     replacedId: "America/Argentina/Ushuaia"
     replacementId: "America/Argentina/Salta"
     fromMillis: 1087704000000
+  }
+  timeZoneReplacements {
+    replacedId: "America/Argentina/San_Luis"
+    replacementId: "America/Argentina/Buenos_Aires"
+    fromMillis: 1255233600000
   }
 }
 countryMappings {
@@ -1066,7 +1070,7 @@ countryMappings {
   timeZoneReplacements {
     replacedId: "Asia/Aqtobe"
     replacementId: "Asia/Oral"
-    fromMillis: 1545328800000
+    fromMillis: 1099173600000
   }
   timeZoneReplacements {
     replacedId: "Asia/Atyrau"
@@ -1181,12 +1185,16 @@ countryMappings {
 }
 countryMappings {
   isoCode: "mn"
-  timeZoneIds: "Asia/Choibalsan"
   timeZoneIds: "Asia/Ulaanbaatar"
   timeZoneIds: "Asia/Hovd"
   timeZoneLinks {
     alternativeId: "Asia/Ulan_Bator"
     preferredId: "Asia/Ulaanbaatar"
+  }
+  timeZoneReplacements {
+    replacedId: "Asia/Choibalsan"
+    replacementId: "Asia/Ulaanbaatar"
+    fromMillis: 1206889200000
   }
 }
 countryMappings {

@@ -2100,21 +2100,32 @@ countries:<
 >
 
 # MONGOLIA
+#
+# Priorities assigned on 20210105 using:
+# https://en.wikipedia.org/wiki/List_of_cities_in_Mongolia
+# ... etc.
+# Priority is related to the population of the province.
 countries:<
   isoCode:"mn"
   defaultTimeZoneId:"Asia/Ulaanbaatar"
   timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Choibalsan"
+    # 38K
+    priority:38
   >
   timeZoneMappings:<
     utcOffset:"8:00"
     id:"Asia/Ulaanbaatar"
+    # 1.145M
+    priority:1145
   >
 
   timeZoneMappings:<
     utcOffset:"7:00"
     id:"Asia/Hovd"
+    # 29K
+    priority:29
   >
 >
 
