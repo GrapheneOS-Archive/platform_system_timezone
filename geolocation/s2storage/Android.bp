@@ -15,7 +15,8 @@
 // Library for read-only access to TZ S2 data files.
 java_library {
     name: "geotz_s2storage_ro",
-    sdk_version: "30",
+    sdk_version: "current",
+    min_sdk_version: "current",
     host_supported: true,
     srcs: [
         "src/readonly/java/**/*.java",
