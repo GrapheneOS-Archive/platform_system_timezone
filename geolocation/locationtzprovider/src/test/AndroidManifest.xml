@@ -17,10 +17,10 @@
  */
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.android.timezone.geotz.provider.core">
+          package="com.android.timezone.location.provider.core">
 
     <application android:allowBackup="false" android:debuggable="true" />
 
     <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"
-                     android:targetPackage="com.android.timezone.geotz.provider.core" />
+                     android:targetPackage="com.android.timezone.location.provider.core" />
 </manifest>
