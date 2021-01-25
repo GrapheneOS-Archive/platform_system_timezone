@@ -15,11 +15,10 @@
  */
 package com.android.timezone.geotz.provider.core;
 
-import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_NA;
-import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_HIGH;
-import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_LOW;
 import static com.android.timezone.geotz.provider.core.LogUtils.formatElapsedRealtimeMillis;
-import static com.android.timezone.geotz.provider.core.LogUtils.formatUtcTime;
+import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_ACTIVE;
+import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_NA;
+import static com.android.timezone.geotz.provider.core.OfflineLocationTimeZoneDelegate.LOCATION_LISTEN_MODE_PASSIVE;
 
 import android.os.SystemClock;
 
@@ -47,26 +46,13 @@ import java.util.Objects;
  * Valid transitions:
  *
  * {@link #MODE_STOPPED}
- *   -> {@link #MODE_STARTED}(1)
- *       - when the LTZP first receives an started request it starts listening for the current
- *         location with {@link OfflineLocationTimeZoneDelegate#LOCATION_LISTEN_MODE_HIGH}.
- * {@link #MODE_STARTED}(1)
- *   -> {@link #MODE_STARTED}(2)
- *       - when the LTZP receives a valid location, or if it is unable to determine the current
- *         location within the mode timeout, it moves to {@link
- *         OfflineLocationTimeZoneDelegate#LOCATION_LISTEN_MODE_LOW}
+ *   -> {@link #MODE_STARTED}
+ *       - when the LTZP first receives a "start" request it starts listening for the current
+ *         location.
+ * {@link #MODE_STARTED}
  *   -> {@link #MODE_STOPPED}
- *       - when the system server sends a "stopped" request the LTZP is stopped.
- * {@link #MODE_STARTED}(2)
- *   -> {@link #MODE_STARTED}(1)
- *       - when no valid location has been received within the mode timeout, the LTZP will start
- *         listening for the current location using {@link
- *         OfflineLocationTimeZoneDelegate#LOCATION_LISTEN_MODE_HIGH}.
- *   -> {@link #MODE_STARTED}(2)
- *       - when the LTZP receives a valid location, it stays in {@link
- *         OfflineLocationTimeZoneDelegate#LOCATION_LISTEN_MODE_LOW}
- *   -> {@link #MODE_STOPPED}
- *       - when the system server sends a "stopped" request the LTZP is stopped.
+ *       - when the system server sends a "stopped" request it stops listening for the current
+ *         location.
  *
  * {All states}
  *   -> {@link #MODE_FAILED} (terminal state)
@@ -90,6 +76,7 @@ class Mode {
 
     /**
      * The LTZP has been started by the system server, and is listening for the current location.
+     * The {@link #mListenMode} records the current type of listening.
      */
     @ModeEnum
     static final int MODE_STARTED = 2;
@@ -116,16 +103,9 @@ class Mode {
     final @ListenModeEnum int mListenMode;
 
     /**
-     * Debug information: The time according to {@link SystemClock#elapsedRealtime()} when the mode
-     * was created.
+     * Debug information: The elapsed realtime recorded when the mode was created.
      */
-    private final String mModeEnteredElapsedTime;
-
-    /**
-     * Debug information: The time according to {@link System#currentTimeMillis()} when the mode
-     * was created.
-     */
-    private final String mModeEnteredSystemClockTime;
+    private final long mCreationElapsedRealtimeMillis;
 
     /**
      * Debug information: Information about why the mode was entered.
@@ -138,35 +118,21 @@ class Mode {
      * used to stop listening for the current location.
      */
     @Nullable
-    private Cancellable mLocationListenerCancellable;
-
-    /**
-     * Used when mModeEnum == {@link #MODE_STARTED}. The {@link Cancellable} that can be
-     * used to stop listening for the current location.
-     */
-    @Nullable
-    private Cancellable mTimeoutCancellable;
-
-    /**
-     * Used when mModeEnum == {@link #MODE_STARTED} to record the token associated with the
-     * mode timeout.
-     */
-    @Nullable
-    private String mTimeoutToken;
+    private final Cancellable mLocationListenerCancellable;
 
     Mode(@ModeEnum int modeEnum, @NonNull String entryCause) {
-        this(modeEnum, entryCause, LOCATION_LISTEN_MODE_NA);
+        this(modeEnum, entryCause, LOCATION_LISTEN_MODE_NA, null);
     }
 
-    Mode(@ModeEnum int modeEnum, @NonNull String entryCause,
-            @ListenModeEnum int listenMode) {
+    Mode(@ModeEnum int modeEnum, @NonNull String entryCause, @ListenModeEnum int listenMode,
+            @Nullable Cancellable listeningCancellable) {
         mModeEnum = validateModeEnum(modeEnum);
         mListenMode = validateListenModeEnum(modeEnum, listenMode);
+        mEntryCause = entryCause;
+        mLocationListenerCancellable = listeningCancellable;
 
         // Information useful for logging / debugging.
-        mModeEnteredElapsedTime = formatElapsedRealtimeMillis(SystemClock.elapsedRealtime());
-        mModeEnteredSystemClockTime = formatUtcTime(System.currentTimeMillis());
-        mEntryCause = entryCause;
+        mCreationElapsedRealtimeMillis = SystemClock.elapsedRealtime();
     }
 
     /** Returns the stopped mode which is the starting state for a provider. */
@@ -175,28 +141,15 @@ class Mode {
         return new Mode(MODE_STOPPED, "init" /* entryCause */);
     }
 
-    /**
-     * Associates the supplied {@link Cancellable} with the mode to enable location listening to
-     * be cancelled. Used when mModeEnum == {@link #MODE_STARTED}. See
-     * {@link #cancelLocationListening()}.
-     */
-    void setLocationListenerCancellable(@NonNull Cancellable locationListenerCancellable) {
-        if (mLocationListenerCancellable != null) {
-            throw new IllegalStateException("mLocationListenerCancellable already set,"
-                    + " current cancellable=" + mLocationListenerCancellable
-                    + " new cancellable=" + locationListenerCancellable);
-        }
-        mLocationListenerCancellable = Objects.requireNonNull(locationListenerCancellable);
-    }
-
     @NonNull
     Cancellable getLocationListenerCancellable() {
         return Objects.requireNonNull(mLocationListenerCancellable);
     }
 
     /**
-     * If {@link #setLocationListenerCancellable(Cancellable)} has been called, this invokes {@link
-     * Cancellable#cancel()}.
+     * If this mode is associated with location listening, this invokes {@link
+     * Cancellable#cancel()}. If this mode is not associated with location listening, this is a
+     * no-op.
      */
     void cancelLocationListening() {
         if (mLocationListenerCancellable != null) {
@@ -204,47 +157,14 @@ class Mode {
         }
     }
 
-    /**
-     * Associates the {@code timeoutToken} with the mode for later retrieval. Used for
-     * {@link #MODE_STARTED}.
-     */
-    void setTimeoutInfo(@NonNull Cancellable timeoutCancellable,
-            @NonNull String timeoutToken) {
-        if (mTimeoutCancellable != null) {
-            throw new IllegalStateException("mTimeoutCancellable already set,"
-                    + " current cancellable=" + mTimeoutCancellable
-                    + " new cancellable=" + timeoutCancellable);
-        }
-        mTimeoutCancellable = Objects.requireNonNull(timeoutCancellable);
-        mTimeoutToken = Objects.requireNonNull(timeoutToken);
-    }
-
-    /**
-     * If {@link #setTimeoutInfo(Cancellable, String)} has been called, calls
-     * {@link Cancellable#cancel()}.
-     */
-    void cancelTimeout() {
-        if (mTimeoutCancellable != null) {
-            mTimeoutCancellable.cancel();
-        }
-    }
-
-    /** Returns the current timeout token, or {@code null} if there isn't one. */
-    @Nullable
-    String getTimeoutToken() {
-        return mTimeoutToken;
-    }
-
     @Override
     public String toString() {
         return "Mode{"
                 + "mModeEnum=" + prettyPrintModeEnum(mModeEnum)
                 + ", mListenMode=" + prettyPrintListenModeEnum(mListenMode)
-                + ", mModeEnteredElapsedTime=" + mModeEnteredElapsedTime
-                + ", mModeEnteredSystemClockTime=" + mModeEnteredSystemClockTime
-                + ", mEntryCause='" + mEntryCause + '\''
-                + ", mTimeoutCancellable=" + mTimeoutCancellable
-                + ", mTimeoutToken=" + mTimeoutToken
+                + ", mCreationElapsedRealtimeMillis="
+                + formatElapsedRealtimeMillis(mCreationElapsedRealtimeMillis)
+                + ", mEntryCause={" + mEntryCause + '}'
                 + ", mLocationListenerCancellable=" + mLocationListenerCancellable
                 + '}';
     }
@@ -270,10 +190,10 @@ class Mode {
         switch (listenMode) {
             case LOCATION_LISTEN_MODE_NA:
                 return "LISTEN_MODE_NA";
-            case LOCATION_LISTEN_MODE_HIGH:
-                return "LOCATION_LISTEN_MODE_HIGH";
-            case LOCATION_LISTEN_MODE_LOW:
-                return "LOCATION_LISTEN_MODE_LOW";
+            case LOCATION_LISTEN_MODE_ACTIVE:
+                return "LOCATION_LISTEN_MODE_ACTIVE";
+            case LOCATION_LISTEN_MODE_PASSIVE:
+                return "LOCATION_LISTEN_MODE_PASSIVE";
             default:
                 return listenMode + " (Unknown)";
         }
@@ -289,7 +209,8 @@ class Mode {
     private static @ListenModeEnum int validateListenModeEnum(
             @ModeEnum int modeEnum, @ListenModeEnum int listenMode) {
         if (modeEnum == MODE_STARTED) {
-            if (listenMode != LOCATION_LISTEN_MODE_HIGH && listenMode != LOCATION_LISTEN_MODE_LOW) {
+            if (listenMode != LOCATION_LISTEN_MODE_ACTIVE
+                    && listenMode != LOCATION_LISTEN_MODE_PASSIVE) {
                 throw new IllegalArgumentException();
             }
         } else {
