@@ -64,6 +64,9 @@ class EnvironmentImpl implements Environment {
     private static final String RESOURCE_CONFIG_PROPERTIES = "offlineltzprovider.properties";
     private static final String CONFIG_KEY_GEODATA_PATH = "geodata.path";
 
+    /** An arbitrary value larger than the largest time we might want to hold a wake lock. */
+    private static final long WAKELOCK_ACQUIRE_MILLIS = Duration.ofMinutes(1).toMillis();
+
     @NonNull
     private final LocationManager mLocationManager;
     @NonNull
@@ -82,7 +85,7 @@ class EnvironmentImpl implements Environment {
         mLocationManager = context.getSystemService(LocationManager.class);
 
         PowerManager powerManager = context.getSystemService(PowerManager.class);
-        mWakeLock = powerManager.newWakeLock(PARTIAL_WAKE_LOCK, LOG_TAG);
+        mWakeLock = powerManager.newWakeLock(PARTIAL_WAKE_LOCK, LOG_TAG + ":wakelock");
 
         mResultConsumer = Objects.requireNonNull(resultConsumer);
         mHandler = new Handler(Looper.getMainLooper());
@@ -279,7 +282,7 @@ class EnvironmentImpl implements Environment {
 
     @Override
     public void acquireWakeLock() {
-        mWakeLock.acquire();
+        mWakeLock.acquire(WAKELOCK_ACQUIRE_MILLIS);
     }
 
     @Override

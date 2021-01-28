@@ -16,7 +16,8 @@
 java_library {
     name: "geotz_lookup",
     srcs: ["src/main/java/**/*.java"],
-    sdk_version: "30",
+    sdk_version: "current",
+    min_sdk_version: "current",
     libs: ["androidx.annotation_annotation"],
     static_libs: [
         "geotz_s2storage_ro",
@@ -34,7 +35,8 @@ android_test {
     name: "GeotzLookupTests",
     srcs: ["src/test/java/**/*.java"],
     manifest: "src/test/AndroidManifest.xml",
-    sdk_version: "30",
+    sdk_version: "current",
+    min_sdk_version: "current",
     static_libs: [
         "androidx.test.runner",
         "geotz_lookup",
