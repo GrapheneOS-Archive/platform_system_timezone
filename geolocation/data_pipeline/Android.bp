@@ -46,7 +46,7 @@ java_library_host {
 // files, one per time zone ID.
 java_binary_host {
     name: "geotz_geojsontz_to_tzs2polygons",
-    main_class: "com.android.timezone.geolocation.data_pipeline.steps.GeoJsonTzToTzS2Polygons",
+    main_class: "com.android.timezone.location.data_pipeline.steps.GeoJsonTzToTzS2Polygons",
     static_libs: ["geotz_data_pipeline"],
 }
 
@@ -56,7 +56,7 @@ java_binary_host {
 // IDs, combining multiple input files into output files where necessary.
 java_binary_host {
     name: "geotz_canonicalize_tzs2polygons",
-    main_class: "com.android.timezone.geolocation.data_pipeline.steps.CanonicalizeTzS2Polygons",
+    main_class: "com.android.timezone.location.data_pipeline.steps.CanonicalizeTzS2Polygons",
     static_libs: ["geotz_data_pipeline"],
 }
 
@@ -65,7 +65,7 @@ java_binary_host {
 // Converts TzS2Polygon proto files to TsS2CellUnion proto files at a maximum S2 level.
 java_binary_host {
     name: "geotz_tzs2polygons_to_tzs2cellunions",
-    main_class: "com.android.timezone.geolocation.data_pipeline.steps.TzS2PolygonsToTzS2CellUnions",
+    main_class: "com.android.timezone.location.data_pipeline.steps.TzS2PolygonsToTzS2CellUnions",
     static_libs: ["geotz_data_pipeline"],
 }
 
@@ -74,7 +74,7 @@ java_binary_host {
 // Converts TsS2CellUnion proto files to (single time zone) TzS2Ranges proto files.
 java_binary_host {
     name: "geotz_tzs2cellunions_to_tzs2ranges",
-    main_class: "com.android.timezone.geolocation.data_pipeline.steps.TzS2CellUnionsToTzS2Ranges",
+    main_class: "com.android.timezone.location.data_pipeline.steps.TzS2CellUnionsToTzS2Ranges",
     static_libs: ["geotz_data_pipeline"],
 }
 
@@ -84,7 +84,7 @@ java_binary_host {
 // proto file
 java_binary_host {
     name: "geotz_mergetzs2ranges",
-    main_class: "com.android.timezone.geolocation.data_pipeline.steps.MergeTzS2Ranges",
+    main_class: "com.android.timezone.location.data_pipeline.steps.MergeTzS2Ranges",
     static_libs: ["geotz_data_pipeline"],
 }
 
@@ -94,7 +94,7 @@ java_binary_host {
 // geotz_createtzs2file tool.
 java_binary_host {
     name: "geotz_createtzs2fileinput",
-    main_class: "com.android.timezone.geolocation.data_pipeline.steps.CreateTzS2ProtoDataFile",
+    main_class: "com.android.timezone.location.data_pipeline.steps.CreateTzS2ProtoDataFile",
     static_libs: ["geotz_data_pipeline"],
 }
 
@@ -110,14 +110,14 @@ java_library_host {
 // Dev / debug tool: Prints basic stats about TzS2Range files. See the Java class for details.
 java_binary_host {
     name: "geotz_data_pipeline_debug_printtzs2rangesstats",
-    main_class: "com.android.timezone.geolocation.data_pipeline.tools.PrintTzS2RangeStats",
+    main_class: "com.android.timezone.location.data_pipeline.tools.PrintTzS2RangeStats",
     static_libs: ["geotz_data_pipeline_debug"],
 }
 
 // Dev / debug tool: Prints basic stats about TzS2CellUnion files. See the Java class for details.
 java_binary_host {
     name: "geotz_data_pipeline_debug_printtzs2cellunionstats",
-    main_class: "com.android.timezone.geolocation.data_pipeline.tools.PrintTzS2CellUnionStats",
+    main_class: "com.android.timezone.location.data_pipeline.tools.PrintTzS2CellUnionStats",
     static_libs: ["geotz_data_pipeline_debug"],
 }
 
