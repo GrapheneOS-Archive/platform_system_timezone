@@ -25,7 +25,7 @@ java_library_host {
 
 java_binary_host {
     name: "geotz_geonames_comparison",
-    main_class: "com.android.timezone.geolocation.validation.GeonamesComparison",
+    main_class: "com.android.timezone.location.validation.GeonamesComparison",
     srcs: [
         "src/main/java/**/*.java",
     ],

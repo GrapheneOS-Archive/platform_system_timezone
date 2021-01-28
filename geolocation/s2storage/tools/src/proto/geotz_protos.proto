@@ -16,10 +16,10 @@
 
 syntax = "proto2";
 
-option java_package = "com.android.timezone.geotz.tools.proto";
+option java_package = "com.android.timezone.location.tools.proto";
 option java_multiple_files = false;
 
-package com.android.timezone.geotz.tools.proto;
+package com.android.timezone.location.tools.proto;
 
 // The format need to write a TZ S2 data file.
 message TimeZones {
