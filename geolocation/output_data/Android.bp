@@ -25,6 +25,7 @@ prebuilt_etc {
 filegroup {
     name: "tzs2.dat-resources",
     visibility: [
+        "//packages/modules/GeoTZ:__subpackages__",
         "//system/timezone:__subpackages__",
     ],
     path: "odbl/",
