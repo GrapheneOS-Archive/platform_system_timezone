@@ -1,8 +1,0 @@
-{
-  "presubmit": [
-    {
-      "name": "geotz_data_pipeline_tests",
-      "host": true
-    }
-  ]
-}
