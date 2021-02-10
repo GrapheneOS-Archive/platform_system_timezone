@@ -1,4 +1,5 @@
-// Copyright (C) 2019 The Android Open Source Project
+//
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,9 +14,7 @@
 // limitations under the License.
 
 package {
-    default_applicable_licenses: [
-        "system_timezone_output_data_icu_overlay_license",
-    ],
+    default_applicable_licenses: ["system_timezone_license"],
 }
 
 // Added automatically by a large-scale-change that took the approach of
@@ -33,29 +32,15 @@ package {
 // used in the current project.
 // http://go/android-license-faq
 license {
-    name: "system_timezone_output_data_icu_overlay_license",
+    name: "system_timezone_license",
     visibility: [":__subpackages__"],
     license_kinds: [
+        "SPDX-license-identifier-Apache-2.0",
         "SPDX-license-identifier-BSD",
         "SPDX-license-identifier-MIT",
         "SPDX-license-identifier-Unicode-DFS",
+        "legacy_notice",
+        "legacy_unencumbered",
     ],
-    license_text: [
-        "LICENSE",
-    ],
-}
-
-// Module definition producing a tzdata prebuilt file in
-// /system/etc/tzdata_module/etc/tz for standalone ART testing purposes.
-// This is a temporary change needed until the ART Buildbot and Golem both fully
-// support the Time Zone Data APEX (see b/121117762). This module should never
-// be shipped by default (i.e. should never be part of `PRODUCT_PACKAGE`.)
-
-// TODO(b/121117762, b/129332183): Remove this module definition when
-// the ART Buildbot and Golem have full support for the Time Zone Data APEX.
-prebuilt_etc {
-    name: "icu_overlay-art-test-tzdata",
-    src: "icu_tzdata.dat",
-    filename_from_src: true,
-    sub_dir: "tzdata_module/etc/icu",
+    // large-scale-change unable to identify any license_text files
 }
