@@ -65,7 +65,6 @@
    <id notafter="796147200000">Australia/Melbourne</id>
    <id>Australia/Brisbane</id>
    <id notafter="1193500800000">Australia/Hobart</id>
-   <id notafter="37728000000">Australia/Currie</id>
    <id notafter="762883200000">Australia/Lindeman</id>
    <id notafter="1286035200000">Antarctica/Macquarie</id>
    <id>Australia/Lord_Howe</id>
@@ -711,8 +710,8 @@
    <id notafter="701823600000">Europe/Astrakhan</id>
    <id notafter="1480806000000">Europe/Ulyanovsk</id>
    <id>Europe/Saratov</id>
-   <id>Europe/Volgograd</id>
    <id>Europe/Moscow</id>
+   <id>Europe/Volgograd</id>
    <id>Europe/Kirov</id>
    <id>Europe/Kaliningrad</id>
   </country>
