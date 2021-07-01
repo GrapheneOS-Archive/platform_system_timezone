@@ -221,7 +221,7 @@ def CreateDistroFiles(iana_data_version, output_distro_dir, output_version_file)
   create_distro_script = '%s/distro/tools/create-distro.py' % timezone_dir
 
   tzdata_file = '%s/iana/tzdata' % timezone_output_data_dir
-  icu_file = '%s/icu_overlay/icu_tzdata.dat' % timezone_output_data_dir
+  icu_dir = '%s/icu_overlay' % timezone_output_data_dir
   tzlookup_file = '%s/android/tzlookup.xml' % timezone_output_data_dir
   telephonylookup_file = '%s/android/telephonylookup.xml' % timezone_output_data_dir
 
@@ -235,7 +235,7 @@ def CreateDistroFiles(iana_data_version, output_distro_dir, output_version_file)
   subprocess.check_call([create_distro_script,
       '-iana_version', iana_data_version,
       '-tzdata', tzdata_file,
-      '-icu', icu_file,
+      '-icu_dir', icu_dir,
       '-tzlookup', tzlookup_file,
       '-telephonylookup', telephonylookup_file,
       '-output_distro_dir', output_distro_dir,
