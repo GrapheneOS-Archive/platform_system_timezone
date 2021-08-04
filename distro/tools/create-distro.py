@@ -16,8 +16,6 @@
 
 """Generates a time zone distro file"""
 
-from __future__ import print_function
-
 import argparse
 import os
 import shutil

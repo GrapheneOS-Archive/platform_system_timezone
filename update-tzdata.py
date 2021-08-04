@@ -16,8 +16,6 @@
 
 """Generates the timezone data files used by Android."""
 
-from __future__ import print_function
-
 import glob
 import os
 import re
