@@ -16,8 +16,6 @@
 
 """Allows visualization of zone trees (the thing that works out if zones are distinct)."""
 
-from __future__ import print_function
-
 import argparse
 import glob
 import os
