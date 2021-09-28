@@ -71,8 +71,8 @@ def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('-iana_version', required=True,
       help='The IANA time zone rules release version, e.g. 2017b')
-  parser.add_argument('-revision', type=int, default=1,
-      help='The distro revision for the IANA version, default = 1')
+  parser.add_argument('-revision', type=int, required = True,
+      help='The distro revision for the IANA version')
   parser.add_argument('-tzdata', required=True, help='The location of the tzdata file to include')
   parser.add_argument('-icu_dir', required=True,
       help='Directory with the ICU overlay .dat and license files')
