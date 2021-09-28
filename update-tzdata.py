@@ -16,6 +16,7 @@
 
 """Generates the timezone data files used by Android."""
 
+import argparse
 import glob
 import os
 import re
@@ -215,7 +216,8 @@ def BuildTelephonylookup():
   subprocess.check_call([command, telephonylookup_source_file, telephonylookup_dest_file])
 
 
-def CreateDistroFiles(iana_data_version, output_distro_dir, output_version_file):
+def CreateDistroFiles(iana_data_version, android_revision,
+                      output_distro_dir, output_version_file):
   create_distro_script = '%s/distro/tools/create-distro.py' % timezone_dir
 
   tzdata_file = '%s/iana/tzdata' % timezone_output_data_dir
@@ -232,6 +234,7 @@ def CreateDistroFiles(iana_data_version, output_distro_dir, output_version_file)
 
   subprocess.check_call([create_distro_script,
       '-iana_version', iana_data_version,
+      '-revision', str(android_revision),
       '-tzdata', tzdata_file,
       '-icu_dir', icu_dir,
       '-tzlookup', tzlookup_file,
@@ -245,9 +248,18 @@ def UpdateTestFiles():
   subprocess.check_call([update_test_files_script], cwd=testing_data_dir)
 
 
-# Run with no arguments from any directory, with no special setup required.
+# Run from any directory, with no special setup required.
+# In the rare case when tzdata has to be updated, but under the same version,
+# pass "-revision" argument.
 # See http://www.iana.org/time-zones/ for more about the source of this data.
 def main():
+  parser = argparse.ArgumentParser()
+  parser.add_argument('-revision', type=int, default=1,
+      help='The distro revision for the IANA version, default = 1')
+
+  args = parser.parse_args()
+  android_revision = args.revision
+
   print('Source data file structure: %s' % timezone_input_data_dir)
   print('Source tools file structure: %s' % timezone_input_tools_dir)
   print('Intermediate / working dir: %s' % tmp_dir)
@@ -277,7 +289,8 @@ def main():
   # Create a distro file and version file from the output from prior stages.
   output_distro_dir = '%s/distro' % timezone_output_data_dir
   output_version_file = '%s/version/tz_version' % timezone_output_data_dir
-  CreateDistroFiles(iana_data_version, output_distro_dir, output_version_file)
+  CreateDistroFiles(iana_data_version, android_revision,
+                    output_distro_dir, output_version_file)
 
   # Update test versions of distro files too.
   UpdateTestFiles()
