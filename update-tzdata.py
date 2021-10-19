@@ -170,7 +170,7 @@ def BuildTzdata(zic_binary_file, extracted_iana_data_dir, iana_data_version):
   print('Calling zic...')
   zic_output_dir = '%s/data' % tmp_dir
   os.mkdir(zic_output_dir)
-  zic_cmd = [zic_binary_file, '-d', zic_output_dir, zic_input_file]
+  zic_cmd = [zic_binary_file, '-b', 'fat', '-d', zic_output_dir, zic_input_file]
   subprocess.check_call(zic_cmd)
 
   # ZoneCompactor
