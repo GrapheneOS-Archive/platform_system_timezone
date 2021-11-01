@@ -1792,6 +1792,9 @@ countries:<
 
   timeZoneMappings:<
     utcOffset:"13:00"
+    # TODO(b/204539416) Remove aliasId and switch to Pacific/Kanton when CLDR
+    # has exemplar location translations.
+    aliasId:"Pacific/Kanton"
     id:"Pacific/Enderbury"
   >
 
