@@ -1792,6 +1792,9 @@ countries:<
 
   timeZoneMappings:<
     utcOffset:"13:00"
+    # Prefer Pacific/Enderbury because the ICU version used in this
+    # Android release doesn't have translations for Pacific/Kanton.
+    aliasId:"Pacific/Kanton"
     id:"Pacific/Enderbury"
   >
 
