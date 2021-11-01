@@ -1,3 +1,25 @@
+### 2021a rev. 3
+
+Like 2021a rev.2 this release is also different from regular updates. It is
+closely correlated with IANA's `2021d` and `2021e`. See below for more details.
+
+TZDB version `2021c` reverted most (but not all) time zone merges from `2021b`.
+As Android has not applied any of them and there were no other rules update,
+it is a no-op for Android.
+
+Then TZDB version `2021d` was released with Fiji changes. That corresponds to
+ICU's `2021a2`. But `2021a2` also picked up a
+`"Link America/Panama America/Coral_Harbour"` change from IANA's TZDB release
+in the backward file.
+
+ICU's `2021a3` is `2021a2` with Palestine changes. No extra change there.
+
+`tzdata2021a.tar.gz` in this Android TZDB update is ICU's [`tzdata2021a3.tar.gz`](https://github.com/unicode-org/icu-data/blob/d90a4eed92e3c5221c4dc1977bfdb7c072a8bb3d/tzdata/tzdata_patch/tzdata2021a3.tar.gz)
+with `Link` change mention above reverted. Not reverting it will put
+`America/Coral_Harbour` under Panama in `tzlookup.xml`. Right approach here
+is to update tooling, but that will take some time.
+
+
 ### 2021a rev. 2
 
 In `2021b` several time zones which were alike since 1970 were merged. It

@@ -441,7 +441,7 @@
   </country>
   <country code="ki" default="Pacific/Tarawa" everutc="n">
    <id>Pacific/Kiritimati</id>
-   <id>Pacific/Enderbury</id>
+   <id>Pacific/Kanton</id>
    <id>Pacific/Tarawa</id>
   </country>
   <country code="km" default="Indian/Comoro" everutc="n">
