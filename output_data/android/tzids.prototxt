@@ -1019,6 +1019,10 @@ countryMappings {
   timeZoneIds: "Pacific/Kiritimati"
   timeZoneIds: "Pacific/Enderbury"
   timeZoneIds: "Pacific/Tarawa"
+  timeZoneLinks {
+    alternativeId: "Pacific/Kanton"
+    preferredId: "Pacific/Enderbury"
+  }
 }
 countryMappings {
   isoCode: "km"
