@@ -117,6 +117,8 @@ def BuildIcuData(iana_data_tar_file):
   icu_overlay_dat_file = '%s/icu_tzdata.dat' % icu_overlay_dir
   icuutil.MakeAndCopyOverlayTzIcuData(icu_build_dir, icu_overlay_dat_file)
 
+  # There are files in ICU which generation depends on ICU itself,
+  # so multiple builds might be needed.
   icuutil.GenerateIcuDataFiles()
 
   # Copy ICU license file(s)
