@@ -425,6 +425,7 @@ countryMappings {
   timeZoneIds: "America/Blanc-Sablon"
   timeZoneIds: "America/Atikokan"
   timeZoneIds: "America/Regina"
+  timeZoneIds: "America/Dawson_Creek"
   timeZoneIds: "America/Whitehorse"
   timeZoneLinks {
     alternativeId: "America/Montreal"
@@ -525,11 +526,6 @@ countryMappings {
     replacedId: "America/Yellowknife"
     replacementId: "America/Edmonton"
     fromMillis: 309945600000
-  }
-  timeZoneReplacements {
-    replacedId: "America/Dawson_Creek"
-    replacementId: "America/Whitehorse"
-    fromMillis: 1604214000000
   }
   timeZoneReplacements {
     replacedId: "America/Creston"
