@@ -205,7 +205,7 @@
    <id>Europe/Zurich</id>
   </country>
   <country code="ci" default="Africa/Abidjan" everutc="y">
-   <id alts="Africa/Timbuktu">Africa/Abidjan</id>
+   <id>Africa/Abidjan</id>
   </country>
   <country code="ck" default="Pacific/Rarotonga" everutc="n">
    <id>Pacific/Rarotonga</id>
@@ -280,7 +280,7 @@
    <id>Africa/El_Aaiun</id>
   </country>
   <country code="er" default="Africa/Asmara" everutc="n">
-   <id>Africa/Asmara</id>
+   <id alts="Africa/Asmera">Africa/Asmara</id>
   </country>
   <country code="es" default="Europe/Madrid" everutc="y">
    <id>Europe/Madrid</id>
@@ -431,7 +431,7 @@
    <id alts="Japan">Asia/Tokyo</id>
   </country>
   <country code="ke" default="Africa/Nairobi" everutc="n">
-   <id alts="Africa/Asmera">Africa/Nairobi</id>
+   <id>Africa/Nairobi</id>
   </country>
   <country code="kg" default="Asia/Bishkek" everutc="n">
    <id>Asia/Bishkek</id>
@@ -530,7 +530,7 @@
    <id>Europe/Skopje</id>
   </country>
   <country code="ml" default="Africa/Bamako" everutc="y">
-   <id>Africa/Bamako</id>
+   <id alts="Africa/Timbuktu">Africa/Bamako</id>
   </country>
   <country code="mm" default="Asia/Yangon" everutc="n">
    <id alts="Asia/Rangoon">Asia/Yangon</id>
