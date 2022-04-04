@@ -1084,7 +1084,6 @@ countries:<
   timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Abidjan"
-    alternativeIds: "Africa/Timbuktu"
   >
 >
 
@@ -1350,6 +1349,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"3:00"
     id:"Africa/Asmara"
+    alternativeIds: "Africa/Asmera"
   >
 >
 
@@ -1857,7 +1857,6 @@ countries:<
   timeZoneMappings:<
     utcOffset:"3:00"
     id:"Africa/Nairobi"
-    alternativeIds: "Africa/Asmera"
   >
 >
 
@@ -2192,6 +2191,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"0:00"
     id:"Africa/Bamako"
+    alternativeIds: "Africa/Timbuktu"
   >
 >
 
