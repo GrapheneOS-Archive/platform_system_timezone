@@ -577,10 +577,6 @@ countryMappings {
 countryMappings {
   isoCode: "ci"
   timeZoneIds: "Africa/Abidjan"
-  timeZoneLinks {
-    alternativeId: "Africa/Timbuktu"
-    preferredId: "Africa/Abidjan"
-  }
 }
 countryMappings {
   isoCode: "ck"
@@ -719,6 +715,10 @@ countryMappings {
 countryMappings {
   isoCode: "er"
   timeZoneIds: "Africa/Asmara"
+  timeZoneLinks {
+    alternativeId: "Africa/Asmera"
+    preferredId: "Africa/Asmara"
+  }
 }
 countryMappings {
   isoCode: "es"
@@ -997,10 +997,6 @@ countryMappings {
 countryMappings {
   isoCode: "ke"
   timeZoneIds: "Africa/Nairobi"
-  timeZoneLinks {
-    alternativeId: "Africa/Asmera"
-    preferredId: "Africa/Nairobi"
-  }
 }
 countryMappings {
   isoCode: "kg"
@@ -1174,6 +1170,10 @@ countryMappings {
 countryMappings {
   isoCode: "ml"
   timeZoneIds: "Africa/Bamako"
+  timeZoneLinks {
+    alternativeId: "Africa/Timbuktu"
+    preferredId: "Africa/Bamako"
+  }
 }
 countryMappings {
   isoCode: "mm"
