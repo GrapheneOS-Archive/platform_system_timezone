@@ -30,6 +30,8 @@ import i18nutil
 import icuutil
 import tzdatautil
 
+# Unix epoch timestamp in seconds up to which transitions in tzdata will be pregenerated.
+pregeneration_upper_bound = 4102444800 # 1 Jan 2100
 
 # Calculate the paths that are referred to by multiple functions.
 android_build_top = i18nutil.GetAndroidRootOrDie()
@@ -173,7 +175,8 @@ def BuildTzdata(zic_binary_file, extracted_iana_data_dir, iana_data_version):
   print('Calling zic...')
   zic_output_dir = '%s/data' % tmp_dir
   os.mkdir(zic_output_dir)
-  zic_cmd = [zic_binary_file, '-b', 'fat', '-d', zic_output_dir, zic_input_file]
+  # -R specifies upper bound for generated transitions.
+  zic_cmd = [zic_binary_file, '-b', 'fat', '-R', f'@{pregeneration_upper_bound}', '-d', zic_output_dir, zic_input_file]
   subprocess.check_call(zic_cmd)
 
   # ZoneCompactor
