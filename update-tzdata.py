@@ -176,7 +176,7 @@ def BuildTzdata(zic_binary_file, extracted_iana_data_dir, iana_data_version):
   zic_output_dir = '%s/data' % tmp_dir
   os.mkdir(zic_output_dir)
   # -R specifies upper bound for generated transitions.
-  zic_cmd = [zic_binary_file, '-b', 'fat', '-R', f'@{pregeneration_upper_bound}', '-d', zic_output_dir, zic_input_file]
+  zic_cmd = [zic_binary_file, '-b', 'slim', '-R', f'@{pregeneration_upper_bound}', '-d', zic_output_dir, zic_input_file]
   subprocess.check_call(zic_cmd)
 
   # ZoneCompactor
