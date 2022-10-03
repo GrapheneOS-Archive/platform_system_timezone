@@ -831,8 +831,6 @@
   </country>
   <country code="ua" default="Europe/Kiev" everutc="n">
    <id>Europe/Kiev</id>
-   <id notafter="686091600000">Europe/Uzhgorod</id>
-   <id notafter="686102400000">Europe/Zaporozhye</id>
    <id picker="n">Europe/Simferopol</id>
   </country>
   <country code="ug" default="Africa/Kampala" everutc="n">
