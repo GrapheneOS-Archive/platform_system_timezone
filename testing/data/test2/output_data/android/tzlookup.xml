@@ -830,9 +830,7 @@
    <id>Africa/Dar_es_Salaam</id>
   </country>
   <country code="ua" default="Europe/Kiev" everutc="n">
-   <id>Europe/Kiev</id>
-   <id notafter="686102400000" repl="Europe/Kiev">Europe/Zaporozhye</id>
-   <id notafter="686091600000" repl="Europe/Zaporozhye">Europe/Uzhgorod</id>
+   <id alts="Europe/Kyiv,Europe/Uzhgorod,Europe/Zaporozhye">Europe/Kiev</id>
    <id picker="n">Europe/Simferopol</id>
   </country>
   <country code="ug" default="Africa/Kampala" everutc="n">
