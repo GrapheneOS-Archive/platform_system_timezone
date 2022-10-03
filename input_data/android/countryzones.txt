@@ -25,7 +25,7 @@
 # a time zone for an Android device.
 
 # ianaVersion: The version of the IANA rules this file matches.
-ianaVersion:"2022a"
+ianaVersion:"2022d"
 
 # countries:
 #
@@ -3301,33 +3301,25 @@ countries:<
 >
 
 # UKRAINE
-#
-# Priorities assigned on 20180309 using:
-# https://en.wikipedia.org/wiki/List_of_cities_in_Ukraine
-# Priorities are just an abstract score.
 countries:<
   isoCode:"ua"
   defaultTimeZoneId:"Europe/Kiev"
   timeZoneMappings:<
     utcOffset:"2:00"
     id:"Europe/Kiev"
-    priority:3
-  >
-  timeZoneMappings:<
-    utcOffset:"2:00"
-    id:"Europe/Zaporozhye"
-    priority:2
-  >
-  timeZoneMappings:<
-    utcOffset:"2:00"
-    id:"Europe/Uzhgorod"
-    priority:1
+    # Europe/Kyiv was added in TZDB 2022b (August 2022) as a replacement ID
+    # for the zone previously known as Europe/Kiev. Europe/Kiev is retained
+    # as an alias.
+    # As there is no translation of Europe/Kyiv available in ICU and it
+    # won't be updated in already released Android devices, Europe/Kyiv
+    # should be mention as an alternativeIds indefinitely.
+    alternativeIds:"Europe/Kyiv"
+    alternativeIds:"Europe/Zaporozhye"
+    alternativeIds:"Europe/Uzhgorod"
   >
   timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Simferopol"
-    # ?
-    priority:1
     # http://b/73922616
     shownInPicker:false
   >
