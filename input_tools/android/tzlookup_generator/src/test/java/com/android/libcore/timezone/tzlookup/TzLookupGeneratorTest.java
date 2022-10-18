@@ -334,7 +334,7 @@ public class TzLookupGeneratorTest {
     public void incorrectOffset() throws Exception {
         CountryZonesFile.Country validGbCountry = createValidCountryGb();
         CountryZonesFile.Country.Builder gbWithWrongOffsetBuilder = validGbCountry.toBuilder();
-        gbWithWrongOffsetBuilder.getTimeZoneMappingsBuilder(0).setUtcOffset("20:00").build();
+        gbWithWrongOffsetBuilder.getTimeZoneMappingsBuilder(0).setUtcOffset("20:00");
         CountryZonesFile.Country gbWithWrongOffset = gbWithWrongOffsetBuilder.build();
 
         CountryZonesFile.CountryZones countryZones = createValidCountryZones(gbWithWrongOffset);
