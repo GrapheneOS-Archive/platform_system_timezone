@@ -169,14 +169,11 @@
    <id notafter="1162098000000">America/Moncton</id>
    <id notafter="1299996000000">America/Goose_Bay</id>
    <id>America/Blanc-Sablon</id>
-   <id notafter="89186400000">America/Nipigon</id>
-   <id notafter="120636000000">America/Thunder_Bay</id>
    <id notafter="972802800000">America/Iqaluit</id>
    <id notafter="796806000000">America/Pangnirtung</id>
    <id>America/Atikokan</id>
    <id>America/Regina</id>
    <id notafter="1130659200000">America/Rankin_Inlet</id>
-   <id notafter="986112000000">America/Rainy_River</id>
    <id notafter="73472400000">America/Swift_Current</id>
    <id notafter="1173600000000">America/Resolute</id>
    <id notafter="986115600000">America/Cambridge_Bay</id>
@@ -571,13 +568,13 @@
    <id>America/Mexico_City</id>
    <id notafter="407653200000">America/Merida</id>
    <id notafter="594198000000">America/Monterrey</id>
+   <id notafter="1667116800000">America/Chihuahua</id>
    <id>America/Matamoros</id>
    <id notafter="1270371600000">America/Bahia_Banderas</id>
+   <id notafter="1667116800000">America/Ojinaga</id>
    <id>America/Cancun</id>
-   <id>America/Chihuahua</id>
    <id>America/Hermosillo</id>
-   <id notafter="891766800000">America/Mazatlan</id>
-   <id>America/Ojinaga</id>
+   <id notafter="1667116800000">America/Mazatlan</id>
    <id>America/Tijuana</id>
   </country>
   <country code="my" default="Asia/Kuala_Lumpur" everutc="n">

@@ -25,7 +25,7 @@
 # a time zone for an Android device.
 
 # ianaVersion: The version of the IANA rules this file matches.
-ianaVersion:"2022e"
+ianaVersion:"2022f"
 
 # countries:
 #
@@ -828,18 +828,6 @@ countries:<
 
   timeZoneMappings:<
     utcOffset:"-5:00"
-    id:"America/Nipigon"
-    # 1.63K
-    priority:1
-  >
-  timeZoneMappings:<
-    utcOffset:"-5:00"
-    id:"America/Thunder_Bay"
-    # 108K
-    priority:108
-  >
-  timeZoneMappings:<
-    utcOffset:"-5:00"
     id:"America/Iqaluit"
     # 7.74K
     priority:8
@@ -868,12 +856,6 @@ countries:<
     id:"America/Rankin_Inlet"
     # 2.84K
     priority:3
-  >
-  timeZoneMappings:<
-    utcOffset:"-6:00"
-    id:"America/Rainy_River"
-    # 0.84K
-    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -2206,6 +2188,12 @@ countries:<
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
+    id:"America/Chihuahua"
+    # 878K
+    priority:878
+  >
+  timeZoneMappings:<
+    utcOffset:"-6:00"
     id:"America/Matamoros"
     # 520K
     priority:520
@@ -2215,6 +2203,12 @@ countries:<
     id:"America/Bahia_Banderas"
     # 83.7K
     priority:84
+  >
+  timeZoneMappings:<
+    utcOffset:"-6:00"
+    id:"America/Ojinaga"
+    # 28.0K
+    priority:28
   >
 
   timeZoneMappings:<
@@ -2226,12 +2220,6 @@ countries:<
 
   timeZoneMappings:<
     utcOffset:"-7:00"
-    id:"America/Chihuahua"
-    # 878K
-    priority:878
-  >
-  timeZoneMappings:<
-    utcOffset:"-7:00"
     id:"America/Hermosillo"
     # 812K
     priority:812
@@ -2241,12 +2229,6 @@ countries:<
     id:"America/Mazatlan"
     # 658K
     priority:658
-  >
-  timeZoneMappings:<
-    utcOffset:"-7:00"
-    id:"America/Ojinaga"
-    # 28.0K
-    priority:28
   >
 
   timeZoneMappings:<
