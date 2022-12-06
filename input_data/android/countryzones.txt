@@ -25,7 +25,7 @@
 # a time zone for an Android device.
 
 # ianaVersion: The version of the IANA rules this file matches.
-ianaVersion:"2022f"
+ianaVersion:"2022g"
 
 # countries:
 #
@@ -917,14 +917,9 @@ countries:<
   timeZoneMappings:<
     utcOffset:"-5:00"
     id:"America/Iqaluit"
+    alternativeIds:"America/Pangnirtung"
     # 7.74K
     priority:8
-  >
-  timeZoneMappings:<
-    utcOffset:"-5:00"
-    id:"America/Pangnirtung"
-    # 1.48K
-    priority:1
   >
   timeZoneMappings:<
     utcOffset:"-5:00"
@@ -1530,7 +1525,7 @@ countries:<
   >
 
   timeZoneMappings:<
-    utcOffset:"-3:00"
+    utcOffset:"-2:00"
     id:"America/Nuuk"
     alternativeIds: "America/Godthab"
   >
@@ -2359,6 +2354,13 @@ countries:<
     id:"America/Cancun"
     # 744K
     priority:744
+  >
+
+  timeZoneMappings:<
+    utcOffset:"-7:00"
+    id:"America/Ciudad_Juarez"
+    # 2.5M
+    priority:2539
   >
 
   timeZoneMappings:<
