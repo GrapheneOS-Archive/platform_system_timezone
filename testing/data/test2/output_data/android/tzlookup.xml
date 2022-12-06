@@ -170,14 +170,13 @@
    <id notafter="1299996000000">America/Goose_Bay</id>
    <id>America/Blanc-Sablon</id>
    <id notafter="972802800000">America/Iqaluit</id>
-   <id notafter="796806000000">America/Pangnirtung</id>
    <id>America/Atikokan</id>
    <id>America/Regina</id>
    <id notafter="1130659200000">America/Rankin_Inlet</id>
    <id notafter="73472400000">America/Swift_Current</id>
    <id notafter="1173600000000">America/Resolute</id>
    <id notafter="986115600000">America/Cambridge_Bay</id>
-   <id notafter="309945600000">America/Yellowknife</id>
+   <id notafter="294228000000">America/Yellowknife</id>
    <id notafter="294228000000">America/Inuvik</id>
    <id>America/Whitehorse</id>
    <id notafter="1604214000000">America/Dawson_Creek</id>
@@ -571,15 +570,16 @@
    <id notafter="1667116800000">America/Chihuahua</id>
    <id>America/Matamoros</id>
    <id notafter="1270371600000">America/Bahia_Banderas</id>
-   <id notafter="1667116800000">America/Ojinaga</id>
+   <id notafter="1667718000000">America/Ojinaga</id>
    <id>America/Cancun</id>
+   <id>America/Ciudad_Juarez</id>
    <id>America/Hermosillo</id>
    <id notafter="1667116800000">America/Mazatlan</id>
    <id>America/Tijuana</id>
   </country>
   <country code="my" default="Asia/Kuala_Lumpur" everutc="n">
    <id>Asia/Kuala_Lumpur</id>
-   <id notafter="378664200000">Asia/Kuching</id>
+   <id notafter="378662400000">Asia/Kuching</id>
   </country>
   <country code="mz" default="Africa/Maputo" everutc="n">
    <id>Africa/Maputo</id>

@@ -1,3 +1,11 @@
+### 2022g
+
+Since introduction of Europe/Kyiv (2022b, 10 Aug 2022) we were carrying local
+patch: Europe/Kyiv in zone.tab is renamed back to Europe/Kiev as alternative
+names are not supported in this release and there are no ICU translations
+for Europe/Kyiv. Doing so has no visible effect on users as we do not expose
+Olson IDs and these time zones are identical.
+
 ### 2022a
 
 This update includes pre-1970
