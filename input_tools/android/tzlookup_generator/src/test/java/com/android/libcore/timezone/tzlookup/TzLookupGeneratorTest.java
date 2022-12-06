@@ -399,7 +399,7 @@ public class TzLookupGeneratorTest {
                 + ">\n"
                 + "\n"
                 + "timeZoneMappings:<\n"
-                + "  utcOffset:\"-3:00\"\n"
+                + "  utcOffset:\"-2:00\"\n"
                 + "  id:\"America/Godthab\"\n"
                 + "  alternativeIds: \"America/Nuuk\"\n"
                 + ">\n"
