@@ -1005,11 +1005,11 @@ countryMappings {
 countryMappings {
   isoCode: "ki"
   timeZoneIds: "Pacific/Kiritimati"
-  timeZoneIds: "Pacific/Enderbury"
+  timeZoneIds: "Pacific/Kanton"
   timeZoneIds: "Pacific/Tarawa"
   timeZoneLinks {
-    alternativeId: "Pacific/Kanton"
-    preferredId: "Pacific/Enderbury"
+    alternativeId: "Pacific/Enderbury"
+    preferredId: "Pacific/Kanton"
   }
 }
 countryMappings {
