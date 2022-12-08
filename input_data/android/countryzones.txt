@@ -1868,10 +1868,8 @@ countries:<
 
   timeZoneMappings:<
     utcOffset:"13:00"
-    # TODO(b/204539416) Switch to Pacific/Kanton when CLDR has exemplar
-    # location translations.
-    id:"Pacific/Enderbury"
-    alternativeIds: "Pacific/Kanton"
+    id:"Pacific/Kanton"
+    alternativeIds:"Pacific/Enderbury"
   >
 
   timeZoneMappings:<
