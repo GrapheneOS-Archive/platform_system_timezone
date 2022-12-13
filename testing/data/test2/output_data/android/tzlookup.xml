@@ -169,18 +169,17 @@
    <id notafter="57733200000" repl="America/Halifax">America/Glace_Bay</id>
    <id notafter="1299996000000" repl="America/Halifax">America/Goose_Bay</id>
    <id>America/Blanc-Sablon</id>
-   <id notafter="972802800000" repl="America/Toronto">America/Iqaluit</id>
-   <id notafter="796806000000" repl="America/Iqaluit">America/Pangnirtung</id>
+   <id notafter="972802800000" repl="America/Toronto" alts="America/Pangnirtung">America/Iqaluit</id>
    <id alts="America/Coral_Harbour">America/Atikokan</id>
    <id alts="Canada/Saskatchewan">America/Regina</id>
    <id notafter="73472400000" repl="America/Regina">America/Swift_Current</id>
    <id notafter="1130659200000" repl="America/Winnipeg">America/Rankin_Inlet</id>
    <id notafter="1173600000000" repl="America/Winnipeg">America/Resolute</id>
-   <id notafter="309945600000" repl="America/Edmonton">America/Yellowknife</id>
+   <id notafter="0" repl="America/Edmonton">America/Yellowknife</id>
    <id>America/Dawson_Creek</id>
    <id notafter="84013200000" repl="America/Dawson_Creek">America/Creston</id>
    <id notafter="1425808800000" repl="America/Dawson_Creek">America/Fort_Nelson</id>
-   <id notafter="294228000000" repl="America/Yellowknife">America/Inuvik</id>
+   <id notafter="294228000000" repl="America/Edmonton">America/Inuvik</id>
    <id notafter="986115600000" repl="America/Edmonton">America/Cambridge_Bay</id>
    <id notafter="120646800000" repl="America/Whitehorse">America/Dawson</id>
    <id alts="Canada/Yukon">America/Whitehorse</id>
@@ -570,16 +569,17 @@
    <id notafter="594198000000" repl="America/Mexico_City">America/Monterrey</id>
    <id notafter="1667116800000" repl="America/Mexico_City">America/Chihuahua</id>
    <id notafter="1270371600000" repl="America/Mexico_City">America/Bahia_Banderas</id>
-   <id notafter="1667116800000" repl="America/Mexico_City">America/Ojinaga</id>
+   <id notafter="1667718000000" repl="America/Matamoros">America/Ojinaga</id>
    <id>America/Matamoros</id>
    <id>America/Cancun</id>
+   <id>America/Ciudad_Juarez</id>
    <id>America/Hermosillo</id>
    <id notafter="1667116800000" repl="America/Hermosillo" alts="Mexico/BajaSur">America/Mazatlan</id>
    <id alts="America/Ensenada,America/Santa_Isabel,Mexico/BajaNorte">America/Tijuana</id>
   </country>
   <country code="my" default="Asia/Kuala_Lumpur" everutc="n">
    <id>Asia/Kuala_Lumpur</id>
-   <id notafter="378664200000" repl="Asia/Kuala_Lumpur">Asia/Kuching</id>
+   <id notafter="378662400000" repl="Asia/Kuala_Lumpur">Asia/Kuching</id>
   </country>
   <country code="mz" default="Africa/Maputo" everutc="n">
    <id>Africa/Maputo</id>
