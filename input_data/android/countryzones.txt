@@ -698,16 +698,11 @@ countries:<
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
-    id:"America/Santarem"
-    # City: 294K, State:7.79M (Same state as Belem)
-    priority:7789
-  >
-  timeZoneMappings:<
-    utcOffset:"-3:00"
     id:"America/Recife"
     # City: 1.63M, State: 8.93M
     priority:8930
   >
+
   timeZoneMappings:<
     utcOffset:"-3:00"
     id:"America/Fortaleza"
@@ -719,6 +714,12 @@ countries:<
     id:"America/Belem"
     # City: 1.44M, State: 7.78M
     priority:7780
+  >
+  timeZoneMappings:<
+    utcOffset:"-3:00"
+    id:"America/Santarem"
+    # City: 294K, State:7.79M (Same state as Belem)
+    priority:7789
   >
   timeZoneMappings:<
     utcOffset:"-3:00"
@@ -993,16 +994,16 @@ countries:<
   >
   timeZoneMappings:<
     utcOffset:"-7:00"
-    id:"America/Dawson"
-    # 1.38K
-    priority:1
-  >
-  timeZoneMappings:<
-    utcOffset:"-7:00"
     id:"America/Whitehorse"
     # 25.1K
     priority:251
     alternativeIds: "Canada/Yukon"
+  >
+  timeZoneMappings:<
+    utcOffset:"-7:00"
+    id:"America/Dawson"
+    # 1.38K
+    priority:1
   >
 >
 
@@ -2193,16 +2194,16 @@ countries:<
   defaultTimeZoneId:"Asia/Ulaanbaatar"
   timeZoneMappings:<
     utcOffset:"8:00"
-    id:"Asia/Choibalsan"
-    # 38K
-    priority:38
-  >
-  timeZoneMappings:<
-    utcOffset:"8:00"
     id:"Asia/Ulaanbaatar"
     # 1.145M
     priority:1145
     alternativeIds: "Asia/Ulan_Bator"
+  >
+  timeZoneMappings:<
+    utcOffset:"8:00"
+    id:"Asia/Choibalsan"
+    # 38K
+    priority:38
   >
 
   timeZoneMappings:<
@@ -2334,17 +2335,17 @@ countries:<
     # 83.7K
     priority:84
   >
-   timeZoneMappings:<
-     utcOffset:"-6:00"
-     id:"America/Ojinaga"
-     # 28.0K
-     priority:28
-   >
   timeZoneMappings:<
     utcOffset:"-6:00"
     id:"America/Matamoros"
     # 520K
     priority:520
+  >
+  timeZoneMappings:<
+    utcOffset:"-6:00"
+    id:"America/Ojinaga"
+    # 28.0K
+    priority:28
   >
 
   timeZoneMappings:<
