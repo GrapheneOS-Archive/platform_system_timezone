@@ -335,11 +335,6 @@ countryMappings {
     fromMillis: 1550368800000
   }
   timeZoneReplacements {
-    replacedId: "America/Santarem"
-    replacementId: "America/Recife"
-    fromMillis: 1214280000000
-  }
-  timeZoneReplacements {
     replacedId: "America/Recife"
     replacementId: "America/Bahia"
     fromMillis: 1330221600000
@@ -353,6 +348,11 @@ countryMappings {
     replacedId: "America/Belem"
     replacementId: "America/Recife"
     fromMillis: 1013911200000
+  }
+  timeZoneReplacements {
+    replacedId: "America/Santarem"
+    replacementId: "America/Recife"
+    fromMillis: 1214280000000
   }
   timeZoneReplacements {
     replacedId: "America/Maceio"
