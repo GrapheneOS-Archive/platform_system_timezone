@@ -653,6 +653,10 @@ countryMappings {
   isoCode: "cy"
   timeZoneIds: "Asia/Nicosia"
   timeZoneIds: "Asia/Famagusta"
+  timeZoneLinks {
+    alternativeId: "Europe/Nicosia"
+    preferredId: "Asia/Nicosia"
+  }
 }
 countryMappings {
   isoCode: "cz"
@@ -1676,6 +1680,10 @@ countryMappings {
 countryMappings {
   isoCode: "tr"
   timeZoneIds: "Europe/Istanbul"
+  timeZoneLinks {
+    alternativeId: "Asia/Istanbul"
+    preferredId: "Europe/Istanbul"
+  }
   timeZoneLinks {
     alternativeId: "Turkey"
     preferredId: "Europe/Istanbul"

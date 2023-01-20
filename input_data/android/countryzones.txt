@@ -1193,6 +1193,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"2:00"
     id:"Asia/Nicosia"
+    alternativeIds:"Europe/Nicosia"
   >
   timeZoneMappings:<
     utcOffset:"2:00"
@@ -3242,6 +3243,7 @@ countries:<
   timeZoneMappings:<
     utcOffset:"3:00"
     id:"Europe/Istanbul"
+    alternativeIds: "Asia/Istanbul"
     alternativeIds: "Turkey"
   >
 >
