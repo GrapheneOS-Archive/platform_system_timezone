@@ -237,7 +237,7 @@
    <id>Indian/Christmas</id>
   </country>
   <country code="cy" default="Asia/Nicosia" everutc="n">
-   <id>Asia/Nicosia</id>
+   <id alts="Europe/Nicosia">Asia/Nicosia</id>
    <id>Asia/Famagusta</id>
   </country>
   <country code="cz" default="Europe/Prague" everutc="n">
@@ -812,7 +812,7 @@
    <id>Pacific/Tongatapu</id>
   </country>
   <country code="tr" default="Europe/Istanbul" everutc="n">
-   <id alts="Turkey">Europe/Istanbul</id>
+   <id alts="Asia/Istanbul,Turkey">Europe/Istanbul</id>
   </country>
   <country code="tt" default="America/Port_of_Spain" everutc="n">
    <id alts="America/Virgin">America/Port_of_Spain</id>
