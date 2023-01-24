@@ -30,6 +30,7 @@ sys.path.append('%s/external/icu/tools' % os.environ.get('ANDROID_BUILD_TOP'))
 import i18nutil
 import icuutil
 import tzdatautil
+import patches
 
 
 # Calculate the paths that are referred to by multiple functions.
@@ -236,8 +237,7 @@ def main():
   print('Source tools file structure: %s' % timezone_input_tools_dir)
   print('Output data file structure: %s' % timezone_output_data_dir)
 
-  iana_input_data_dir = '%s/iana' % timezone_input_data_dir
-  iana_data_tar_file = tzdatautil.GetIanaTarFile(iana_input_data_dir, 'tzdata')
+  iana_data_tar_file = patches.Apply()
   iana_data_version = GetIanaVersion(iana_data_tar_file)
   print('IANA time zone data release %s in %s ...' % (iana_data_version, iana_data_tar_file))
 

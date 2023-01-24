@@ -29,7 +29,7 @@ import tzdatautil
 
 # Calculate the paths that are referred to by multiple functions.
 android_build_top = i18nutil.GetAndroidRootOrDie()
-iana_data_dir = os.path.realpath('%s/system/timezone/input_data/iana' % android_build_top)
+iana_data_dir = os.path.realpath('%s/system/timezone/input_data/iana/original' % android_build_top)
 iana_tools_dir = os.path.realpath('%s/system/timezone/input_tools/iana' % android_build_top)
 
 def FtpRetrieveFile(ftp, filename):

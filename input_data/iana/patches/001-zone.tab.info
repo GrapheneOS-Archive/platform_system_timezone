@@ -1,0 +1,5 @@
+ICU translations for Europe/Kyiv won't be available on already
+released Androids, so Europe/Kiev is used as UA time zone.
+It has no user visible effect as the latter is just an alias
+of the former.
+

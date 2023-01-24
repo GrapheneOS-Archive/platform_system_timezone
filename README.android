@@ -20,6 +20,15 @@ input_data
     Some files come from external sources and some are mastered in Android.
     See also download-iana-data.py.
 
+    Android tries not to carry patches over IANA, but they can be necessary,
+    particularly on old releases, e.g. if legacy time zone IDs are preferred
+    because translations are not available for them in old versions of ICU.
+    In such case:
+      - iana/original stores unmodified IANA files.
+      - iana/patches stores Android specific patches.
+      - iana/patched contains original files with patches mentioned above
+        applied. Empty if there are no patches.
+
 input_tools
   - Contains tools that generate Android time zone files.
 
