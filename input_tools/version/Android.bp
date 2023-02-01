@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2015 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,23 +17,12 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
-// A static library for the zone_compactor host tool.
-// The tool can be run with java -jar zone_compactor.jar
+// The tool used to create time zone version file.
 java_binary_host {
-    name: "zone_compactor",
-    main_class: "ZoneCompactor",
-    srcs: ["main/java/**/*.java"],
-}
-
-java_test_host {
-    name: "zone_compactor_tests",
-    srcs: ["test/java/**/*.java"],
-    test_options: {
-        unit_test: true,
-    },
+    name: "create_tz_version",
+    main_class: "com.android.timezone.version.tools.CreateTzVersion",
+    srcs: ["src/main/**/*.java"],
     static_libs: [
-        "zone_compactor",
-        "junit",
-        "tztools_common_testing",
+        "timezone-host",
     ],
 }

@@ -335,11 +335,6 @@ countryMappings {
     fromMillis: 1550368800000
   }
   timeZoneReplacements {
-    replacedId: "America/Santarem"
-    replacementId: "America/Recife"
-    fromMillis: 1214280000000
-  }
-  timeZoneReplacements {
     replacedId: "America/Recife"
     replacementId: "America/Bahia"
     fromMillis: 1330221600000
@@ -353,6 +348,11 @@ countryMappings {
     replacedId: "America/Belem"
     replacementId: "America/Recife"
     fromMillis: 1013911200000
+  }
+  timeZoneReplacements {
+    replacedId: "America/Santarem"
+    replacementId: "America/Recife"
+    fromMillis: 1214280000000
   }
   timeZoneReplacements {
     replacedId: "America/Maceio"
@@ -653,6 +653,10 @@ countryMappings {
   isoCode: "cy"
   timeZoneIds: "Asia/Nicosia"
   timeZoneIds: "Asia/Famagusta"
+  timeZoneLinks {
+    alternativeId: "Europe/Nicosia"
+    preferredId: "Asia/Nicosia"
+  }
 }
 countryMappings {
   isoCode: "cz"
@@ -1005,11 +1009,11 @@ countryMappings {
 countryMappings {
   isoCode: "ki"
   timeZoneIds: "Pacific/Kiritimati"
-  timeZoneIds: "Pacific/Enderbury"
+  timeZoneIds: "Pacific/Kanton"
   timeZoneIds: "Pacific/Tarawa"
   timeZoneLinks {
-    alternativeId: "Pacific/Kanton"
-    preferredId: "Pacific/Enderbury"
+    alternativeId: "Pacific/Enderbury"
+    preferredId: "Pacific/Kanton"
   }
 }
 countryMappings {
@@ -1676,6 +1680,10 @@ countryMappings {
 countryMappings {
   isoCode: "tr"
   timeZoneIds: "Europe/Istanbul"
+  timeZoneLinks {
+    alternativeId: "Asia/Istanbul"
+    preferredId: "Europe/Istanbul"
+  }
   timeZoneLinks {
     alternativeId: "Turkey"
     preferredId: "Europe/Istanbul"

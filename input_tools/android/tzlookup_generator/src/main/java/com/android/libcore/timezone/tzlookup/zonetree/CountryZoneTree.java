@@ -557,20 +557,20 @@ public final class CountryZoneTree {
             }
 
             private void addZoneEntryIfMissing(
-                    Instant endInstant, String replacementTimeZoneId, ZoneInfo zoneInfo) {
+                    Instant notAfterInstant, String replacementTimeZoneId, ZoneInfo zoneInfo) {
                 String zoneId = zoneInfo.getZoneId();
 
                 if (Objects.equals(zoneId, replacementTimeZoneId)) {
                     throw new IllegalStateException(zoneId + " cannot replace itself. Cycle!");
                 }
 
-                if (!notAfterCutOff.isAfter(endInstant)) {
-                    // notAfterCutOff <= endInstant
-                    endInstant = null;
+                if (!notAfterCutOff.isAfter(notAfterInstant)) {
+                    // notAfterCutOff <= notAfterInstant
+                    notAfterInstant = null;
                     replacementTimeZoneId = null;
                 }
                 if (!zoneUsage.hasEntry(zoneId)) {
-                    zoneUsage.addEntry(zoneId, endInstant, replacementTimeZoneId);
+                    zoneUsage.addEntry(zoneId, notAfterInstant, replacementTimeZoneId);
                 }
             }
 
