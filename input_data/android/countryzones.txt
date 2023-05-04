@@ -25,7 +25,7 @@
 # a time zone for an Android device.
 
 # ianaVersion: The version of the IANA rules this file matches.
-ianaVersion:"2022g"
+ianaVersion:"2023a"
 
 # countries:
 #
@@ -864,6 +864,7 @@ countries:<
     # 1.06M
     priority:1060
     alternativeIds: "Canada/Mountain"
+    alternativeIds: "America/Yellowknife"
   >
   timeZoneMappings:<
     utcOffset:"-6:00"
@@ -955,12 +956,6 @@ countries:<
     priority:1
   >
 
-  timeZoneMappings:<
-    utcOffset:"-7:00"
-    id:"America/Yellowknife"
-    # 19.6K
-    priority:20
-  >
   timeZoneMappings:<
     utcOffset:"-7:00"
     id:"America/Dawson_Creek"
