@@ -28,4 +28,10 @@
       android:maxSdkVersion="30"
       android:targetSdkVersion="30"
   />
+  <!-- Due to an APEX reset bug this should not be installed if a device
+     does not have a particular Platform feature. -->
+  <uses-feature
+      android:name="com.google.android.mainline.patchlevel.1"
+      android:required="true"
+  />
 </manifest>
