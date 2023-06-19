@@ -674,7 +674,7 @@ countries:<
 # Score is (mostly) related to the state population.
 countries:<
   isoCode:"br"
-  defaultTimeZoneId:"America/Noronha"
+  defaultTimeZoneId:"America/Sao_Paulo"
   timeZoneMappings:<
     utcOffset:"-2:00"
     id:"America/Noronha"
