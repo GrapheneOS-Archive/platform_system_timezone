@@ -125,7 +125,7 @@
   <country code="bq" default="America/Kralendijk" everutc="n">
    <id>America/Kralendijk</id>
   </country>
-  <country code="br" default="America/Noronha" everutc="n">
+  <country code="br" default="America/Sao_Paulo" everutc="n">
    <id alts="Brazil/DeNoronha">America/Noronha</id>
    <id alts="Brazil/East">America/Sao_Paulo</id>
    <id notafter="1550368800000" repl="America/Sao_Paulo">America/Bahia</id>
