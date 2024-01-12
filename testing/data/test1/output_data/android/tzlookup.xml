@@ -331,8 +331,8 @@
   </country>
   <country code="gl" default="America/Nuuk" everutc="y">
    <id>America/Danmarkshavn</id>
-   <id>America/Scoresbysund</id>
    <id alts="America/Godthab">America/Nuuk</id>
+   <id notafter="1711846800000" repl="America/Nuuk">America/Scoresbysund</id>
    <id>America/Thule</id>
   </country>
   <country code="gm" default="Africa/Banjul" everutc="y">

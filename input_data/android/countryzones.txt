@@ -25,7 +25,7 @@
 # a time zone for an Android device.
 
 # ianaVersion: The version of the IANA rules this file matches.
-ianaVersion:"2023a"
+ianaVersion:"2023d"
 
 # countries:
 #
@@ -255,7 +255,7 @@ countries:<
   >
 
   timeZoneMappings:<
-    utcOffset:"11:00"
+    utcOffset:"8:00"
     id:"Antarctica/Casey"
   >
 
@@ -270,7 +270,7 @@ countries:<
   >
 
   timeZoneMappings:<
-    utcOffset:"6:00"
+    utcOffset:"5:00"
     id:"Antarctica/Vostok"
   >
 
@@ -1514,22 +1514,32 @@ countries:<
   timeZoneMappings:<
     utcOffset:"0:00"
     id:"America/Danmarkshavn"
-  >
-
-  timeZoneMappings:<
-    utcOffset:"-1:00"
-    id:"America/Scoresbysund"
+    # Setting lowest possible value.
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"-2:00"
     id:"America/Nuuk"
     alternativeIds: "America/Godthab"
+    # Population of Nuuk was 17635 (2017) according to Wikipedia.
+    priority:17
+  >
+
+  timeZoneMappings:<
+    utcOffset:"-2:00"
+    id:"America/Scoresbysund"
+    # Scoresbysund's (now known as Ittoqqortoormiit) population was 345 (2020) according to
+    # Wikipedia.
+    priority:1
   >
 
   timeZoneMappings:<
     utcOffset:"-4:00"
     id:"America/Thule"
+    # Qaanaaq's, formerly known as Thule or New Thule, population was 646 (2020) according to
+    # Wikipedia.
+    priority:1
   >
 >
 
