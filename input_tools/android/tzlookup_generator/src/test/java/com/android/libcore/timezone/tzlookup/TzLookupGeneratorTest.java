@@ -391,22 +391,26 @@ public class TzLookupGeneratorTest {
                 + "timeZoneMappings:<\n"
                 + "  utcOffset:\"0:00\"\n"
                 + "  id:\"America/Danmarkshavn\"\n"
-                + ">\n"
-                + "\n"
-                + "timeZoneMappings:<\n"
-                + "  utcOffset:\"-1:00\"\n"
-                + "  id:\"America/Scoresbysund\"\n"
+                + "  priority:1\n"
                 + ">\n"
                 + "\n"
                 + "timeZoneMappings:<\n"
                 + "  utcOffset:\"-2:00\"\n"
                 + "  id:\"America/Godthab\"\n"
                 + "  alternativeIds: \"America/Nuuk\"\n"
+                + "  priority: 17\n"
+                + ">\n"
+                + "\n"
+                + "timeZoneMappings:<\n"
+                + "  utcOffset:\"-2:00\"\n"
+                + "  id:\"America/Scoresbysund\"\n"
+                + "  priority:1\n"
                 + ">\n"
                 + "\n"
                 + "timeZoneMappings:<\n"
                 + "  utcOffset:\"-4:00\"\n"
                 + "  id:\"America/Thule\"\n"
+                + "  priority:1\n"
                 + ">\n";
         Country country = parseCountry(countryZonesWithOldIdText);
         List<ZoneTabFile.CountryEntry> zoneTabWithNewIds = Arrays.asList(
@@ -419,7 +423,8 @@ public class TzLookupGeneratorTest {
         OutputData outputData = generateOutputData(country, zoneTabWithNewIds);
 
         String expectedTzLookupOutput = "<id>America/Danmarkshavn</id>\n"
-                + "<id>America/Scoresbysund</id>\n"
+                + "<id notafter=\"1711846800000\" repl=\"America/Godthab\">"
+                + "America/Scoresbysund</id>\n"
                 + "<id alts=\"America/Nuuk\">America/Godthab</id>\n"
                 + "<id>America/Thule</id>\n";
         String[] expectedTzLookupXmlLines = expectedTzLookupOutput.split("\\n");
@@ -434,13 +439,13 @@ public class TzLookupGeneratorTest {
         TzIdsProto.CountryMapping.Builder b = TzIdsProto.CountryMapping.newBuilder()
                 .setIsoCode("gl")
                 .addTimeZoneIds("America/Danmarkshavn")
-                .addTimeZoneIds("America/Scoresbysund")
                 .addTimeZoneIds("America/Godthab")
                 .addTimeZoneIds("America/Thule");
 
         // Because Android lists America/Nuuk in alternativeIds in countryzones.txt, the link will
         // be reversed from the usual.
         addLink(b, "America/Nuuk" /* alternativeId */, "America/Godthab" /* preferredId */);
+        addReplacement(b, 1711846800000L, "America/Godthab", "America/Scoresbysund");
 
         tzIdsBuilder.addCountryMappings(b);
         assertEquals(tzIdsBuilder.build(), outputData.timeZoneIds);
