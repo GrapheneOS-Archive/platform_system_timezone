@@ -25,7 +25,7 @@
 # a time zone for an Android device.
 
 # ianaVersion: The version of the IANA rules this file matches.
-ianaVersion:"2023d"
+ianaVersion:"2024a"
 
 # countries:
 #
@@ -1942,46 +1942,54 @@ countries:<
 
 # KAZAKHSTAN
 #
-# Priorities assigned on 20190107 using:
+# Priorities assigned on 13 Feb 2024 using:
 # https://en.wikipedia.org/wiki/List_of_cities_in_Kazakhstan
-# Priority is just an abstract score.
+# Priority is related to city population.
 countries:<
   isoCode:"kz"
   defaultTimeZoneId:"Asia/Almaty"
   timeZoneMappings:<
-    utcOffset:"6:00"
+    utcOffset:"5:00"
     id:"Asia/Almaty"
-    priority:2
-  >
-  timeZoneMappings:<
-    utcOffset:"6:00"
-    id:"Asia/Qostanay"
-  >
-
-  timeZoneMappings:<
-    utcOffset:"5:00"
-    id:"Asia/Oral"
-    priority:2
-  >
-  timeZoneMappings:<
-    utcOffset:"5:00"
-    id:"Asia/Aqtau"
-    priority:1
-  >
-  timeZoneMappings:<
-    utcOffset:"5:00"
-    id:"Asia/Qyzylorda"
-    priority:1
+    # Population is 2.217M (wiki, 2023)
+    priority:2217
   >
   timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Aqtobe"
-    priority:1
+    # Population is 560K (wiki 2023)
+    priority:560
+  >
+  timeZoneMappings:<
+    utcOffset:"5:00"
+    id:"Asia/Qyzylorda"
+    # Population is 315500 (wiki, 2023)
+    # Rounding up to avoid conflicts with Asia/Atyrau.
+    priority:316
   >
   timeZoneMappings:<
     utcOffset:"5:00"
     id:"Asia/Atyrau"
-    priority:1
+    # Population is 315274 (wiki, 2023)
+    priority:315
+  >
+  timeZoneMappings:<
+    utcOffset:"5:00"
+    id:"Asia/Aqtau"
+    # Population is 270K (wiki, 2023)
+    priority:270
+  >
+  timeZoneMappings:<
+    utcOffset:"5:00"
+    id:"Asia/Qostanay"
+    # Population is 265K (wiki, 2023)
+    priority:265
+  >
+  timeZoneMappings:<
+    utcOffset:"5:00"
+    id:"Asia/Oral"
+    # Population is 254K (wiki, 2023)
+    priority:254
   >
 >
 
