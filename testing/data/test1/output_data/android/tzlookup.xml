@@ -331,8 +331,8 @@
   </country>
   <country code="gl" default="America/Nuuk" everutc="y">
    <id>America/Danmarkshavn</id>
-   <id>America/Scoresbysund</id>
    <id alts="America/Godthab">America/Nuuk</id>
+   <id notafter="1711846800000" repl="America/Nuuk">America/Scoresbysund</id>
    <id>America/Thule</id>
   </country>
   <country code="gm" default="Africa/Banjul" everutc="y">
@@ -459,12 +459,12 @@
   </country>
   <country code="kz" default="Asia/Almaty" everutc="n">
    <id>Asia/Almaty</id>
+   <id notafter="1709229600000" repl="Asia/Almaty">Asia/Aqtobe</id>
+   <id notafter="1545328800000" repl="Asia/Aqtobe">Asia/Qyzylorda</id>
+   <id notafter="1099173600000" repl="Asia/Aqtobe">Asia/Atyrau</id>
+   <id notafter="1099173600000" repl="Asia/Aqtobe">Asia/Aqtau</id>
    <id notafter="1099170000000" repl="Asia/Almaty">Asia/Qostanay</id>
-   <id>Asia/Oral</id>
-   <id notafter="1099173600000" repl="Asia/Oral">Asia/Aqtau</id>
-   <id notafter="1545328800000" repl="Asia/Oral">Asia/Qyzylorda</id>
-   <id notafter="1099173600000" repl="Asia/Oral">Asia/Aqtobe</id>
-   <id notafter="922572000000" repl="Asia/Oral">Asia/Atyrau</id>
+   <id notafter="922572000000" repl="Asia/Atyrau">Asia/Oral</id>
   </country>
   <country code="la" default="Asia/Vientiane" everutc="n">
    <id>Asia/Vientiane</id>
